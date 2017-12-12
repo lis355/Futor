@@ -5,15 +5,22 @@ namespace Futor
 {
     static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new OptionsForm());
+
+
+            //readonly AudioManager _audioManager;
+            var contextMenuProvider = new ContextMenuProvider();
+
+            using (var pi = new ProcessIcon { ContextMenu = contextMenuProvider.ContextMenuStrip})
+            {
+                pi.Display();
+
+                Application.Run();
+            }
         }
     }
 }

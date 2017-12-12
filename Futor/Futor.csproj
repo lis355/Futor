@@ -68,6 +68,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioManager.cs" />
+    <Compile Include="ContextMenuProvider.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ContextMenuProvider.Designer.cs">
+      <DependentUpon>ContextMenuProvider.cs</DependentUpon>
+    </Compile>
     <Compile Include="PluginsStackProcessor.cs" />
     <Compile Include="OptionsForm.cs">
       <SubType>Form</SubType>
@@ -76,9 +82,13 @@
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="OptionsFormManager.cs" />
+    <Compile Include="ProcessIcon.cs" />
     <Compile Include="Processor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ContextMenuProvider.resx">
+      <DependentUpon>ContextMenuProvider.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="OptionsForm.resx">
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </EmbeddedResource>

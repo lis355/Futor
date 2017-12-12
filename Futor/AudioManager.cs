@@ -9,38 +9,7 @@ using PitchShifter;
 
 namespace Futor
 {
-    /*public class WaveProvider32 : IWaveProvider
-    {
-        const int _kBitsInByte = 8;
-
-        public delegate int ReadDelegate(float[] buffer, int offset, int count);
-
-        public WaveFormat WaveFormat { get; }
-
-        public ReadDelegate ReadFunction { get; }
-
-        public WaveProvider32(int sampleRate, int channels, ReadDelegate readFunction)
-        {
-            WaveFormat = WaveFormat.CreateIeeeFloatWaveFormat(sampleRate, channels);
-            ReadFunction = readFunction;
-        }
-        
-        public int Read(byte[] buffer, int offset, int count)
-        {
-            int bytesPerSample = WaveFormat.BitsPerSample / _kBitsInByte;
-            var waveBuffer = new WaveBuffer(buffer);
-            int samplesRequired = count / bytesPerSample;
-            int samplesRead = ReadFloat(waveBuffer, offset / bytesPerSample, samplesRequired);
-            return samplesRead * bytesPerSample;
-        }
-
-        public int ReadFloat(float[] buffer, int offset, int sampleCount)
-        {
-            return (ReadFunction != null) ? ReadFunction(buffer, offset, sampleCount) : sampleCount;
-        }
-    }*/
-
-    class AudioManager
+    public class AudioManager
     {
         List<MMDevice> _inputDevices;
         List<MMDevice> _outputDevices;
@@ -49,6 +18,7 @@ namespace Futor
         WasapiCapture _soundIn;
         WasapiOut _soundOut;
         PluginsStackProcessor _pluginsStack;
+        bool _working;
         
         public void Init()
         {
@@ -89,6 +59,15 @@ namespace Futor
         {
             _soundOut?.Dispose();
             _soundIn?.Dispose();
+
+            _soundOut = null;
+            _soundIn = null;
+        }
+
+        public void Restart()
+        {
+            Finish();
+            Start();
         }
     }
 }
