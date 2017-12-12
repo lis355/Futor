@@ -3,8 +3,7 @@
     public class OptionsFormManager
     {
         readonly OptionsForm _form;
-
-        AudioManager _audioManager;
+        readonly AudioManager _audioManager;
 
         public OptionsFormManager(OptionsForm form)
         {
@@ -12,6 +11,16 @@
 
             _audioManager = new AudioManager();
             _audioManager.Init();
+        }
+
+        public void OnFormLoad()
+        {
+            _audioManager.Start();
+        }
+
+        public void OnFormClosed()
+        {
+            _audioManager.Finish();
         }
     }
 }

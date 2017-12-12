@@ -1,12 +1,15 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
-using NAudio.CoreAudioApi;
-using NAudio.Utils;
-using NAudio.Wave;
+using CSCore;
+using CSCore.CoreAudioAPI;
+using CSCore.SoundIn;
+using CSCore.SoundOut;
+using CSCore.Streams;
+using PitchShifter;
 
 namespace Futor
 {
-    public class WaveProvider32 : IWaveProvider
+    /*public class WaveProvider32 : IWaveProvider
     {
         const int _kBitsInByte = 8;
 
@@ -35,94 +38,57 @@ namespace Futor
         {
             return (ReadFunction != null) ? ReadFunction(buffer, offset, sampleCount) : sampleCount;
         }
-    }
-    
+    }*/
+
     class AudioManager
     {
-        IWaveIn _waveIn;
-        WaveProvider32 _inChannel;
-        WaveOut _waveOut;
-        WaveProvider32 _outChannel;
-
-        BufferedWaveProvider _buffer;
-
+        List<MMDevice> _inputDevices;
+        List<MMDevice> _outputDevices;
+        int _inputDeviceNumber;
+        int _outputDevicesNumber;
+        WasapiCapture _soundIn;
+        WasapiOut _soundOut;
+        PluginsStackProcessor _pluginsStack;
+        
         public void Init()
         {
             var deviceEnum = new MMDeviceEnumerator();
-            var devices = deviceEnum.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active).ToList();
+            _inputDevices = deviceEnum.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active).ToList();
+            _outputDevices = deviceEnum.EnumAudioEndpoints(DataFlow.Render, DeviceState.Active).ToList();
 
-            _waveIn = new WasapiCapture(devices[3], false, 10);
-            //_waveIn.DeviceNumber = 0;
-            _waveIn.DataAvailable += (sender, e) =>
+            /////
+            _inputDeviceNumber = 3;
+            _outputDevicesNumber = 0;
+        }
+
+        public void Start()
+        {
+            const AudioClientShareMode audioClientSharedMode = AudioClientShareMode.Shared;
+            const int latencyMs = 5;
+
+            _soundIn = new WasapiCapture(false, audioClientSharedMode, latencyMs);
+            _soundIn.Device = _inputDevices[_inputDeviceNumber];
+            _soundIn.Initialize();
+            _soundIn.Start();
+
+            var soundInSource = new SoundInSource(_soundIn)
             {
-                var wb = new WaveBuffer(e.Buffer);
-                float[] floatb = wb;
-
-                _buffer.AddSamples(e.Buffer, 0, e.BytesRecorded);
+                FillWithZeros = true
             };
 
-            _waveIn.WaveFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
-            //_waveIn.BufferMilliseconds = 10;
+            _pluginsStack = new PluginsStackProcessor(soundInSource.ToSampleSource());
 
-            //CircularBuffer
+            _soundOut = new WasapiOut(false, audioClientSharedMode, latencyMs);
+            _soundOut.Device = _outputDevices[_outputDevicesNumber];
+            _soundOut.Initialize(_pluginsStack.ToWaveSource());
 
-            //var inName = WaveIn.GetCapabilities(_waveIn.DeviceNumber).ProductName;
-            
-            float[] a = new float[44100];
-
-            //_inChannel = new WaveProvider32(44100, 2, (buffer, offset, count) =>
-            //{
-            //    bool noise = true;
-            //
-            //    for (int i = 0; i < count; i++)
-            //    {
-            //        a[i] = buffer[i + offset];
-            //
-            //        if (Math.Abs(a[i]) > 1e-3)
-            //            noise = false;
-            //    }
-            //    
-            //    //Array.Copy(buffer, offset, a, 0, count);
-            //
-            //    return count;
-            //});
-
-            //_waveIn.Init(_inChannel);
-
-            _buffer = new BufferedWaveProvider(_waveIn.WaveFormat);
-            _buffer.DiscardOnBufferOverflow = true;
-
-            _waveIn.StartRecording();
-            //_waveIn.Play();
-
-            _waveOut = new WaveOut();
-            _waveOut.DeviceNumber = 1;
-
-            var outName = WaveOut.GetCapabilities(_waveOut.DeviceNumber).ProductName;
-
-            //_outChannel = new WaveProvider32(44100, 2, (buffer, offset, count) =>
-            //{
-            //    for (int i = 0; i < count; i++)
-            //        buffer[i + offset] = a[i];
-            //
-            //    //Array.Copy(a, 0, buffer, offset, count);
-            //
-            //    return count;
-            //});
-
-            _waveOut.Init(_buffer);
-            _waveOut.Play();
+            _soundOut.Play();
         }
-        
-        //public void Start()
-        //{
-        //    
-        //}
-        //
-        //public void Finish()
-        //{
-        //    _waveOut.Stop();
-        //    _waveOut.Dispose();
-        //}
+
+        public void Finish()
+        {
+            _soundOut?.Dispose();
+            _soundIn?.Dispose();
+        }
     }
 }
