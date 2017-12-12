@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using NAudio.CoreAudioApi;
 using NAudio.Utils;
 using NAudio.Wave;
 
@@ -37,7 +39,7 @@ namespace Futor
     
     class AudioManager
     {
-        WaveIn _waveIn;
+        IWaveIn _waveIn;
         WaveProvider32 _inChannel;
         WaveOut _waveOut;
         WaveProvider32 _outChannel;
@@ -46,15 +48,25 @@ namespace Futor
 
         public void Init()
         {
-            _waveIn = new ();
-            _waveIn.DeviceNumber = 0;
-            _waveIn.DataAvailable += OnDataAvailable;
+            var deviceEnum = new MMDeviceEnumerator();
+            var devices = deviceEnum.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active).ToList();
+
+            _waveIn = new WasapiCapture(devices[3], false, 10);
+            //_waveIn.DeviceNumber = 0;
+            _waveIn.DataAvailable += (sender, e) =>
+            {
+                var wb = new WaveBuffer(e.Buffer);
+                float[] floatb = wb;
+
+                _buffer.AddSamples(e.Buffer, 0, e.BytesRecorded);
+            };
+
             _waveIn.WaveFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
             //_waveIn.BufferMilliseconds = 10;
 
             //CircularBuffer
 
-            var inName = WaveIn.GetCapabilities(_waveIn.DeviceNumber).ProductName;
+            //var inName = WaveIn.GetCapabilities(_waveIn.DeviceNumber).ProductName;
             
             float[] a = new float[44100];
 
@@ -101,12 +113,7 @@ namespace Futor
             _waveOut.Init(_buffer);
             _waveOut.Play();
         }
-
-        void OnDataAvailable(object sender, WaveInEventArgs e)
-        {
-            _buffer.AddSamples(e.Buffer, 0, e.BytesRecorded);
-        }
-
+        
         //public void Start()
         //{
         //    
