@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CSCore;
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.SoundOut;
 using CSCore.Streams;
-using PitchShifter;
 
 namespace Futor
 {
@@ -26,8 +26,9 @@ namespace Futor
         int _outputDevicesNumber;
         WasapiCapture _soundIn;
         WasapiOut _soundOut;
-        PluginsStackProcessor _pluginsStack;
+        Processor _sampleProcessor;
         bool _working;
+        uint _latencyMilliseconds = 5;
 
         List<MMDevice> InputMMDevices
         {
@@ -67,6 +68,34 @@ namespace Futor
             }
         }
 
+        public uint LatencyMilliseconds
+        {
+            get { return _latencyMilliseconds; }
+            set
+            {
+                if (_latencyMilliseconds == value)
+                    return;
+
+                _latencyMilliseconds = value;
+
+                Restart();
+            }
+        }
+
+        public Processor SampleProcessor
+        {
+            get { return _sampleProcessor; }
+            set
+            {
+                if (_sampleProcessor == value)
+                    return;
+
+                _sampleProcessor = value;
+                
+                Restart();
+            }
+        }
+        
         public void Init()
         {
             _mmDeviceEnumerator = new MMDeviceEnumerator();
@@ -78,10 +107,12 @@ namespace Futor
 
         public void Start()
         {
-            const AudioClientShareMode audioClientSharedMode = AudioClientShareMode.Shared;
-            const int latencyMs = 5;
+            if (_working)
+                throw new Exception("Call Start when working.");
 
-            _soundIn = new WasapiCapture(false, audioClientSharedMode, latencyMs);
+            const AudioClientShareMode audioClientSharedMode = AudioClientShareMode.Shared;
+
+            _soundIn = new WasapiCapture(false, audioClientSharedMode, (int)LatencyMilliseconds);
             _soundIn.Device = InputMMDevices[_inputDeviceNumber];
             _soundIn.Initialize();
             _soundIn.Start();
@@ -91,28 +122,44 @@ namespace Futor
                 FillWithZeros = true
             };
 
-            _pluginsStack = new PluginsStackProcessor(soundInSource.ToSampleSource());
+            IWaveSource waveSource = soundInSource;
 
-            _soundOut = new WasapiOut(false, audioClientSharedMode, latencyMs);
+            if (SampleProcessor != null)
+            {
+                SampleProcessor.SampleSource = soundInSource.ToSampleSource();
+                waveSource = SampleProcessor.ToWaveSource();
+            }
+
+            _soundOut = new WasapiOut(false, audioClientSharedMode, (int)LatencyMilliseconds);
             _soundOut.Device = OutputMMDevices[_outputDevicesNumber];
-            _soundOut.Initialize(_pluginsStack.ToWaveSource());
+            _soundOut.Initialize(waveSource);
 
             _soundOut.Play();
+
+            _working = true;
         }
 
         public void Finish()
         {
-            _soundOut?.Dispose();
+            if (!_working)
+                throw new Exception("Call Finish when not working.");
+
+                _soundOut?.Dispose();
             _soundIn?.Dispose();
 
             _soundOut = null;
             _soundIn = null;
+
+            _working = false;
         }
 
         public void Restart()
         {
-            Finish();
-            Start();
+            if (_working)
+            {
+                Finish();
+                Start();
+            }
         }
     }
 }

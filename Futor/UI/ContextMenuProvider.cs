@@ -13,6 +13,7 @@ namespace Futor
         void ExitStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+            Environment.Exit(0);
         }
     }
 }
