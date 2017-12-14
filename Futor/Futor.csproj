@@ -84,9 +84,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\Audio\ApplicationManager.cs" />
+    <Compile Include="Source\ApplicationManager.cs" />
     <Compile Include="Source\Audio\AudioManager.cs" />
     <Compile Include="Source\Audio\HostCommandStub.cs" />
+    <Compile Include="Source\Preferences.cs" />
+    <Compile Include="Source\XmlSerializer.cs" />
     <Compile Include="UI\ContextMenuProvider.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -19,7 +19,7 @@ namespace Futor
         public PluginsStackProcessor()
         {
             const string path = @"C:\Program Files\VstPluginsLib\Pitch\PitchShifter.dll";
-            var pluginContext = OpenPlugin(path);
+            VstPluginContext pluginContext = null;//OpenPlugin(path);
 
             if (pluginContext != null)
             {
