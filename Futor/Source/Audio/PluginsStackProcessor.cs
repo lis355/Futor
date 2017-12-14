@@ -2,6 +2,12 @@
 {
     public class PluginsStackProcessor : Processor
     {
+        public PluginsStackProcessor()
+        {
+            const string path = @"C:\Program Files\VstPluginsLib\Pitch\PitchShifter.dll";
+            var plugin = new Plugin(path);
+        }
+
         public override void Process(float[] buffer, int offset, int samples)
         {
             // for (var i = offset; i < offset + samples; i++)
