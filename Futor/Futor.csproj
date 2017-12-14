@@ -87,7 +87,6 @@
     <Compile Include="Source\Audio\ApplicationManager.cs" />
     <Compile Include="Source\Audio\AudioManager.cs" />
     <Compile Include="Source\Audio\HostCommandStub.cs" />
-    <Compile Include="Source\Audio\Plugin.cs" />
     <Compile Include="UI\ContextMenuProvider.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -98,7 +97,7 @@
     <Compile Include="UI\EditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\EditorForm.designer.cs">
+    <Compile Include="UI\EditorForm.Designer.cs">
       <DependentUpon>EditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\OptionsForm.cs">

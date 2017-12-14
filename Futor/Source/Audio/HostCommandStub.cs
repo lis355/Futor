@@ -4,8 +4,18 @@ using Jacobi.Vst.Core.Host;
 
 namespace Futor
 {
-    public class HostCommandStub : IVstHostCommandStub 
+    public class HostCommandStub : IVstHostCommandStub
     {
+        public class PluginCalledEventArgs : EventArgs
+        {
+            public PluginCalledEventArgs(string message)
+            {
+                Message = message;
+            }
+
+            public string Message { get; private set; }
+        }
+
         public event EventHandler<PluginCalledEventArgs> PluginCalled;
 
         void RaisePluginCalled(string message)
@@ -162,15 +172,5 @@ namespace Futor
         {
             RaisePluginCalled("SetParameterAutomated(" + index + ", " + value + ")");
         }
-    }
-    
-    public class PluginCalledEventArgs : EventArgs
-    {
-        public PluginCalledEventArgs(string message)
-        {
-            Message = message;
-        }
-        
-        public string Message { get; private set; }
     }
 }

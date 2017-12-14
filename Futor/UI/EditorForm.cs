@@ -7,35 +7,34 @@ namespace Futor
 {
     public partial class EditorForm : Form
     {
-        public EditorForm()
+        readonly IVstPluginCommandStub _pluginCommandStub;
+
+        public EditorForm(IVstPluginCommandStub pluginCommandStub)
         {
             InitializeComponent();
+
+            _pluginCommandStub = pluginCommandStub;
         }
-        
-        public IVstPluginCommandStub PluginCommandStub { get; set; }
-        
-        public new void ShowDialog()
+
+        public new void Show()
         {
             Rectangle wndRect;
 
-            Text = PluginCommandStub.GetEffectName();
+            Text = _pluginCommandStub.GetEffectName();
 
-            if (PluginCommandStub.EditorGetRect(out wndRect))
+            if (_pluginCommandStub.EditorGetRect(out wndRect))
             {
                 Size = SizeFromClientSize(new Size(wndRect.Width, wndRect.Height));
 
-                PluginCommandStub.EditorOpen(Handle);
+                _pluginCommandStub.EditorOpen(Handle);
             }
 
-            base.ShowDialog();
+            base.Show();
         }
-
-        protected override void OnClosing(CancelEventArgs e)
+        
+        void EditorForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            base.OnClosing(e);
-
-            if (e.Cancel == false)
-                PluginCommandStub.EditorClose();
+            _pluginCommandStub.EditorClose();
         }
     }
 }
