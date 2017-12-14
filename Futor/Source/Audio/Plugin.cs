@@ -1,18 +1,28 @@
 ﻿using System;
+using System.Windows.Forms;
 using Jacobi.Vst.Interop.Host;
 
 namespace Futor
 {
     public class Plugin
     {
-        VstPluginContext _pluginContext;
+        readonly VstPluginContext _pluginContext;
 
         public Plugin(string path)
         {
             _pluginContext = OpenPlugin(path);
+
+            if (_pluginContext != null)
+            {
+
+                var dlg = new EditorForm {PluginCommandStub = _pluginContext.PluginCommandStub};
+
+                _pluginContext.PluginCommandStub.MainsChanged(true);
+                dlg.ShowDialog();
+            }
         }
 
-        VstPluginContext OpenPlugin(string pluginPath)
+        static VstPluginContext OpenPlugin(string pluginPath)
         {
             try
             {
@@ -30,9 +40,17 @@ namespace Futor
             }
             catch (Exception e)
             {
+                MessageBox.Show(string.Format("Can't open plugin at path {0}: {1}", pluginPath, e.Message));
             }
 
             return null;
+        }
+
+        void ClosePlugin()
+        {
+            _pluginContext.PluginCommandStub.MainsChanged(false);
+
+            _pluginContext?.Dispose();
         }
     }
 }
