@@ -36,7 +36,7 @@ namespace Futor
 
         public void LoadStack()
         {
-            var pluginInfos = PreferencesManager<PreferencesDescriptor>.Instance.PluginInfos;
+            var pluginInfos = Preferences<PreferencesDescriptor>.Instance.PluginInfos;
             var changed = false;
 
             for (int i = 0; i < pluginInfos.Count; i++)
@@ -70,8 +70,8 @@ namespace Futor
                 }
             }
 
-            //if (changed)
-            //    PreferencesManager<PreferencesDescriptor>.Save();
+            if (changed)
+                Preferences<PreferencesDescriptor>.Manager.Save();
         }
 
         public override void Process(float[] buffer, int offset, int samples)

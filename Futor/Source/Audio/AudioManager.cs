@@ -101,7 +101,7 @@ namespace Futor
             _mmDeviceEnumerator = new MMDeviceEnumerator();
 
             /////
-            _inputDeviceNumber = 3;
+            _inputDeviceNumber = 0;
             _outputDevicesNumber = 0;
         }
 
