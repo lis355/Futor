@@ -21,18 +21,18 @@ namespace Futor
         {
             var openFileDialog = new OpenFileDialog();
 
-            if (Directory.Exists(Preferences.Instance.LastPluginPath))
-                openFileDialog.InitialDirectory = Preferences.Instance.LastPluginPath;
+            if (Directory.Exists(Preferences<PreferencesDescriptor>.Instance.LastPluginPath))
+                openFileDialog.InitialDirectory = Preferences<PreferencesDescriptor>.Instance.LastPluginPath;
 
             openFileDialog.Filter = "VST Plugins|*.dll";
             openFileDialog.Multiselect = false;
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                
+                // ...
 
-                Preferences.Instance.LastPluginPath = Path.GetDirectoryName(openFileDialog.FileName);
-                Preferences.Instance.Save();
+                Preferences<PreferencesDescriptor>.Instance.LastPluginPath = Path.GetDirectoryName(openFileDialog.FileName);
+                Preferences<PreferencesDescriptor>.Manager.Save();
             }
         }
     }

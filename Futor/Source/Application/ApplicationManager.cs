@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace Futor
 {
@@ -6,7 +7,7 @@ namespace Futor
     {
         public void Run(Action runAction)
         {
-            // C:\Users\LIS\AppData\Local\Microsoft\Futor\1.0.0.0
+            Preferences<PreferencesDescriptor>.Manager.Load(Application.LocalUserAppDataPath + "\\preferences.xml");
 
             var pluginsStackProcessor = new PluginsStackProcessor();
             
