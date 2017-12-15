@@ -8,6 +8,8 @@ namespace Futor
         {
             // C:\Users\LIS\AppData\Local\Microsoft\Futor\1.0.0.0
 
+            var t = PreferencesManager<PreferencesDescriptor>.Instance.LastPluginPath;
+
             var pluginsStackProcessor = new PluginsStackProcessor();
             
             var audioManager = new AudioManager

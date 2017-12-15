@@ -84,11 +84,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\ApplicationManager.cs" />
+    <Compile Include="Source\Application\ApplicationManager.cs" />
+    <Compile Include="Source\Application\PreferencesDescriptor.cs" />
     <Compile Include="Source\Audio\AudioManager.cs" />
     <Compile Include="Source\Audio\HostCommandStub.cs" />
-    <Compile Include="Source\Preferences.cs" />
-    <Compile Include="Source\XmlSerializer.cs" />
+    <Compile Include="Source\Application\PreferencesManager.cs" />
+    <Compile Include="Source\Framework\XmlSerializer.cs" />
     <Compile Include="UI\ContextMenuProvider.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -108,10 +109,10 @@
     <Compile Include="UI\OptionsForm.Designer.cs">
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Source\OptionsFormManager.cs" />
-    <Compile Include="Source\ProcessIcon.cs" />
+    <Compile Include="Source\Application\OptionsFormManager.cs" />
+    <Compile Include="Source\Framework\ProcessIcon.cs" />
     <Compile Include="Source\Audio\Processor.cs" />
-    <Compile Include="Source\Program.cs" />
+    <Compile Include="Source\Application\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="UI\ContextMenuProvider.resx">
       <DependentUpon>ContextMenuProvider.cs</DependentUpon>
