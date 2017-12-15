@@ -6,11 +6,17 @@ namespace Futor
     {
         public void Run(Action runAction)
         {
+            // C:\Users\LIS\AppData\Local\Microsoft\Futor\1.0.0.0
+
+            var pluginsStackProcessor = new PluginsStackProcessor();
+            
             var audioManager = new AudioManager
             {
                 LatencyMilliseconds = 5,
-                SampleProcessor = new PluginsStackProcessor()
+                SampleProcessor = pluginsStackProcessor 
             };
+
+            pluginsStackProcessor.LoadStack();
 
             audioManager.Init();
             audioManager.Start();

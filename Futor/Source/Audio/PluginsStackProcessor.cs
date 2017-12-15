@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Jacobi.Vst.Core;
@@ -16,19 +17,61 @@ namespace Futor
         VstAudioBuffer[] _inputBuffers;
         VstAudioBuffer[] _outputBuffers;
 
+        public class PluginEventArgs : EventArgs 
+        {
+            public VstPluginContext PluginContext { get; private set; }
+
+            public PluginEventArgs(VstPluginContext pluginContext)
+            {
+                PluginContext = pluginContext;
+            }
+        }
+
+        public EventHandler<PluginEventArgs> OnPluginAdded;
+        public EventHandler<PluginEventArgs> OnPluginRemoved;
+
         public PluginsStackProcessor()
         {
-            const string path = @"C:\Program Files\VstPluginsLib\Pitch\PitchShifter.dll";
-            VstPluginContext pluginContext = null;//OpenPlugin(path);
+        }
 
-            if (pluginContext != null)
+        public void LoadStack()
+        {
+            var pluginInfos = Preferences.Instance.PluginInfos;
+            var changed = false;
+
+            for (int i = 0; i < pluginInfos.Count; i++)
             {
-                _plugins.Add(pluginContext);
+                var pluginInfo = pluginInfos[i];
+                var error = true;
+                var pluginPath = pluginInfo.Path;
+                if (File.Exists(pluginPath))
+                {
+                    var pluginContext = OpenPlugin(pluginPath);
+                    if (pluginContext != null)
+                    {
+                        error = false;
 
-                var dlg = new EditorForm(pluginContext.PluginCommandStub);
-                
-                dlg.Show();
+                        _plugins.Add(pluginContext);
+
+                        OnPluginAdded?.Invoke(this, new PluginEventArgs(pluginContext));
+
+                        //////
+                        var dlg = new EditorForm(pluginContext.PluginCommandStub);
+                        dlg.Show();
+                    }
+                }
+
+                if (error)
+                {
+                    pluginInfos.RemoveAt(i);
+                    i--;
+
+                    changed = true;
+                }
             }
+
+            if (changed)
+                Preferences.Instance.Save();
         }
 
         public override void Process(float[] buffer, int offset, int samples)
@@ -42,18 +85,25 @@ namespace Futor
                     || _size != size)
                     ResetBufferManager(channelsCount, size);
 
+                _bufferManager.ClearAllBuffers();
+
                 for (int i = offset, k = 0; i < offset + samples; i += channelsCount, k++)
                     for (int j = 0; j < channelsCount; j++)
                         _inputBuffers[j][k] = buffer[i + j];
 
-                foreach (var pluginContext in _plugins)
+                for (int i = 0; i < _plugins.Count; i++)
                 {
+                    if (i > 0)
+                    {
+                        var tmpBuffer = _outputBuffers;
+                        _outputBuffers = _inputBuffers;
+                        _inputBuffers = tmpBuffer;
+                    }
+
+                    var pluginContext = _plugins[i];
+
                     pluginContext.PluginCommandStub.SetBlockSize(size);
                     pluginContext.PluginCommandStub.ProcessReplacing(_inputBuffers, _outputBuffers);
-
-                    //var tmpBuffer = _outputBuffers;
-                    //_outputBuffers = _inputBuffers;
-                    //_inputBuffers = tmpBuffer;
                 }
 
                 for (int i = offset, k = 0; i < offset + samples; i += channelsCount, k++)
