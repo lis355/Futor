@@ -17,9 +17,11 @@ namespace Futor
         }
 
         public string LastPluginPath;
-
+        
         public string InputDeviceName;
         public string OutputDeviceName;
+
+        public int LatencyMilliseconds;
 
         public List<PluginInfo> PluginInfos = new List<PluginInfo>();
     }

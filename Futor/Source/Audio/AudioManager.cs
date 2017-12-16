@@ -11,64 +11,66 @@ namespace Futor
 {
     public class AudioManager
     {
-        public class Device
+        public class AudioManagerEventArgs : EventArgs
         {
-            public string Name { get; private set; }
+            public AudioManager AudioManager { get; private set; }
 
-            public Device(MMDevice device)
+            public AudioManagerEventArgs(AudioManager audioManager)
             {
-                Name = device.FriendlyName;
+                AudioManager = audioManager;
             }
         }
 
+        const int _kMinimumLatencyMilliseconds = 5;
+
         MMDeviceEnumerator _mmDeviceEnumerator;
-        int _inputDeviceNumber;
-        int _outputDevicesNumber;
         WasapiCapture _soundIn;
         WasapiOut _soundOut;
         Processor _sampleProcessor;
         bool _working;
-        uint _latencyMilliseconds = 5;
+        int _latencyMilliseconds = _kMinimumLatencyMilliseconds;
+        string _inputDeviceName;
+        string _outputDeviceName;
 
-        List<MMDevice> InputMMDevices
+        public event EventHandler<AudioManagerEventArgs> OnInputDeviceChanged;
+        public event EventHandler<AudioManagerEventArgs> OnOutputDeviceChanged;
+        public event EventHandler<AudioManagerEventArgs> OnLatencyMillisecondsChanged;
+        public event EventHandler<AudioManagerEventArgs> OnAudionConnectionStarted;
+        public event EventHandler<AudioManagerEventArgs> OnAudionConnectionFinished;
+
+        public string InputDeviceName
         {
-            get
+            get { return _inputDeviceName; }
+            set
             {
-                return _mmDeviceEnumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active)
-                    .ToList();
+                if (_inputDeviceName == value)
+                    return;
+
+                _inputDeviceName = value;
+
+                RestartIfWorking();
+
+                OnInputDeviceChanged?.Invoke(this, new AudioManagerEventArgs(this));
             }
         }
 
-        public IList<Device> InputDevices
+        public string OutputDeviceName
         {
-            get
+            get { return _outputDeviceName; }
+            set
             {
-                return InputMMDevices
-                    .Select(x => new Device(x))
-                    .ToList();
-            }
-        }
-        
-        List<MMDevice> OutputMMDevices
-        {
-            get
-            {
-                return _mmDeviceEnumerator.EnumAudioEndpoints(DataFlow.Render, DeviceState.Active)
-                    .ToList();
+                if (_outputDeviceName == value)
+                    return;
+
+                _outputDeviceName = value;
+
+                RestartIfWorking();
+
+                OnOutputDeviceChanged?.Invoke(this, new AudioManagerEventArgs(this));
             }
         }
 
-        public IList<Device> OutputDevices
-        {
-            get
-            {
-                return OutputMMDevices
-                    .Select(x => new Device(x))
-                    .ToList();
-            }
-        }
-
-        public uint LatencyMilliseconds
+        public int LatencyMilliseconds
         {
             get { return _latencyMilliseconds; }
             set
@@ -76,9 +78,11 @@ namespace Futor
                 if (_latencyMilliseconds == value)
                     return;
 
-                _latencyMilliseconds = value;
+                _latencyMilliseconds = Math.Max(_kMinimumLatencyMilliseconds, value);
 
-                Restart();
+                RestartIfWorking();
+
+                OnLatencyMillisecondsChanged?.Invoke(this, new AudioManagerEventArgs(this));
             }
         }
 
@@ -92,17 +96,13 @@ namespace Futor
 
                 _sampleProcessor = value;
                 
-                Restart();
+                RestartIfWorking();
             }
         }
         
         public void Init()
         {
             _mmDeviceEnumerator = new MMDeviceEnumerator();
-
-            /////
-            _inputDeviceNumber = 0;
-            _outputDevicesNumber = 0;
         }
 
         public void Start()
@@ -110,10 +110,30 @@ namespace Futor
             if (_working)
                 throw new Exception("Call Start when working.");
 
+            var inputMMDevices = GetInputMMDevices();
+            var outputMMDevices = GetOutputMMDevices();
+            if (!inputMMDevices.Any()
+                || !outputMMDevices.Any())
+                return;
+
+            var inputDevice = inputMMDevices.Find(x => x.FriendlyName == InputDeviceName);
+            if (inputDevice == null)
+            {
+                inputDevice = inputMMDevices.First();
+                InputDeviceName = inputDevice.FriendlyName;
+            }
+
+            var outputDevice = outputMMDevices.Find(x => x.FriendlyName == OutputDeviceName);
+            if (outputDevice == null)
+            {
+                outputDevice = outputMMDevices.First();
+                OutputDeviceName = outputDevice.FriendlyName;
+            }
+
             const AudioClientShareMode audioClientSharedMode = AudioClientShareMode.Shared;
 
-            _soundIn = new WasapiCapture(false, audioClientSharedMode, (int)LatencyMilliseconds);
-            _soundIn.Device = InputMMDevices[_inputDeviceNumber];
+            _soundIn = new WasapiCapture(false, audioClientSharedMode, LatencyMilliseconds);
+            _soundIn.Device = inputDevice;
             _soundIn.Initialize();
             _soundIn.Start();
 
@@ -131,12 +151,14 @@ namespace Futor
             }
 
             _soundOut = new WasapiOut(false, audioClientSharedMode, (int)LatencyMilliseconds);
-            _soundOut.Device = OutputMMDevices[_outputDevicesNumber];
+            _soundOut.Device = outputDevice;
             _soundOut.Initialize(waveSource);
 
             _soundOut.Play();
 
             _working = true;
+
+            OnAudionConnectionStarted?.Invoke(this, new AudioManagerEventArgs(this));
         }
 
         public void Finish()
@@ -144,22 +166,36 @@ namespace Futor
             if (!_working)
                 throw new Exception("Call Finish when not working.");
 
-                _soundOut?.Dispose();
+            _soundOut?.Dispose();
             _soundIn?.Dispose();
 
             _soundOut = null;
             _soundIn = null;
 
             _working = false;
-        }
 
-        public void Restart()
+            OnAudionConnectionFinished?.Invoke(this, new AudioManagerEventArgs(this));
+        }
+        
+        void RestartIfWorking()
         {
             if (_working)
             {
                 Finish();
                 Start();
             }
+        }
+
+        List<MMDevice> GetInputMMDevices()
+        {
+            return _mmDeviceEnumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active)
+                .ToList();
+        }
+
+        List<MMDevice> GetOutputMMDevices()
+        {
+            return _mmDeviceEnumerator.EnumAudioEndpoints(DataFlow.Render, DeviceState.Active)
+                .ToList();
         }
     }
 }
