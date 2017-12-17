@@ -5,42 +5,44 @@ namespace Futor
 {
     public class ApplicationManager
     {
+        public AudioManager AudioManager { get; private set; }
+
         public void Run(Action runAction)
         {
             Preferences<PreferencesDescriptor>.Manager.Load(Application.LocalUserAppDataPath + "\\preferences.xml");
 
             var pluginsStackProcessor = new PluginsStackProcessor();
 
-            var audioManager = new AudioManager();
+            AudioManager = new AudioManager();
 
-            audioManager.OnInputDeviceChanged += (sender, args) =>
+            AudioManager.OnInputDeviceChanged += (sender, args) =>
             {
                 Preferences<PreferencesDescriptor>.Instance.InputDeviceName = args.AudioManager.InputDeviceName;
             };
 
-            audioManager.OnOutputDeviceChanged += (sender, args) =>
+            AudioManager.OnOutputDeviceChanged += (sender, args) =>
             {
                 Preferences<PreferencesDescriptor>.Instance.OutputDeviceName = args.AudioManager.OutputDeviceName;
             };
 
-            audioManager.OnLatencyMillisecondsChanged += (sender, args) =>
+            AudioManager.OnLatencyMillisecondsChanged += (sender, args) =>
             {
                 Preferences<PreferencesDescriptor>.Instance.LatencyMilliseconds = args.AudioManager.LatencyMilliseconds;
             };
 
-            audioManager.InputDeviceName = Preferences<PreferencesDescriptor>.Instance.InputDeviceName;
-            audioManager.OutputDeviceName = Preferences<PreferencesDescriptor>.Instance.OutputDeviceName;
-            audioManager.LatencyMilliseconds = Preferences<PreferencesDescriptor>.Instance.LatencyMilliseconds;
-            audioManager.SampleProcessor = pluginsStackProcessor;
+            AudioManager.InputDeviceName = Preferences<PreferencesDescriptor>.Instance.InputDeviceName;
+            AudioManager.OutputDeviceName = Preferences<PreferencesDescriptor>.Instance.OutputDeviceName;
+            AudioManager.LatencyMilliseconds = Preferences<PreferencesDescriptor>.Instance.LatencyMilliseconds;
+            AudioManager.SampleProcessor = pluginsStackProcessor;
          
             pluginsStackProcessor.LoadStack();
 
-            audioManager.Init();
-            audioManager.Start();
+            AudioManager.Init();
+            AudioManager.Start();
 
             Preferences<PreferencesDescriptor>.Manager.Save();
 
-            var contextMenuProvider = new ContextMenuProvider();
+            var contextMenuProvider = new ContextMenuProvider(this);
 
             using (var pi = new ProcessIcon { ContextMenu = contextMenuProvider.ContextMenuStrip })
             {
@@ -48,6 +50,14 @@ namespace Futor
 
                 runAction?.Invoke();
             }
+        }
+
+        public void Exit()
+        {
+            // ... todo call dispose
+
+            Application.Exit();
+            Environment.Exit(0);
         }
     }
 }

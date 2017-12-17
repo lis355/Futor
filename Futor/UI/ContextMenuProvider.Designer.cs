@@ -124,6 +124,7 @@
             this.OptionsStripMenuItem.Name = "OptionsStripMenuItem";
             this.OptionsStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.OptionsStripMenuItem.Text = "Options";
+            this.OptionsStripMenuItem.Click += new System.EventHandler(this.OptionsStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 

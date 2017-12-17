@@ -109,7 +109,6 @@
     <Compile Include="UI\OptionsForm.Designer.cs">
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Source\Application\OptionsFormManager.cs" />
     <Compile Include="Source\Framework\ProcessIcon.cs" />
     <Compile Include="Source\Audio\Processor.cs" />
     <Compile Include="Source\Application\Program.cs" />

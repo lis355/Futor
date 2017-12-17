@@ -6,15 +6,18 @@ namespace Futor
 {
     public partial class ContextMenuProvider : UserControl
     {
-        public ContextMenuProvider()
+        readonly ApplicationManager _applicationManager;
+
+        public ContextMenuProvider(ApplicationManager applicationManager)
         {
             InitializeComponent();
+
+            _applicationManager = applicationManager;
         }
 
         void ExitStripMenuItem_Click(object sender, EventArgs e)
         {
-            Application.Exit();
-            Environment.Exit(0);
+            _applicationManager.Exit();
         }
 
         void AddPluginStripMenuItem_Click(object sender, EventArgs e)
@@ -34,6 +37,12 @@ namespace Futor
                 Preferences<PreferencesDescriptor>.Instance.LastPluginPath = Path.GetDirectoryName(openFileDialog.FileName);
                 Preferences<PreferencesDescriptor>.Manager.Save();
             }
+        }
+
+        void OptionsStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var optionsForm = new OptionsForm(_applicationManager.AudioManager);
+            optionsForm.ShowDialog();
         }
     }
 }

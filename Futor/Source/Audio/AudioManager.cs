@@ -69,6 +69,18 @@ namespace Futor
                 OnOutputDeviceChanged?.Invoke(this, new AudioManagerEventArgs(this));
             }
         }
+        
+        public List<MMDevice> GetInputMMDevices()
+        {
+            return _mmDeviceEnumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active)
+                .ToList();
+        }
+
+        public List<MMDevice> GetOutputMMDevices()
+        {
+            return _mmDeviceEnumerator.EnumAudioEndpoints(DataFlow.Render, DeviceState.Active)
+                .ToList();
+        }
 
         public int LatencyMilliseconds
         {
@@ -83,6 +95,17 @@ namespace Futor
                 RestartIfWorking();
 
                 OnLatencyMillisecondsChanged?.Invoke(this, new AudioManagerEventArgs(this));
+            }
+        }
+
+        public int SampleRate
+        {
+            get
+            {
+                if (!_working)
+                    return 0;
+
+                return _soundOut.WaveSource.WaveFormat.SampleRate;
             }
         }
 
@@ -184,18 +207,6 @@ namespace Futor
                 Finish();
                 Start();
             }
-        }
-
-        List<MMDevice> GetInputMMDevices()
-        {
-            return _mmDeviceEnumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active)
-                .ToList();
-        }
-
-        List<MMDevice> GetOutputMMDevices()
-        {
-            return _mmDeviceEnumerator.EnumAudioEndpoints(DataFlow.Render, DeviceState.Active)
-                .ToList();
         }
     }
 }
