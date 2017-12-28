@@ -54,7 +54,7 @@
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Location = new System.Drawing.Point(98, 66);
             this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(180, 21);
+            this.comboBox3.Size = new System.Drawing.Size(232, 21);
             this.comboBox3.TabIndex = 5;
             // 
             // label3
@@ -71,7 +71,7 @@
             this.OutputDevicesComboBox.FormattingEnabled = true;
             this.OutputDevicesComboBox.Location = new System.Drawing.Point(98, 39);
             this.OutputDevicesComboBox.Name = "OutputDevicesComboBox";
-            this.OutputDevicesComboBox.Size = new System.Drawing.Size(180, 21);
+            this.OutputDevicesComboBox.Size = new System.Drawing.Size(232, 21);
             this.OutputDevicesComboBox.TabIndex = 3;
             // 
             // label2
@@ -88,12 +88,12 @@
             this.InputDevicesComboBox.FormattingEnabled = true;
             this.InputDevicesComboBox.Location = new System.Drawing.Point(98, 12);
             this.InputDevicesComboBox.Name = "InputDevicesComboBox";
-            this.InputDevicesComboBox.Size = new System.Drawing.Size(180, 21);
+            this.InputDevicesComboBox.Size = new System.Drawing.Size(232, 21);
             this.InputDevicesComboBox.TabIndex = 1;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(208, 125);
+            this.button1.Location = new System.Drawing.Point(260, 123);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(70, 23);
             this.button1.TabIndex = 2;
@@ -105,7 +105,7 @@
             this.comboBox4.FormattingEnabled = true;
             this.comboBox4.Location = new System.Drawing.Point(98, 93);
             this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(180, 21);
+            this.comboBox4.Size = new System.Drawing.Size(232, 21);
             this.comboBox4.TabIndex = 7;
             // 
             // label4
@@ -119,7 +119,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(132, 125);
+            this.button2.Location = new System.Drawing.Point(184, 123);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(70, 23);
             this.button2.TabIndex = 8;
@@ -130,7 +130,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(287, 158);
+            this.ClientSize = new System.Drawing.Size(342, 158);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.comboBox4);
             this.Controls.Add(this.label4);

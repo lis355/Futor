@@ -11,7 +11,6 @@ namespace Futor
         {
             Preferences<PreferencesDescriptor>.Manager.Load(Application.LocalUserAppDataPath + "\\preferences.xml");
 
-            var pluginsStackProcessor = new PluginsStackProcessor();
 
             AudioManager = new AudioManager();
 
@@ -33,10 +32,12 @@ namespace Futor
             AudioManager.InputDeviceName = Preferences<PreferencesDescriptor>.Instance.InputDeviceName;
             AudioManager.OutputDeviceName = Preferences<PreferencesDescriptor>.Instance.OutputDeviceName;
             AudioManager.LatencyMilliseconds = Preferences<PreferencesDescriptor>.Instance.LatencyMilliseconds;
-            AudioManager.SampleProcessor = pluginsStackProcessor;
-         
+            
+            var pluginsStackProcessor = new PluginsStackProcessor();
             pluginsStackProcessor.LoadStack();
 
+            AudioManager.SampleProcessor = pluginsStackProcessor;
+         
             AudioManager.Init();
             AudioManager.Start();
 
