@@ -12,7 +12,9 @@ namespace Futor
             Application.SetCompatibleTextRenderingDefault(false);
 
             var applicationManager = new ApplicationManager();
-            applicationManager.Run(Application.Run);
+            applicationManager.Start();
+
+            Application.Run();
         }
     }
 }

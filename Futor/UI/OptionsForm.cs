@@ -55,6 +55,7 @@ namespace Futor
 
         void OptionsForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Preferences<PreferencesDescriptor>.Manager.Save();
         }
     }
 }

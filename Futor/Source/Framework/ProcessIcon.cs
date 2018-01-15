@@ -34,7 +34,7 @@ namespace Futor
 
         void UpdateText()
         {
-            _notifyIcon.Text = Application.ProductName;
+            _notifyIcon.Text = GetText();
         }
 
         void NotifyIconMouseMove(object sender, MouseEventArgs e)
@@ -54,11 +54,8 @@ namespace Futor
 
         void NotifyIconMouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left
-                && OnLeftMouseClick != null)
-            {
-                OnLeftMouseClick(sender, e);
-            }
+            if (e.Button == MouseButtons.Left)
+                OnLeftMouseClick?.Invoke(sender, e);
         }
     }
 }

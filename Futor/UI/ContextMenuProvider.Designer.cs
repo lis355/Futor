@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PluginStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MoveUpStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MoveDownStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,20 +42,20 @@
             this.OptionsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ExitStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ContextMenuStrip.SuspendLayout();
+            this.ContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
-            // ContextMenuStrip
+            // ContextMenu
             // 
-            this.ContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.PluginStripMenuItem,
             this.AddPluginStripMenuItem,
             this.toolStripSeparator2,
             this.OptionsStripMenuItem,
             this.toolStripSeparator1,
             this.ExitStripMenuItem});
-            this.ContextMenuStrip.Name = "ContextMenuStrip";
-            this.ContextMenuStrip.Size = new System.Drawing.Size(153, 126);
+            this.ContextMenu.Name = "ContextMenuStrip";
+            this.ContextMenu.Size = new System.Drawing.Size(153, 126);
             // 
             // PluginStripMenuItem
             // 
@@ -144,7 +144,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "ContextMenuProvider";
             this.Size = new System.Drawing.Size(600, 400);
-            this.ContextMenuStrip.ResumeLayout(false);
+            this.ContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -152,7 +152,7 @@
         #endregion
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem ExitStripMenuItem;
-        public System.Windows.Forms.ContextMenuStrip ContextMenuStrip;
+        public System.Windows.Forms.ContextMenuStrip ContextMenu;
         private System.Windows.Forms.ToolStripMenuItem OptionsStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem PluginStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem AddPluginStripMenuItem;

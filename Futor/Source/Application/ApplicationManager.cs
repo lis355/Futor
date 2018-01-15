@@ -1,17 +1,24 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Futor
 {
     public class ApplicationManager
     {
+        ProcessIcon _processIcon;
+
         public AudioManager AudioManager { get; private set; }
 
-        public void Run(Action runAction)
+        public ApplicationManager()
         {
+        }
+
+        public void Start()
+        {
+            // %appdata%\..\Local\MBL\Futor\1.0.0.0
             Preferences<PreferencesDescriptor>.Manager.Load(Application.LocalUserAppDataPath + "\\preferences.xml");
-
-
+            
             AudioManager = new AudioManager();
 
             AudioManager.OnInputDeviceChanged += (sender, args) =>
@@ -38,24 +45,23 @@ namespace Futor
 
             AudioManager.SampleProcessor = pluginsStackProcessor;
          
-            AudioManager.Init();
             AudioManager.Start();
 
             Preferences<PreferencesDescriptor>.Manager.Save();
 
             var contextMenuProvider = new ContextMenuProvider(this);
 
-            using (var pi = new ProcessIcon { ContextMenu = contextMenuProvider.ContextMenuStrip })
-            {
-                pi.Display();
-
-                runAction?.Invoke();
-            }
+            _processIcon = new ProcessIcon {ContextMenu = contextMenuProvider.ContextMenu};
+            _processIcon.Display();
         }
 
-        public void Exit()
+        public void Finish()
         {
+            _processIcon.Dispose();
+
             // ... todo call dispose
+
+            Preferences<PreferencesDescriptor>.Manager.Save();
 
             Application.Exit();
             Environment.Exit(0);

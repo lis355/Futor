@@ -17,7 +17,7 @@ namespace Futor
 
         void ExitStripMenuItem_Click(object sender, EventArgs e)
         {
-            _applicationManager.Exit();
+            _applicationManager.Finish();
         }
 
         void AddPluginStripMenuItem_Click(object sender, EventArgs e)
@@ -35,7 +35,6 @@ namespace Futor
                 // ...
 
                 Preferences<PreferencesDescriptor>.Instance.LastPluginPath = Path.GetDirectoryName(openFileDialog.FileName);
-                Preferences<PreferencesDescriptor>.Manager.Save();
             }
         }
 
