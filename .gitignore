@@ -25,6 +25,7 @@ exe/
 out/
 packages/
 _ReSharper*/
+.vs/
 #*.exe
 *.opendb
 *.sdf

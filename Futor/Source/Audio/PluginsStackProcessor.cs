@@ -29,11 +29,7 @@ namespace Futor
 
         public EventHandler<PluginEventArgs> OnPluginAdded;
         public EventHandler<PluginEventArgs> OnPluginRemoved;
-
-        public PluginsStackProcessor()
-        {
-        }
-
+        
         public void LoadStack()
         {
             var pluginInfos = Preferences<PreferencesDescriptor>.Instance.PluginInfos;
@@ -55,8 +51,8 @@ namespace Futor
                         OnPluginAdded?.Invoke(this, new PluginEventArgs(pluginContext));
 
                         //////
-                        var dlg = new EditorForm(pluginContext.PluginCommandStub);
-                        dlg.Show();
+                        //var dlg = new EditorForm(pluginContext.PluginCommandStub);
+                        //dlg.Show();
                     }
                 }
 

@@ -130,6 +130,9 @@ namespace Futor
                 || !outputMMDevices.Any())
                 return;
 
+            // DEBUG
+            InputDeviceName = "CABLE Output (VB-Audio Virtual Cable)";
+
             var inputDevice = inputMMDevices.Find(x => x.FriendlyName == InputDeviceName);
             if (inputDevice == null)
             {

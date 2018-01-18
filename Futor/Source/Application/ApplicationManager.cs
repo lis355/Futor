@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Windows.Forms;
 
 namespace Futor
@@ -9,15 +8,10 @@ namespace Futor
         ProcessIcon _processIcon;
 
         public AudioManager AudioManager { get; private set; }
-
-        public ApplicationManager()
-        {
-        }
-
+        
         public void Start()
         {
-            // %appdata%\..\Local\MBL\Futor\1.0.0.0
-            Preferences<PreferencesDescriptor>.Manager.Load(Application.LocalUserAppDataPath + "\\preferences.xml");
+            Preferences<PreferencesDescriptor>.Manager.Load(DataPathProvider.Path("/preferences.xml"));
             
             AudioManager = new AudioManager();
 
