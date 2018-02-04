@@ -6,7 +6,7 @@ namespace Futor
     {
         public static string Path(string localPath)
         {
-            // %appdata%\..\Local\MBL\Futor\1.0.0.0
+            // %appdata%\..\Local\MBL\Futor\
 
             return Application.LocalUserAppDataPath + localPath;
         }

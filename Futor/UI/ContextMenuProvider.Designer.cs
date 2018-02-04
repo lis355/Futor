@@ -67,7 +67,6 @@
             // 
             // EditStripMenuItem
             // 
-            this.EditStripMenuItem.CheckOnClick = true;
             this.EditStripMenuItem.Name = "EditStripMenuItem";
             this.EditStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.EditStripMenuItem.Text = "Edit";

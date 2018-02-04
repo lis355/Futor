@@ -1,4 +1,4 @@
-﻿namespace Futor.UI
+﻿namespace Futor
 {
     partial class PluginLine
     {
@@ -31,11 +31,11 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.LabelPanel = new System.Windows.Forms.Panel();
             this.PluginNameLabel = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.MoveUpButton = new System.Windows.Forms.Button();
+            this.UIButton = new System.Windows.Forms.Button();
+            this.BypassButton = new System.Windows.Forms.Button();
+            this.MoveDownButton = new System.Windows.Forms.Button();
+            this.RemoveButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.LabelPanel.SuspendLayout();
             this.SuspendLayout();
@@ -46,14 +46,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.LabelPanel);
-            this.groupBox1.Controls.Add(this.button5);
-            this.groupBox1.Controls.Add(this.button4);
-            this.groupBox1.Controls.Add(this.button3);
-            this.groupBox1.Controls.Add(this.button2);
-            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.MoveUpButton);
+            this.groupBox1.Controls.Add(this.UIButton);
+            this.groupBox1.Controls.Add(this.BypassButton);
+            this.groupBox1.Controls.Add(this.MoveDownButton);
+            this.groupBox1.Controls.Add(this.RemoveButton);
             this.groupBox1.Location = new System.Drawing.Point(0, -6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(504, 39);
+            this.groupBox1.Size = new System.Drawing.Size(500, 39);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             // 
@@ -64,7 +64,7 @@
             this.LabelPanel.Controls.Add(this.PluginNameLabel);
             this.LabelPanel.Location = new System.Drawing.Point(1, 7);
             this.LabelPanel.Name = "LabelPanel";
-            this.LabelPanel.Size = new System.Drawing.Size(281, 31);
+            this.LabelPanel.Size = new System.Drawing.Size(309, 31);
             this.LabelPanel.TabIndex = 6;
             this.LabelPanel.Click += new System.EventHandler(this.LabelPanel_Click);
             // 
@@ -78,66 +78,71 @@
             this.PluginNameLabel.Text = "PLUGIN_NAME";
             this.PluginNameLabel.Click += new System.EventHandler(this.PluginNameLabel_Click);
             // 
-            // button5
+            // MoveUpButton
             // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.BackColor = System.Drawing.SystemColors.Control;
-            this.button5.Enabled = false;
-            this.button5.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.button5.Location = new System.Drawing.Point(413, 11);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(23, 23);
-            this.button5.TabIndex = 5;
-            this.button5.Text = "▲";
-            this.button5.UseVisualStyleBackColor = false;
+            this.MoveUpButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.MoveUpButton.BackColor = System.Drawing.SystemColors.Control;
+            this.MoveUpButton.Enabled = false;
+            this.MoveUpButton.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.MoveUpButton.Location = new System.Drawing.Point(442, 11);
+            this.MoveUpButton.Name = "MoveUpButton";
+            this.MoveUpButton.Size = new System.Drawing.Size(23, 23);
+            this.MoveUpButton.TabIndex = 5;
+            this.MoveUpButton.Text = "▲";
+            this.MoveUpButton.UseVisualStyleBackColor = false;
+            this.MoveUpButton.Click += new System.EventHandler(this.MoveUpButton_Click);
             // 
-            // button4
+            // UIButton
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.BackColor = System.Drawing.SystemColors.Control;
-            this.button4.Enabled = false;
-            this.button4.Location = new System.Drawing.Point(287, 11);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(32, 23);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "UI";
-            this.button4.UseVisualStyleBackColor = false;
+            this.UIButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.UIButton.BackColor = System.Drawing.SystemColors.Control;
+            this.UIButton.Enabled = false;
+            this.UIButton.Location = new System.Drawing.Point(316, 11);
+            this.UIButton.Name = "UIButton";
+            this.UIButton.Size = new System.Drawing.Size(32, 23);
+            this.UIButton.TabIndex = 3;
+            this.UIButton.Text = "UI";
+            this.UIButton.UseVisualStyleBackColor = false;
+            this.UIButton.Click += new System.EventHandler(this.UIButton_Click);
             // 
-            // button3
+            // BypassButton
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.BackColor = System.Drawing.SystemColors.Control;
-            this.button3.Enabled = false;
-            this.button3.Location = new System.Drawing.Point(325, 11);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(53, 23);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "Bypass";
-            this.button3.UseVisualStyleBackColor = false;
+            this.BypassButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BypassButton.BackColor = System.Drawing.SystemColors.Control;
+            this.BypassButton.Enabled = false;
+            this.BypassButton.Location = new System.Drawing.Point(354, 11);
+            this.BypassButton.Name = "BypassButton";
+            this.BypassButton.Size = new System.Drawing.Size(53, 23);
+            this.BypassButton.TabIndex = 2;
+            this.BypassButton.Text = "Bypass";
+            this.BypassButton.UseVisualStyleBackColor = false;
+            this.BypassButton.Click += new System.EventHandler(this.BypassButton_Click);
             // 
-            // button2
+            // MoveDownButton
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.BackColor = System.Drawing.SystemColors.Control;
-            this.button2.Enabled = false;
-            this.button2.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.button2.Location = new System.Drawing.Point(384, 11);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(23, 23);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "▼";
-            this.button2.UseVisualStyleBackColor = false;
+            this.MoveDownButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.MoveDownButton.BackColor = System.Drawing.SystemColors.Control;
+            this.MoveDownButton.Enabled = false;
+            this.MoveDownButton.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.MoveDownButton.Location = new System.Drawing.Point(413, 11);
+            this.MoveDownButton.Name = "MoveDownButton";
+            this.MoveDownButton.Size = new System.Drawing.Size(23, 23);
+            this.MoveDownButton.TabIndex = 1;
+            this.MoveDownButton.Text = "▼";
+            this.MoveDownButton.UseVisualStyleBackColor = false;
+            this.MoveDownButton.Click += new System.EventHandler(this.MoveDownButton_Click);
             // 
-            // button1
+            // RemoveButton
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.SystemColors.Control;
-            this.button1.Location = new System.Drawing.Point(442, 11);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(56, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Remove";
-            this.button1.UseVisualStyleBackColor = false;
+            this.RemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.RemoveButton.BackColor = System.Drawing.SystemColors.Control;
+            this.RemoveButton.Location = new System.Drawing.Point(471, 11);
+            this.RemoveButton.Name = "RemoveButton";
+            this.RemoveButton.Size = new System.Drawing.Size(23, 23);
+            this.RemoveButton.TabIndex = 0;
+            this.RemoveButton.Text = "❌";
+            this.RemoveButton.UseVisualStyleBackColor = false;
+            this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
             // 
             // PluginLine
             // 
@@ -145,7 +150,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox1);
             this.Name = "PluginLine";
-            this.Size = new System.Drawing.Size(504, 33);
+            this.Size = new System.Drawing.Size(500, 33);
             this.groupBox1.ResumeLayout(false);
             this.LabelPanel.ResumeLayout(false);
             this.LabelPanel.PerformLayout();
@@ -157,11 +162,11 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label PluginNameLabel;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button UIButton;
+        private System.Windows.Forms.Button BypassButton;
+        private System.Windows.Forms.Button MoveDownButton;
+        private System.Windows.Forms.Button RemoveButton;
+        private System.Windows.Forms.Button MoveUpButton;
         private System.Windows.Forms.Panel LabelPanel;
     }
 }

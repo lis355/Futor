@@ -39,14 +39,14 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.GeneralTabPage = new System.Windows.Forms.TabPage();
-            this.AudioTabPage = new System.Windows.Forms.TabPage();
-            this.AutostartCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.AutostartCheckBox = new System.Windows.Forms.CheckBox();
+            this.AudioTabPage = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tabControl1.SuspendLayout();
             this.GeneralTabPage.SuspendLayout();
-            this.AudioTabPage.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.AudioTabPage.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -129,7 +129,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(5);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(444, 200);
+            this.tabControl1.Size = new System.Drawing.Size(444, 150);
             this.tabControl1.TabIndex = 9;
             // 
             // GeneralTabPage
@@ -138,21 +138,21 @@
             this.GeneralTabPage.Location = new System.Drawing.Point(4, 22);
             this.GeneralTabPage.Name = "GeneralTabPage";
             this.GeneralTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.GeneralTabPage.Size = new System.Drawing.Size(436, 286);
+            this.GeneralTabPage.Size = new System.Drawing.Size(436, 174);
             this.GeneralTabPage.TabIndex = 0;
             this.GeneralTabPage.Text = "General";
             this.GeneralTabPage.UseVisualStyleBackColor = true;
             // 
-            // AudioTabPage
+            // groupBox1
             // 
-            this.AudioTabPage.Controls.Add(this.groupBox2);
-            this.AudioTabPage.Location = new System.Drawing.Point(4, 22);
-            this.AudioTabPage.Name = "AudioTabPage";
-            this.AudioTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.AudioTabPage.Size = new System.Drawing.Size(436, 174);
-            this.AudioTabPage.TabIndex = 1;
-            this.AudioTabPage.Text = "Audio";
-            this.AudioTabPage.UseVisualStyleBackColor = true;
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.AutostartCheckBox);
+            this.groupBox1.Location = new System.Drawing.Point(6, 0);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(424, 31);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
             // 
             // AutostartCheckBox
             // 
@@ -166,17 +166,18 @@
             this.AutostartCheckBox.TabIndex = 0;
             this.AutostartCheckBox.Text = "Autostart";
             this.AutostartCheckBox.UseVisualStyleBackColor = true;
+            this.AutostartCheckBox.CheckedChanged += new System.EventHandler(this.AutostartCheckBox_CheckedChanged);
             // 
-            // groupBox1
+            // AudioTabPage
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.AutostartCheckBox);
-            this.groupBox1.Location = new System.Drawing.Point(6, 0);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(424, 31);
-            this.groupBox1.TabIndex = 1;
-            this.groupBox1.TabStop = false;
+            this.AudioTabPage.Controls.Add(this.groupBox2);
+            this.AudioTabPage.Location = new System.Drawing.Point(4, 22);
+            this.AudioTabPage.Name = "AudioTabPage";
+            this.AudioTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.AudioTabPage.Size = new System.Drawing.Size(436, 124);
+            this.AudioTabPage.TabIndex = 1;
+            this.AudioTabPage.Text = "Audio";
+            this.AudioTabPage.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
@@ -200,21 +201,20 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(454, 211);
+            this.ClientSize = new System.Drawing.Size(454, 161);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(400, 250);
+            this.MinimumSize = new System.Drawing.Size(470, 200);
             this.Name = "OptionsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Options";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OptionsForm_FormClosed);
-            this.Load += new System.EventHandler(this.OptionsForm_Load);
             this.tabControl1.ResumeLayout(false);
             this.GeneralTabPage.ResumeLayout(false);
-            this.AudioTabPage.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.AudioTabPage.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);

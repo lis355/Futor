@@ -49,10 +49,6 @@ namespace Futor
                         _plugins.Add(pluginContext);
 
                         OnPluginAdded?.Invoke(this, new PluginEventArgs(pluginContext));
-
-                        // TODO
-                        //var dlg = new EditorForm(pluginContext.PluginCommandStub);
-                        //dlg.Show();
                     }
                 }
 
@@ -118,7 +114,7 @@ namespace Futor
             _outputBuffers = buffers.Skip(_channelsCount).Take(_channelsCount).ToArray();
         }
 
-        //TODO
+        // DEBUG
         public 
         static VstPluginContext OpenPlugin(string pluginPath)
         {

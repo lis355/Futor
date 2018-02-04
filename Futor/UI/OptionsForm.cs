@@ -5,15 +5,33 @@ namespace Futor
 {
     public partial class OptionsForm : Form
     {
-        readonly AudioManager _audioManager;
+        readonly ApplicationManager _applicationManager;
+        readonly bool _edit;
 
-        public OptionsForm(AudioManager audioManager)
+        public OptionsForm(ApplicationManager applicationManager)
         {
             InitializeComponent();
-            
-            _audioManager = audioManager;
 
-            var inputDevices = _audioManager.GetInputMMDevices();
+            _applicationManager = applicationManager;
+
+            _edit = true;
+
+            ProcessAutostart();
+            ProcessAudio();
+
+            _edit = false;
+        }
+
+        void ProcessAutostart()
+        {
+            AutostartCheckBox.Checked = _applicationManager.HasAutorun;
+        }
+
+        void ProcessAudio()
+        {
+            var audioManager = _applicationManager.AudioManager;
+
+            var inputDevices = audioManager.GetInputMMDevices();
             if (!inputDevices.Any())
             {
                 InputDevicesComboBox.Items.Add("--");
@@ -26,12 +44,12 @@ namespace Futor
                     var deviceName = inputDevice.FriendlyName;
                     InputDevicesComboBox.Items.Add(deviceName);
 
-                    if (_audioManager.InputDeviceName == deviceName)
+                    if (audioManager.InputDeviceName == deviceName)
                         InputDevicesComboBox.SelectedIndex = InputDevicesComboBox.Items.Count - 1;
                 }
             }
 
-            var outputDevices = _audioManager.GetOutputMMDevices();
+            var outputDevices = audioManager.GetOutputMMDevices();
             if (!outputDevices.Any())
             {
                 OutputDevicesComboBox.Items.Add("--");
@@ -43,19 +61,23 @@ namespace Futor
                     var deviceName = outputDevice.FriendlyName;
                     OutputDevicesComboBox.Items.Add(deviceName);
 
-                    if (_audioManager.OutputDeviceName == deviceName)
+                    if (audioManager.OutputDeviceName == deviceName)
                         OutputDevicesComboBox.SelectedIndex = OutputDevicesComboBox.Items.Count - 1;
                 }
             }
         }
 
-        void OptionsForm_Load(object sender, System.EventArgs e)
-        {
-        }
-
         void OptionsForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Preferences<PreferencesDescriptor>.Manager.Save();
+        }
+
+        void AutostartCheckBox_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (_edit)
+                return;
+
+            _applicationManager.HasAutorun = AutostartCheckBox.Checked;
         }
     }
 }

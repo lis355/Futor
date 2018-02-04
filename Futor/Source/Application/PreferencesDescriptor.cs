@@ -16,6 +16,7 @@ namespace Futor
             public List<BankInfo> BankInfos = new List<BankInfo>();
         }
 
+        public bool HasAutorun;
         public string LastPluginPath;
         
         public string InputDeviceName;
