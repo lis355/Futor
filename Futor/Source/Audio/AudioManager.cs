@@ -149,8 +149,11 @@ namespace Futor
 
             const AudioClientShareMode audioClientSharedMode = AudioClientShareMode.Shared;
 
-            _soundIn = new WasapiCapture(false, audioClientSharedMode, LatencyMilliseconds);
-            _soundIn.Device = inputDevice;
+            _soundIn = new WasapiCapture(false, audioClientSharedMode, LatencyMilliseconds)
+            {
+                Device = inputDevice
+            };
+
             _soundIn.Initialize();
             _soundIn.Start();
 
@@ -167,8 +170,11 @@ namespace Futor
                 waveSource = SampleProcessor.ToWaveSource();
             }
 
-            _soundOut = new WasapiOut(false, audioClientSharedMode, LatencyMilliseconds);
-            _soundOut.Device = outputDevice;
+            _soundOut = new WasapiOut(false, audioClientSharedMode, LatencyMilliseconds)
+            {
+                Device = outputDevice
+            };
+
             _soundOut.Initialize(waveSource);
 
             _soundOut.Play();

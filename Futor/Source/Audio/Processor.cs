@@ -22,15 +22,9 @@ namespace Futor
             SampleSource?.Dispose();
         }
 
-        public bool CanSeek
-        {
-            get { return SampleSource.CanSeek; }
-        }
+        public bool CanSeek => SampleSource.CanSeek;
 
-        public WaveFormat WaveFormat
-        {
-            get { return SampleSource.WaveFormat; }
-        }
+        public WaveFormat WaveFormat => SampleSource.WaveFormat;
 
         public long Position
         {
@@ -38,9 +32,6 @@ namespace Futor
             set { SampleSource.Position = value; }
         }
 
-        public long Length
-        {
-            get { return SampleSource.Length; }
-        }
+        public long Length => SampleSource.Length;
     }
 }

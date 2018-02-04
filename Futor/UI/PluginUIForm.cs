@@ -4,11 +4,11 @@ using Jacobi.Vst.Core.Host;
 
 namespace Futor
 {
-    public partial class EditorForm : Form
+    public partial class PluginUIForm : Form
     {
         readonly IVstPluginCommandStub _pluginCommandStub;
 
-        public EditorForm(IVstPluginCommandStub pluginCommandStub)
+        public PluginUIForm(IVstPluginCommandStub pluginCommandStub)
         {
             InitializeComponent();
 
@@ -25,7 +25,7 @@ namespace Futor
             {
                 Size = SizeFromClientSize(new Size(wndRect.Width, wndRect.Height));
 
-                _pluginCommandStub.EditorOpen(Handle);
+                _pluginCommandStub.EditorOpen(panel1.Handle);
             }
 
             base.Show();

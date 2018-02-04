@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using Futor.UI;
 
 namespace Futor
 {
@@ -18,6 +19,12 @@ namespace Futor
         void ExitStripMenuItem_Click(object sender, EventArgs e)
         {
             _applicationManager.Finish();
+        }
+
+        void ShowStack()
+        {
+            var stackForm = new StackForm();
+            stackForm.ShowDialog();
         }
 
         void AddPluginStripMenuItem_Click(object sender, EventArgs e)
@@ -42,6 +49,11 @@ namespace Futor
         {
             var optionsForm = new OptionsForm(_applicationManager.AudioManager);
             optionsForm.ShowDialog();
+        }
+
+        private void EditStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowStack();
         }
     }
 }

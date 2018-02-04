@@ -50,7 +50,7 @@ namespace Futor
 
                         OnPluginAdded?.Invoke(this, new PluginEventArgs(pluginContext));
 
-                        //////
+                        // TODO
                         //var dlg = new EditorForm(pluginContext.PluginCommandStub);
                         //dlg.Show();
                     }
@@ -118,6 +118,8 @@ namespace Futor
             _outputBuffers = buffers.Skip(_channelsCount).Take(_channelsCount).ToArray();
         }
 
+        //TODO
+        public 
         static VstPluginContext OpenPlugin(string pluginPath)
         {
             try
@@ -137,7 +139,7 @@ namespace Futor
             }
             catch (Exception e)
             {
-                MessageBox.Show(string.Format("Can't open plugin at path {0}: {1}", pluginPath, e.Message));
+                MessageBox.Show($"Can't open plugin at path {pluginPath}: {e.Message}");
             }
 
             return null;

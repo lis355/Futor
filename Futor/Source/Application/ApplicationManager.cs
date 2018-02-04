@@ -38,14 +38,18 @@ namespace Futor
             pluginsStackProcessor.LoadStack();
 
             AudioManager.SampleProcessor = pluginsStackProcessor;
-         
-            AudioManager.Start();
+
+            // DEBUG
+            //AudioManager.Start();
+            var ttt = PluginsStackProcessor.OpenPlugin(@"C:\Program Files\VstPluginsLib\Clip\GClip.dll");
+            var dlg = new PluginUIForm(ttt.PluginCommandStub);
+            dlg.Show();
 
             Preferences<PreferencesDescriptor>.Manager.Save();
 
             var contextMenuProvider = new ContextMenuProvider(this);
 
-            _processIcon = new ProcessIcon {ContextMenu = contextMenuProvider.ContextMenu};
+            _processIcon = new ProcessIcon {ContextMenu = contextMenuProvider.ContextRightMenu};
             _processIcon.Display();
         }
 

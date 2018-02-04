@@ -3,7 +3,7 @@ using Microsoft.Win32;
 
 namespace Futor
 {
-    public static class StartupProvider
+    public static class AutorunProvider
     {
         const string _kRegistryRunPath = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
 

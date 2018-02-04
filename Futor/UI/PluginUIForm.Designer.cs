@@ -1,6 +1,6 @@
 ﻿namespace Futor
 {
-    partial class EditorForm
+    partial class PluginUIForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,23 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.panel1 = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
-            // EditorForm
+            // panel1
+            // 
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(448, 326);
+            this.panel1.TabIndex = 0;
+            // 
+            // PluginUIForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(292, 266);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.ClientSize = new System.Drawing.Size(578, 445);
+            this.Controls.Add(this.panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
-            this.Name = "EditorForm";
+            this.Name = "PluginUIForm";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "EditorForm";
+            this.Text = "PLUGIN_NAME";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.EditorForm_FormClosed);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Panel panel1;
     }
 }
