@@ -88,8 +88,9 @@
     <Compile Include="Source\Application\PreferencesDescriptor.cs" />
     <Compile Include="Source\Audio\AudioManager.cs" />
     <Compile Include="Source\Audio\HostCommandStub.cs" />
+    <Compile Include="Source\Framework\HotKeyManager.cs" />
     <Compile Include="Source\Framework\Preferences.cs" />
-    <Compile Include="Source\Framework\StartupProvider.cs" />
+    <Compile Include="Source\Framework\AutorunProvider.cs" />
     <Compile Include="Source\Framework\XmlSerializer.cs" />
     <Compile Include="UI\ContextMenuProvider.cs">
       <SubType>UserControl</SubType>

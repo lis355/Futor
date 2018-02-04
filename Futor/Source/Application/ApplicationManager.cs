@@ -57,6 +57,8 @@ namespace Futor
         {
             _processIcon.Dispose();
 
+            HotKeyManager.Instance.Dispose();
+
             // ... todo call dispose
 
             Preferences<PreferencesDescriptor>.Manager.Save();

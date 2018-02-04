@@ -9,12 +9,12 @@ namespace Futor.UI
             InitializeComponent();
         }
 
-        private void LabelPanel_Click(object sender, System.EventArgs e)
+        void LabelPanel_Click(object sender, System.EventArgs e)
         {
             SelectPlugin();
         }
 
-        private void PluginNameLabel_Click(object sender, System.EventArgs e)
+        void PluginNameLabel_Click(object sender, System.EventArgs e)
         {
             SelectPlugin();
         }
