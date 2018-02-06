@@ -31,10 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.ContextRightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PluginStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.EditStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.PluginNameStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.BypassPluginStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.BypassAllStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.OptionsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,41 +53,10 @@
             // 
             // PluginStripMenuItem
             // 
-            this.PluginStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.EditStripMenuItem,
-            this.toolStripSeparator5,
-            this.PluginNameStripMenuItem});
             this.PluginStripMenuItem.Name = "PluginStripMenuItem";
             this.PluginStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.PluginStripMenuItem.Text = "Plugins";
-            // 
-            // EditStripMenuItem
-            // 
-            this.EditStripMenuItem.Name = "EditStripMenuItem";
-            this.EditStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.EditStripMenuItem.Text = "Edit";
-            this.EditStripMenuItem.Click += new System.EventHandler(this.EditStripMenuItem_Click);
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(151, 6);
-            // 
-            // PluginNameStripMenuItem
-            // 
-            this.PluginNameStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.BypassPluginStripMenuItem1});
-            this.PluginNameStripMenuItem.Name = "PluginNameStripMenuItem";
-            this.PluginNameStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.PluginNameStripMenuItem.Text = "PLUGIN_NAME";
-            // 
-            // BypassPluginStripMenuItem1
-            // 
-            this.BypassPluginStripMenuItem1.CheckOnClick = true;
-            this.BypassPluginStripMenuItem1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.BypassPluginStripMenuItem1.Name = "BypassPluginStripMenuItem1";
-            this.BypassPluginStripMenuItem1.Size = new System.Drawing.Size(110, 22);
-            this.BypassPluginStripMenuItem1.Text = "Bypass";
+            this.PluginStripMenuItem.Click += new System.EventHandler(this.PluginStripMenuItem_Click);
             // 
             // BypassAllStripMenuItem
             // 
@@ -142,10 +107,6 @@
         private System.Windows.Forms.ToolStripMenuItem OptionsStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem PluginStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem EditStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-        private System.Windows.Forms.ToolStripMenuItem PluginNameStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem BypassAllStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem BypassPluginStripMenuItem1;
     }
 }

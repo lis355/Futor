@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,18 +12,32 @@ namespace Futor
         public class PluginSlot
         {
             const string _kEmptyPluginName = "...";
-
+            
             public VstPluginContext Plugin;
 
             public string Name
             {
-                get { return (!IsEmpty) ? Plugin.PluginCommandStub.GetEffectName() : _kEmptyPluginName; }
+                get
+                {
+                    string name;
+
+                    if (IsEmpty)
+                    {
+                        name = _kEmptyPluginName;
+                    }
+                    else
+                    {
+                        name = Plugin.PluginCommandStub.GetEffectName();
+
+                        if (string.IsNullOrEmpty(name))
+                            name = Path.GetFileNameWithoutExtension(Plugin.Find<string>(_kPluginParameterPluginPath));
+                    }
+
+                    return name;
+                }
             }
 
-            public bool IsEmpty
-            {
-                get { return Plugin == null; }
-            }
+            public bool IsEmpty => Plugin == null;
 
             // TODO event
             public bool IsBypass { get; set; }
@@ -113,9 +126,24 @@ namespace Futor
             return pluginSlot;
         }
 
+        public void ClosePlugin(PluginSlot pluginSlot)
+        {
+            if (!pluginSlot.IsEmpty)
+                ClosePluginContext(pluginSlot.Plugin);
+
+            _pluginSlots.Remove(pluginSlot);
+        }
+
+        public void SetPluginIndex(PluginSlot pluginSlot, int newIndex)
+        {
+            _pluginSlots.Remove(pluginSlot);
+            _pluginSlots.Insert(newIndex, pluginSlot);
+        }
+
         public override void Process(float[] buffer, int offset, int samples)
         {
-            if (!_pluginSlots.Any())
+            if (samples == 0
+                || !_pluginSlots.Any())
                 return;
 
             int channelsCount = WaveFormat.Channels;

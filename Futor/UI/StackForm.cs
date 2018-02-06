@@ -34,7 +34,7 @@ namespace Futor
             //pluginLine.OnSelectButtonClick;
             pluginLine.OnMoveUpButtonClick += (sender, args) => MoveUpPlugin(pluginLine);
             pluginLine.OnMoveDownButtonClick += (sender, args) => MoveDownPlugin(pluginLine);
-            //pluginLine.OnBypassButtonClick;
+            pluginLine.OnBypassButtonClick += (sender, args) => BypassPlugin(pluginLine);
             //pluginLine.OnUIButtonClick;
             pluginLine.OnRemoveButtonClick += (sender, args) => RemovePluginLine(pluginLine);
 
@@ -52,6 +52,8 @@ namespace Futor
             _pluginLines.Remove(pluginLine);
 
             PluginsLayoutPanel.Controls.Remove(pluginLine);
+
+            _applicationManager.Stack.ClosePlugin(pluginLine.Slot);
 
             PluginLinesChanged();
         }
@@ -73,9 +75,19 @@ namespace Futor
 
             PluginsLayoutPanel.Controls.SetChildIndex(pluginLine, newIndex);
 
+            _applicationManager.Stack.SetPluginIndex(pluginLine.Slot, newIndex);
+
             PluginLinesChanged();
         }
 
+        void BypassPlugin(PluginLine pluginLine)
+        {
+            var bypass = pluginLine.Slot.IsBypass;
+            pluginLine.Slot.IsBypass = !bypass;
+
+            pluginLine.UpdateSlot();
+        }
+        
         void PluginLinesChanged()
         {
             if (!_pluginLines.Any())

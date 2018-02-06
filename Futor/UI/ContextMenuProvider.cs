@@ -24,7 +24,7 @@ namespace Futor
             _applicationManager.ShowOptions();
         }
 
-        void EditStripMenuItem_Click(object sender, EventArgs e)
+        void PluginStripMenuItem_Click(Object sender, EventArgs e)
         {
             _applicationManager.ShowStack();
         }

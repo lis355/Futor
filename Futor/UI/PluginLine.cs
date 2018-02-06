@@ -111,9 +111,18 @@ namespace Futor
             }
         }
 
-        void UpdateSlot()
+        // TODO make private
+        public void UpdateSlot()
         {
             PluginNameLabel.Text = _pluginSlot.Name;
+
+            var enabled = !_pluginSlot.IsEmpty;
+
+            UIButton.Enabled = enabled;
+            BypassButton.Enabled = enabled;
+            MoveUpButton.Enabled = enabled;
+            MoveDownButton.Enabled = enabled;
+            RemoveButton.Enabled = enabled;
 
             BypassButton.BackColor = (_pluginSlot.IsBypass) ? _bypassColor : _defaultBackgroundColor;
         }
