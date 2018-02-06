@@ -64,6 +64,7 @@
             this.BypassAllStripMenuItem.Name = "BypassAllStripMenuItem";
             this.BypassAllStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.BypassAllStripMenuItem.Text = "Bypass All";
+            this.BypassAllStripMenuItem.CheckedChanged += new System.EventHandler(this.BypassAllStripMenuItem_CheckedChanged);
             // 
             // toolStripSeparator2
             // 

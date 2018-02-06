@@ -138,7 +138,7 @@ namespace Futor
             Preferences<PreferencesDescriptor>.Manager.Save();
         }
 
-        void AddButton_Click(Object sender, EventArgs e)
+        void AddButton_Click(object sender, EventArgs e)
         {
             TryAddPluginLine();
         }

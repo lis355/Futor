@@ -43,18 +43,6 @@ namespace Futor
             public bool IsBypass { get; set; }
         }
 
-        const string _kPluginParameterPluginPath = "PluginPath";
-        const string _kPluginParameterHostCmdStub = "HostCmdStub";
-
-        readonly List<PluginSlot> _pluginSlots = new List<PluginSlot>();
-        int _channelsCount;
-        int _size;
-        VstAudioBufferManager _bufferManager;
-        VstAudioBuffer[] _inputBuffers;
-        VstAudioBuffer[] _outputBuffers;
-
-        public IEnumerable<PluginSlot> PluginSlots { get { return _pluginSlots; } }
-
         public class PluginEventArgs : EventArgs 
         {
             public PluginSlot PluginSlot { get; private set; }
@@ -65,10 +53,39 @@ namespace Futor
             }
         }
 
+        const string _kPluginParameterPluginPath = "PluginPath";
+        const string _kPluginParameterHostCmdStub = "HostCmdStub";
+
+        readonly List<PluginSlot> _pluginSlots = new List<PluginSlot>();
+        int _channelsCount;
+        int _size;
+        VstAudioBufferManager _bufferManager;
+        VstAudioBuffer[] _inputBuffers;
+        VstAudioBuffer[] _outputBuffers;
+        bool _isBypassAll;
+        
         // TODO
         public EventHandler<PluginEventArgs> OnPluginSlotAdded;
         public EventHandler<PluginEventArgs> OnPluginSlotRemoved;
         public EventHandler<PluginEventArgs> OnPluginSlotChanged;
+
+        public IEnumerable<PluginSlot> PluginSlots => _pluginSlots;
+
+        public bool IsBypassAll
+        {
+            get { return _isBypassAll; }
+            set
+            {
+                if (_isBypassAll == value)
+                    return;
+
+                _isBypassAll = value;
+
+                // TODO event???
+                Preferences<PreferencesDescriptor>.Instance.IsBypassAll = _isBypassAll;
+                Preferences<PreferencesDescriptor>.Manager.Save();
+            }
+        }
 
         public void LoadStack(List<PreferencesDescriptor.PluginInfo> pluginInfos)
         {
@@ -143,7 +160,8 @@ namespace Futor
         public override void Process(float[] buffer, int offset, int samples)
         {
             if (samples == 0
-                || !_pluginSlots.Any())
+                || !_pluginSlots.Any()
+                || _isBypassAll)
                 return;
 
             int channelsCount = WaveFormat.Channels;

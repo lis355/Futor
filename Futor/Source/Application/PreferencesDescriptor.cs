@@ -24,6 +24,8 @@ namespace Futor
 
         public int LatencyMilliseconds;
 
+        public bool IsBypassAll;
+
         public List<PluginInfo> PluginInfos = new List<PluginInfo>();
     }
 }

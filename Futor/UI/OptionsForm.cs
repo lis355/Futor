@@ -6,7 +6,7 @@ namespace Futor
     public partial class OptionsForm : Form
     {
         readonly ApplicationManager _applicationManager;
-        readonly bool _edit;
+        readonly bool _isEdit;
 
         public OptionsForm(ApplicationManager applicationManager)
         {
@@ -14,12 +14,12 @@ namespace Futor
 
             _applicationManager = applicationManager;
 
-            _edit = true;
+            _isEdit = true;
 
             ProcessAutostart();
             ProcessAudio();
 
-            _edit = false;
+            _isEdit = false;
         }
 
         void ProcessAutostart()
@@ -74,7 +74,7 @@ namespace Futor
 
         void AutostartCheckBox_CheckedChanged(object sender, System.EventArgs e)
         {
-            if (_edit)
+            if (_isEdit)
                 return;
 
             _applicationManager.HasAutorun = AutostartCheckBox.Checked;
