@@ -10,6 +10,11 @@ namespace Futor
 {
     public class PluginsStackProcessor : Processor
     {
+        public class PluginSlot
+        {
+             
+        }
+
         readonly List<VstPluginContext> _plugins = new List<VstPluginContext>();
         int _channelsCount;
         int _size;
@@ -62,42 +67,40 @@ namespace Futor
 
         public override void Process(float[] buffer, int offset, int samples)
         {
-            if (_plugins.Any())
+            if (!_plugins.Any())
+                return;
+
+            int channelsCount = WaveFormat.Channels;
+            int size = samples / channelsCount;
+
+            if (_channelsCount != channelsCount
+                || _size != size)
+                ResetBufferManager(channelsCount, size);
+
+            _bufferManager.ClearAllBuffers();
+
+            for (int i = offset, k = 0; i < offset + samples; i += channelsCount, k++)
+                for (int j = 0; j < channelsCount; j++)
+                    _inputBuffers[j][k] = buffer[i + j];
+
+            for (int i = 0; i < _plugins.Count; i++)
             {
-                int channelsCount = WaveFormat.Channels;
-                int size = samples / channelsCount;
-
-                if (_channelsCount != channelsCount
-                    || _size != size)
-                    ResetBufferManager(channelsCount, size);
-
-                _bufferManager.ClearAllBuffers();
-
-                for (int i = offset, k = 0; i < offset + samples; i += channelsCount, k++)
-                    for (int j = 0; j < channelsCount; j++)
-                        _inputBuffers[j][k] = buffer[i + j];
-
-                for (int i = 0; i < _plugins.Count; i++)
+                if (i > 0)
                 {
-                    if (i > 0)
-                    {
-                        var tmpBuffer = _outputBuffers;
-                        _outputBuffers = _inputBuffers;
-                        _inputBuffers = tmpBuffer;
-                    }
-
-                    var pluginContext = _plugins[i];
-
-                    pluginContext.PluginCommandStub.SetBlockSize(size);
-                    pluginContext.PluginCommandStub.ProcessReplacing(_inputBuffers, _outputBuffers);
+                    var tmpBuffer = _outputBuffers;
+                    _outputBuffers = _inputBuffers;
+                    _inputBuffers = tmpBuffer;
                 }
 
-                for (int i = offset, k = 0; i < offset + samples; i += channelsCount, k++)
-                    for (int j = 0; j < channelsCount; j++)
-                        buffer[i + j] = _outputBuffers[j][k];
+                var pluginContext = _plugins[i];
 
-                //_plugin.PluginCommandStub.EditorIdle();
+                pluginContext.PluginCommandStub.SetBlockSize(size);
+                pluginContext.PluginCommandStub.ProcessReplacing(_inputBuffers, _outputBuffers);
             }
+
+            for (int i = offset, k = 0; i < offset + samples; i += channelsCount, k++)
+                for (int j = 0; j < channelsCount; j++)
+                    buffer[i + j] = _outputBuffers[j][k];
         }
 
         void ResetBufferManager(int channelsCount, int size)

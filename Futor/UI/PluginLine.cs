@@ -138,5 +138,10 @@ namespace Futor
         {
             OnRemoveButtonClick?.Invoke(sender, e);
         }
+
+        private void LabelPanel_Paint(Object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
