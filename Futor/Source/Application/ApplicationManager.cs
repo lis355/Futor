@@ -11,6 +11,7 @@ namespace Futor
         StackForm _stackForm;
 
         public AudioManager AudioManager { get; private set; }
+        public PluginsStack Stack { get; private set; }
 
         public bool HasAutorun
         {
@@ -73,15 +74,15 @@ namespace Futor
             AudioManager.OutputDeviceName = Preferences<PreferencesDescriptor>.Instance.OutputDeviceName;
             AudioManager.LatencyMilliseconds = Preferences<PreferencesDescriptor>.Instance.LatencyMilliseconds;
 
-            var pluginsStackProcessor = new PluginsStackProcessor();
-            pluginsStackProcessor.LoadStack();
+            Stack = new PluginsStack();
+            Stack.LoadStack(Preferences<PreferencesDescriptor>.Instance.PluginInfos);
 
-            AudioManager.SampleProcessor = pluginsStackProcessor;
+            AudioManager.SampleSampleProcessor = Stack;
 
             AudioManager.Start();
 
             // DEBUG
-            //var ttt = PluginsStackProcessor.OpenPlugin(@"C:\Program Files\VstPluginsLib\Clip\GClip.dll");
+            //var ttt = PluginsStack.OpenPlugin(@"C:\Program Files\VstPluginsLib\Clip\GClip.dll");
             //var dlg = new PluginUIForm(ttt.PluginCommandStub);
             //dlg.Show();
         }
@@ -124,7 +125,7 @@ namespace Futor
         {
             if (_stackForm == null)
             {
-                _stackForm = new StackForm();
+                _stackForm = new StackForm(this);
                 _stackForm.Closed += (sender, args) => _stackForm = null;
                 _stackForm.Show();
             }

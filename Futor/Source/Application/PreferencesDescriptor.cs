@@ -10,7 +10,7 @@ namespace Futor
             {
                 public string Path;
             }
-
+            
             public string Path;
             public bool IsBypass;
             public List<BankInfo> BankInfos = new List<BankInfo>();

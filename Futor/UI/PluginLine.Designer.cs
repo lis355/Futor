@@ -67,7 +67,6 @@
             this.LabelPanel.Size = new System.Drawing.Size(309, 27);
             this.LabelPanel.TabIndex = 6;
             this.LabelPanel.Click += new System.EventHandler(this.LabelPanel_Click);
-            this.LabelPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.LabelPanel_Paint);
             // 
             // PluginNameLabel
             // 

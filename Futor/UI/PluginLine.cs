@@ -13,11 +13,14 @@ namespace Futor
             Middle,
             Last
         }
-        
+
         EPosition _positionType;
-        
+
         readonly Color _disableColor = SystemColors.ControlDark;
+        readonly Color _bypassColor = Color.Yellow;
         readonly Color _defaultTextColor;
+        readonly Color _defaultBackgroundColor;
+        PluginsStack.PluginSlot _pluginSlot;
 
         public EventHandler OnSelectButtonClick;
         public EventHandler OnMoveUpButtonClick;
@@ -26,17 +29,18 @@ namespace Futor
         public EventHandler OnUIButtonClick;
         public EventHandler OnRemoveButtonClick;
 
-        public PluginLine()
+        public PluginLine(PluginsStack.PluginSlot pluginSlot)
         {
             InitializeComponent();
 
             _defaultTextColor = RemoveButton.ForeColor;
+            _defaultBackgroundColor = RemoveButton.BackColor;
+
+            Slot = pluginSlot;
 
             UpdatePositionType();
-
-            PluginName = "Empty";
         }
-        
+
         public EPosition PositionType
         {
             get { return _positionType; }
@@ -51,12 +55,20 @@ namespace Futor
             }
         }
 
-        public string PluginName
+        public PluginsStack.PluginSlot Slot
         {
-            get { return PluginNameLabel.Text; }
-            set { PluginNameLabel.Text = value; }
-        }
+            get { return _pluginSlot; }
+            set
+            {
+                if (_pluginSlot == value)
+                    return;
 
+                _pluginSlot = value;
+
+                UpdateSlot();
+            }
+        }
+        
         void UpdatePositionType()
         {
             switch (_positionType)
@@ -99,6 +111,13 @@ namespace Futor
             }
         }
 
+        void UpdateSlot()
+        {
+            PluginNameLabel.Text = _pluginSlot.Name;
+
+            BypassButton.BackColor = (_pluginSlot.IsBypass) ? _bypassColor : _defaultBackgroundColor;
+        }
+
         void SelectPlugin()
         {
             OnSelectButtonClick?.Invoke(this, null);
@@ -113,7 +132,7 @@ namespace Futor
         {
             SelectPlugin();
         }
-        
+
         void MoveUpButton_Click(object sender, EventArgs e)
         {
             OnMoveUpButtonClick?.Invoke(sender, e);
@@ -134,14 +153,9 @@ namespace Futor
             OnUIButtonClick?.Invoke(sender, e);
         }
 
-        private void RemoveButton_Click(object sender, EventArgs e)
+        void RemoveButton_Click(object sender, EventArgs e)
         {
             OnRemoveButtonClick?.Invoke(sender, e);
-        }
-
-        private void LabelPanel_Paint(Object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

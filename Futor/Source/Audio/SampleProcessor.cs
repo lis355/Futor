@@ -2,7 +2,7 @@
 
 namespace Futor
 {
-    public abstract class Processor : ISampleSource
+    public abstract class SampleProcessor : ISampleSource
     {
         public ISampleSource SampleSource { get; set; }
         

@@ -8,23 +8,27 @@ namespace Futor
 {
     public partial class StackForm : Form
     {
+        readonly ApplicationManager _applicationManager;
         readonly List<PluginLine> _pluginLines = new List<PluginLine>(); 
 
-        public StackForm()
+        public StackForm(ApplicationManager applicationManager)
         {
             InitializeComponent();
+
+            _applicationManager = applicationManager;
 
             LoadSlots();
         }
 
         void LoadSlots()
         {
-            // TODO
+            foreach (var pluginSlot in _applicationManager.Stack.PluginSlots)
+                AddPluginLine(pluginSlot);
         }
-
-        PluginLine AddPluginLine()
+        
+        PluginLine AddPluginLine(PluginsStack.PluginSlot pluginSlot)
         {
-            var pluginLine = new PluginLine();
+            var pluginLine = new PluginLine(pluginSlot);
 
             // TODO
             //pluginLine.OnSelectButtonClick;
@@ -106,21 +110,23 @@ namespace Futor
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                var fileName = openFileDialog.FileName;
+                var pluginPath = openFileDialog.FileName;
 
-                Preferences<PreferencesDescriptor>.Instance.LastPluginPath = Path.GetDirectoryName(fileName);
+                Preferences<PreferencesDescriptor>.Instance.LastPluginPath = Path.GetDirectoryName(pluginPath);
 
-                var pluginLine = AddPluginLine();
-                pluginLine.PluginName = Path.GetFileNameWithoutExtension(fileName);
+                var pluginSlot = _applicationManager.Stack.OpenPlugin(pluginPath);
+                var pluginLine = AddPluginLine(pluginSlot);
             }
         }
 
-        private void StackForm_FormClosed(object sender, FormClosedEventArgs e)
+        void StackForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Preferences<PreferencesDescriptor>.Instance.PluginInfos = _applicationManager.Stack.SaveStack();
+
             Preferences<PreferencesDescriptor>.Manager.Save();
         }
 
-        private void AddButton_Click(Object sender, EventArgs e)
+        void AddButton_Click(Object sender, EventArgs e)
         {
             TryAddPluginLine();
         }
