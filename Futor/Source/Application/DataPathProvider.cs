@@ -8,7 +8,7 @@ namespace Futor
         {
             // %appdata%\..\Local\MBL\Futor\
 
-            return Application.LocalUserAppDataPath + localPath;
+            return System.Windows.Forms.Application.LocalUserAppDataPath + localPath;
         }
     }
 }

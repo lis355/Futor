@@ -26,7 +26,7 @@ namespace Futor
         readonly MMDeviceEnumerator _mmDeviceEnumerator;
         WasapiCapture _soundIn;
         WasapiOut _soundOut;
-        SampleProcessor _sampleSampleProcessor;
+        SampleProcessor _sampleProcessor;
         bool _working;
         int _latencyMilliseconds = _kMinimumLatencyMilliseconds;
         string _inputDeviceName;
@@ -100,15 +100,15 @@ namespace Futor
 
         public int SampleRate => (!_working) ? 0 : _soundOut.WaveSource.WaveFormat.SampleRate;
 
-        public SampleProcessor SampleSampleProcessor
+        public SampleProcessor SampleProcessor
         {
-            get { return _sampleSampleProcessor; }
+            get { return _sampleProcessor; }
             set
             {
-                if (_sampleSampleProcessor == value)
+                if (_sampleProcessor == value)
                     return;
 
-                _sampleSampleProcessor = value;
+                _sampleProcessor = value;
                 
                 RestartIfWorking();
             }
@@ -164,10 +164,10 @@ namespace Futor
 
             IWaveSource waveSource = soundInSource;
 
-            if (SampleSampleProcessor != null)
+            if (SampleProcessor != null)
             {
-                SampleSampleProcessor.SampleSource = soundInSource.ToSampleSource();
-                waveSource = SampleSampleProcessor.ToWaveSource();
+                SampleProcessor.SampleSource = soundInSource.ToSampleSource();
+                waveSource = SampleProcessor.ToWaveSource();
             }
 
             _soundOut = new WasapiOut(false, audioClientSharedMode, LatencyMilliseconds)

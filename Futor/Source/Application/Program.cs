@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Forms;
 
 namespace Futor
 {
@@ -8,13 +7,13 @@ namespace Futor
         [STAThread]
         public static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            System.Windows.Forms.Application.EnableVisualStyles();
+            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
 
-            var applicationManager = new ApplicationManager();
-            applicationManager.Start();
+            var applicationController = new ApplicationController(new Application());
+            applicationController.Start();
 
-            Application.Run();
+            System.Windows.Forms.Application.Run();
         }
     }
 }

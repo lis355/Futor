@@ -4,7 +4,7 @@ using Futor.Properties;
 
 namespace Futor
 {
-    public class ProcessIcon : IDisposable
+    public class TaskbarIcon : IDisposable
     {
         readonly NotifyIcon _notifyIcon;
 
@@ -17,7 +17,7 @@ namespace Futor
             set { _notifyIcon.ContextMenuStrip = value; }
         }
 
-        public ProcessIcon()
+        public TaskbarIcon()
         {
             _notifyIcon = new NotifyIcon();
         }
@@ -49,7 +49,7 @@ namespace Futor
 
         string GetText()
         {
-            return (TextProvider != null) ? TextProvider() : Application.ProductName;
+            return (TextProvider != null) ? TextProvider() : System.Windows.Forms.Application.ProductName;
         }
 
         void NotifyIconMouseClick(object sender, MouseEventArgs e)

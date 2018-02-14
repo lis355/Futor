@@ -29,12 +29,12 @@ namespace Futor
 
         static string GetApplicationName()
         {
-            return Application.ProductName;
+            return System.Windows.Forms.Application.ProductName;
         }
 
         static string GetApplicationPath()
         {
-            return Application.ExecutablePath;
+            return System.Windows.Forms.Application.ExecutablePath;
         }
     }
 }

@@ -106,7 +106,7 @@ namespace Futor
         {
             RaisePluginCalled("GetProductString()");
 
-            return Application.ProductName;
+            return System.Windows.Forms.Application.ProductName;
         }
 
         public float GetSampleRate()
@@ -127,7 +127,7 @@ namespace Futor
         {
             RaisePluginCalled("GetVendorString()");
 
-            return Application.CompanyName;
+            return System.Windows.Forms.Application.CompanyName;
         }
         
         public int GetVendorVersion()

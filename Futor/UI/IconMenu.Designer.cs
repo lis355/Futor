@@ -1,6 +1,6 @@
 ﻿namespace Futor
 {
-    partial class ContextMenuProvider
+    partial class IconMenu
     {
         /// <summary> 
         /// Required designer variable.
@@ -90,11 +90,11 @@
             this.ExitStripMenuItem.Text = "Exit";
             this.ExitStripMenuItem.Click += new System.EventHandler(this.ExitStripMenuItem_Click);
             // 
-            // ContextMenuProvider
+            // IconMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "ContextMenuProvider";
+            this.Name = "IconMenu";
             this.Size = new System.Drawing.Size(600, 400);
             this.ContextRightMenu.ResumeLayout(false);
             this.ResumeLayout(false);

@@ -1,18 +1,21 @@
-﻿using System.Linq;
+﻿using System;
 using System.Windows.Forms;
 
 namespace Futor
 {
-    public partial class OptionsForm : Form
+    public partial class OptionsForm : Form, IOptionsView
     {
-        readonly ApplicationManager _applicationManager;
+        readonly ApplicationOptions _applicationOptions;
         readonly bool _isEdit;
 
-        public OptionsForm(ApplicationManager applicationManager)
+        public event Action OnViewClosed;
+        public event Action<bool> OnAutorunChanged;
+
+        public OptionsForm(ApplicationOptions applicationOptions)
         {
             InitializeComponent();
 
-            _applicationManager = applicationManager;
+            _applicationOptions = applicationOptions;
 
             _isEdit = true;
 
@@ -24,12 +27,12 @@ namespace Futor
 
         void ProcessAutostart()
         {
-            AutostartCheckBox.Checked = _applicationManager.HasAutorun;
+            AutostartCheckBox.Checked = _applicationOptions.HasAutorun;
         }
 
         void ProcessAudio()
-        {
-            var audioManager = _applicationManager.AudioManager;
+        {/*
+            var audioManager = _application.AudioManager;
 
             var inputDevices = audioManager.GetInputMMDevices();
             if (!inputDevices.Any())
@@ -64,20 +67,20 @@ namespace Futor
                     if (audioManager.OutputDeviceName == deviceName)
                         OutputDevicesComboBox.SelectedIndex = OutputDevicesComboBox.Items.Count - 1;
                 }
-            }
+            }*/
         }
 
         void OptionsForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Preferences<PreferencesDescriptor>.Manager.Save();
+            OnViewClosed?.Invoke();
         }
 
-        void AutostartCheckBox_CheckedChanged(object sender, System.EventArgs e)
+        void AutostartCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (_isEdit)
                 return;
 
-            _applicationManager.HasAutorun = AutostartCheckBox.Checked;
+            OnAutorunChanged?.Invoke(AutostartCheckBox.Checked);
         }
     }
 }

@@ -54,6 +54,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CSCore, Version=1.2.1.2, Culture=neutral, PublicKeyToken=5a08f2b6f4415dea, processorArchitecture=MSIL">
       <HintPath>..\packages\CSCore.1.2.1.2\lib\net35-client\CSCore.dll</HintPath>
@@ -83,7 +86,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\Application\ApplicationManager.cs" />
+    <Compile Include="Source\Application\Application.cs" />
+    <Compile Include="Source\Application\ApplicationController.cs" />
+    <Compile Include="Source\Application\ApplicationOptions.cs" />
+    <Compile Include="Source\Application\ApplicationOptionsController.cs" />
     <Compile Include="Source\Application\DataPathProvider.cs" />
     <Compile Include="Source\Application\PreferencesDescriptor.cs" />
     <Compile Include="Source\Audio\AudioManager.cs" />
@@ -92,13 +98,16 @@
     <Compile Include="Source\Framework\Preferences.cs" />
     <Compile Include="Source\Framework\AutorunProvider.cs" />
     <Compile Include="Source\Framework\XmlSerializer.cs" />
-    <Compile Include="UI\ContextMenuProvider.cs">
+    <Compile Include="UI\IMainMenuView.cs" />
+    <Compile Include="UI\IconMenu.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\ContextMenuProvider.Designer.cs">
-      <DependentUpon>ContextMenuProvider.cs</DependentUpon>
+    <Compile Include="UI\IconMenu.Designer.cs">
+      <DependentUpon>IconMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\Audio\PluginsStack.cs" />
+    <Compile Include="UI\IOptionsView.cs" />
+    <Compile Include="UI\IView.cs" />
     <Compile Include="UI\PluginLine.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -117,7 +126,7 @@
     <Compile Include="UI\OptionsForm.Designer.cs">
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Source\Framework\ProcessIcon.cs" />
+    <Compile Include="Source\Framework\TaskbarIcon.cs" />
     <Compile Include="Source\Audio\SampleProcessor.cs" />
     <Compile Include="Source\Application\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -127,8 +136,9 @@
     <Compile Include="UI\StackForm.Designer.cs">
       <DependentUpon>StackForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="UI\ContextMenuProvider.resx">
-      <DependentUpon>ContextMenuProvider.cs</DependentUpon>
+    <Compile Include="UI\TaskbarView.cs" />
+    <EmbeddedResource Include="UI\IconMenu.resx">
+      <DependentUpon>IconMenu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\PluginLine.resx">
       <DependentUpon>PluginLine.cs</DependentUpon>

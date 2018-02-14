@@ -8,21 +8,21 @@ namespace Futor
 {
     public partial class StackForm : Form
     {
-        readonly ApplicationManager _applicationManager;
+        readonly Application _application;
         readonly List<PluginLine> _pluginLines = new List<PluginLine>(); 
 
-        public StackForm(ApplicationManager applicationManager)
+        public StackForm(Application application)
         {
             InitializeComponent();
 
-            _applicationManager = applicationManager;
+            _application = application;
 
             LoadSlots();
         }
 
         void LoadSlots()
         {
-            foreach (var pluginSlot in _applicationManager.Stack.PluginSlots)
+            foreach (var pluginSlot in _application.Stack.PluginSlots)
                 AddPluginLine(pluginSlot);
         }
         
@@ -53,7 +53,7 @@ namespace Futor
 
             PluginsLayoutPanel.Controls.Remove(pluginLine);
 
-            _applicationManager.Stack.ClosePlugin(pluginLine.Slot);
+            _application.Stack.ClosePlugin(pluginLine.Slot);
 
             PluginLinesChanged();
         }
@@ -75,7 +75,7 @@ namespace Futor
 
             PluginsLayoutPanel.Controls.SetChildIndex(pluginLine, newIndex);
 
-            _applicationManager.Stack.SetPluginIndex(pluginLine.Slot, newIndex);
+            _application.Stack.SetPluginIndex(pluginLine.Slot, newIndex);
 
             PluginLinesChanged();
         }
@@ -126,14 +126,14 @@ namespace Futor
 
                 Preferences<PreferencesDescriptor>.Instance.LastPluginPath = Path.GetDirectoryName(pluginPath);
 
-                var pluginSlot = _applicationManager.Stack.OpenPlugin(pluginPath);
+                var pluginSlot = _application.Stack.OpenPlugin(pluginPath);
                 var pluginLine = AddPluginLine(pluginSlot);
             }
         }
 
         void StackForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Preferences<PreferencesDescriptor>.Instance.PluginInfos = _applicationManager.Stack.SaveStack();
+            Preferences<PreferencesDescriptor>.Instance.PluginInfos = _application.Stack.SaveStack();
 
             Preferences<PreferencesDescriptor>.Manager.Save();
         }
