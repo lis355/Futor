@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace Futor
+﻿namespace Futor
 {
     public static class DataPathProvider
     {

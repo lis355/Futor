@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using Futor.Properties;
 
 namespace Futor
 {
@@ -24,7 +23,7 @@ namespace Futor
 
         public void Display()
         {
-            _notifyIcon.Icon = Resources.MainIcon;
+            _notifyIcon.Icon = Properties.Resources.MainIcon;
             UpdateText();
             _notifyIcon.Visible = true;
 

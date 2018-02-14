@@ -3,42 +3,35 @@ using System.Windows.Forms;
 
 namespace Futor
 {
-    public partial class IconMenu : UserControl, IMainMenuView
+    public partial class IconMenu : UserControl
     {
-        readonly bool _isEdit;
-
-        public event Action OnViewClosed;
+        bool _isEdit;
+        
         public event Action OnShowOptionsClicked;
         public event Action OnShowStackClicked;
         public event Action<bool> OnBypassAllChanged;
+        public event Action OnExitClicked;
+
+        public bool BypassAll
+        {
+            get { return BypassAllStripMenuItem.Checked; }
+            set
+            {
+                _isEdit = true;
+
+                BypassAllStripMenuItem.Checked = value;
+
+                _isEdit = false;
+            }
+        }
 
         public IconMenu(Application application)
         {
             InitializeComponent();
             
-
-            _isEdit = true;
-
-            BypassAllStripMenuItem.Checked = application.Options.HasAutorun;
-
-            _isEdit = false;
+            BypassAll = application.Options.IsBypassAll;
         }
         
-        public void ShowView()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CloseView()
-        {
-            throw new NotImplementedException();
-        }
-
-        void ExitStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OnViewClosed?.Invoke();
-        }
-
         void OptionsStripMenuItem_Click(object sender, EventArgs e)
         {
             OnShowOptionsClicked?.Invoke();
@@ -53,9 +46,13 @@ namespace Futor
         {
             if (_isEdit)
                 return;
-
-            // TODO как то отображать что включено в PluginLine
+            
             OnBypassAllChanged?.Invoke(BypassAllStripMenuItem.Checked);
+        }
+
+        private void ExitStripMenuItem_Click(Object sender, EventArgs e)
+        {
+            OnExitClicked?.Invoke();
         }
     }
 }

@@ -91,6 +91,7 @@
     <Compile Include="Source\Application\ApplicationOptions.cs" />
     <Compile Include="Source\Application\ApplicationOptionsController.cs" />
     <Compile Include="Source\Application\DataPathProvider.cs" />
+    <Compile Include="Source\Application\PluginsStackController.cs" />
     <Compile Include="Source\Application\PreferencesDescriptor.cs" />
     <Compile Include="Source\Audio\AudioManager.cs" />
     <Compile Include="Source\Audio\HostCommandStub.cs" />
@@ -98,7 +99,6 @@
     <Compile Include="Source\Framework\Preferences.cs" />
     <Compile Include="Source\Framework\AutorunProvider.cs" />
     <Compile Include="Source\Framework\XmlSerializer.cs" />
-    <Compile Include="UI\IMainMenuView.cs" />
     <Compile Include="UI\IconMenu.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -106,8 +106,6 @@
       <DependentUpon>IconMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\Audio\PluginsStack.cs" />
-    <Compile Include="UI\IOptionsView.cs" />
-    <Compile Include="UI\IView.cs" />
     <Compile Include="UI\PluginLine.cs">
       <SubType>UserControl</SubType>
     </Compile>

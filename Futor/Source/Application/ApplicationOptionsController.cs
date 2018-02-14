@@ -1,46 +1,41 @@
-﻿namespace Futor.Source.Application
+﻿namespace Futor
 {
-    class ApplicationOptionsController
+    public class ApplicationOptionsController
     {
-        IOptionsView _optionsView;
-
         public ApplicationOptions Options { get; }
+
+        public OptionsForm OptionsForm { get; private set; }
 
         public ApplicationOptionsController(ApplicationOptions applicationOptions)
         {
             Options = applicationOptions;
-            _optionsView = new OptionsForm(applicationOptions);
-            _optionsView.OnAutorunChanged += OptionsViewOnAutorunChanged;
-        }
-
-        void OptionsViewOnAutorunChanged(bool value)
-        {
-            
         }
 
         public void ShowOptions()
         {
-            if (_optionsForm == null)
+            if (OptionsForm == null)
             {
-                _optionsForm = new OptionsForm(Options);
-                _optionsForm.OnViewClosed += OptionsFormOnViewClosed;
-                _optionsForm.OnAutorunChanged += OptionsFormOnAutorunChanged;
-            
-                _optionsForm.Closed += (sender, args) => _optionsForm = null;
-                _optionsForm.Show();
+                OptionsForm = new OptionsForm(Options);
+
+                OptionsForm.OnViewClosed += () =>
+                {
+                    Options.Save();
+                };
+                OptionsForm.OnAutorunChanged += (value) =>
+                {
+                    Options.HasAutorun = value;
+                };
+                OptionsForm.Closed += (sender, args) =>
+                {
+                    OptionsForm = null;
+
+                    Options.Save();
+                };
+
+                OptionsForm.Show();
             }
-            
-            _optionsForm.Activate();
-        }
 
-        void OptionsFormOnViewClosed()
-        {
-            Options.Save();
-        }
-
-        void OptionsFormOnAutorunChanged(bool value)
-        {
-            Options.HasAutorun = value;
+            OptionsForm.Activate();
         }
     }
 }

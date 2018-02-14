@@ -1,59 +1,72 @@
-﻿using Futor.Source.Application;
-
-namespace Futor
+﻿namespace Futor
 {
     public class ApplicationController
     {
-        readonly IView _taskbarView;
-        ApplicationOptionsController _optionsController;
+        readonly TaskbarView _taskbarView;
+        readonly ApplicationOptionsController _optionsController;
+        readonly PluginsStackController _pluginsStackController;
 
         public Application Application { get; }
 
         public ApplicationController(Application application)
         {
             Application = application;
-            
-            _taskbarView = new TaskbarView(Application);
-            _taskbarView.
-            _optionsController = new ApplicationOptionsController(application.Options);
-        }
 
-        public void Start()
-        {
-            Application.Start();
+            _optionsController = new ApplicationOptionsController(Application.Options);
+            _pluginsStackController = new PluginsStackController(Application.Options, Application.Stack);
+
+            _taskbarView = new TaskbarView(Application);
+            _taskbarView.ShowView();
+
+            _taskbarView.OnLeftMouseClick += () =>
+            {
+                if (_optionsController.OptionsForm != null)
+                    ShowOptions();
+
+                if (_pluginsStackController.StackForm != null)
+                    ShowStack();
+            };
+            _taskbarView.Menu.OnShowOptionsClicked += () =>
+            {
+                ShowOptions();
+            };
+            _taskbarView.Menu.OnShowStackClicked += () =>
+            {
+                ShowStack();
+            };
+            _taskbarView.Menu.OnBypassAllChanged += (value) =>
+            {
+                // TODO как то отображать что включено в PluginLine
+                Application.Options.IsBypassAll = value;
+            };
+            _taskbarView.Menu.OnExitClicked += () =>
+            {
+                Exit();
+            };
 
             _taskbarView.ShowView();
 
             // DEBUG
             ShowStack();
-            
-            // DEBUG
-            //var ttt = PluginsStack.OpenPlugin(@"C:\Program Files\VstPluginsLib\Clip\GClip.dll");
-            //var dlg = new PluginUIForm(ttt.PluginCommandStub);
-            //dlg.Show();
         }
 
-        public void Finish()
+        void ShowStack()
+        {
+            _pluginsStackController.ShowStack();
+        }
+
+        void ShowOptions()
+        {
+            _optionsController.ShowOptions();
+        }
+
+        public void Exit()
         {
             _taskbarView.CloseView();
-
-            // TODO
-            // засунуть в представление с вьюшкой
+            
             HotKeyManager.Instance.Dispose();
 
-            Application.Finish();
-        }
-
-        public void ShowStack()
-        {
-            //if (_stackForm == null)
-            //{
-            //    _stackForm = new StackForm(this);
-            //    _stackForm.Closed += (sender, args) => _stackForm = null;
-            //    _stackForm.Show();
-            //}
-            //
-            //_stackForm.Activate();
+            Application.Dispose();
         }
     }
 }

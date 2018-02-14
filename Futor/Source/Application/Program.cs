@@ -11,7 +11,6 @@ namespace Futor
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
 
             var applicationController = new ApplicationController(new Application());
-            applicationController.Start();
 
             System.Windows.Forms.Application.Run();
         }

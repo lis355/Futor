@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Forms;
 using Jacobi.Vst.Core.Host;
 
 namespace Futor

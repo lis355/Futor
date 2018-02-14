@@ -2,19 +2,23 @@
 
 namespace Futor
 {
-    public class TaskbarView : IView
+    public class TaskbarView
     {
         readonly TaskbarIcon _taskbarIcon;
-        readonly IconMenu _iconMenu;
         
-        public IMainMenuView MainMenuView { get { return _iconMenu; } }
+        public IconMenu Menu { get; }
 
-        public event Action OnViewClosed;
+        public event Action OnLeftMouseClick;
 
         public TaskbarView(Application application)
         {
-            _iconMenu = new IconMenu(application);
-            _taskbarIcon = new TaskbarIcon {ContextMenu = _iconMenu.ContextRightMenu};
+            Menu = new IconMenu(application);
+
+            _taskbarIcon = new TaskbarIcon {ContextMenu = Menu.ContextRightMenu};
+            _taskbarIcon.OnLeftMouseClick += (sender, args) =>
+            {
+                OnLeftMouseClick?.Invoke();
+            };
         }
 
         public void ShowView()
@@ -25,8 +29,6 @@ namespace Futor
         public void CloseView()
         {
             _taskbarIcon.Dispose();
-
-            OnViewClosed?.Invoke();
         }
     }
 }

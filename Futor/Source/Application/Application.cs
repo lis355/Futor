@@ -2,7 +2,7 @@
 
 namespace Futor
 {
-    public class Application
+    public class Application : IDisposable
     {
         public ApplicationOptions Options { get; }
 
@@ -12,16 +12,9 @@ namespace Futor
         public Application()
         {
             Options = new ApplicationOptions();
-        }
-
-        public void Start()
-        {
             Options.Load();
-            
-            ProcessAudioManager();
 
-            // TODO плохая логика
-            Options.Save();
+            ProcessAudioManager();
         }
 
         void ProcessAudioManager()
@@ -55,7 +48,12 @@ namespace Futor
             AudioManager.Start();
         }
         
-        public void Finish()
+        public void Dispose()
+        {
+            Exit();
+        }
+
+        public void Exit()
         {
             // TODO call dispose
 

@@ -8,12 +8,12 @@ namespace Futor
     {
         public static void Serialize(T obj, string filePath)
         {
-            var xmlSerializerNamespaces = new XmlSerializerNamespaces(new[] { XmlQualifiedName.Empty });
+            var xmlSerializerNamespaces = new XmlSerializerNamespaces(new[] {XmlQualifiedName.Empty});
 
             var serializer = new XmlSerializer(typeof(T));
             using (TextWriter writer = new StreamWriter(filePath))
             {
-                var xmlWriter = XmlWriter.Create(writer, new XmlWriterSettings { Indent = true, OmitXmlDeclaration = true });
+                var xmlWriter = XmlWriter.Create(writer, new XmlWriterSettings {Indent = true, OmitXmlDeclaration = true});
 
                 serializer.Serialize(xmlWriter, obj, xmlSerializerNamespaces);
             }

@@ -4,45 +4,30 @@
     {
         const string _kPreferencesPath = "/preferences.xml";
 
+        PreferencesDescriptor Options => Preferences<PreferencesDescriptor>.Instance;
+
         public bool HasAutorun
         {
-            get
-            {
-                return Preferences<PreferencesDescriptor>.Instance.HasAutorun;
-            }
+            get { return Options.HasAutorun; }
             set
             {
-                if (Preferences<PreferencesDescriptor>.Instance.HasAutorun == value)
+                if (Options.HasAutorun == value)
                     return;
 
-                Preferences<PreferencesDescriptor>.Instance.HasAutorun = value;
-
-                if (value)
-                    AutorunProvider.AddToStartup();
-                else
-                    AutorunProvider.RemoveFromStartup();
+                SetHasAutorun(value);
             }
         }
 
         public bool IsBypassAll
         {
-            get
-            {
-                return Preferences<PreferencesDescriptor>.Instance.IsBypassAll;
-            }
-            set
-            {
-                if (Preferences<PreferencesDescriptor>.Instance.IsBypassAll == value)
-                    return;
-                
-                Preferences<PreferencesDescriptor>.Instance.IsBypassAll = value;
-            }
+            get { return Options.IsBypassAll; }
+            set { Options.IsBypassAll = value; }
         }
 
         public void Load()
         {
             Preferences<PreferencesDescriptor>.Manager.Load(DataPathProvider.Path(_kPreferencesPath));
-            
+
             ProcessAutorun();
         }
 
@@ -53,9 +38,18 @@
 
         void ProcessAutorun()
         {
-            var preferencesHasAutorun = Preferences<PreferencesDescriptor>.Instance.HasAutorun;
-            if (preferencesHasAutorun != AutorunProvider.HasSturtup())
-                HasAutorun = preferencesHasAutorun;
+            if (HasAutorun != AutorunProvider.HasSturtup())
+                SetHasAutorun(HasAutorun);
+        }
+
+        void SetHasAutorun(System.Boolean value)
+        {
+            Options.HasAutorun = value;
+
+            if (value)
+                AutorunProvider.AddToStartup();
+            else
+                AutorunProvider.RemoveFromStartup();
         }
     }
 }

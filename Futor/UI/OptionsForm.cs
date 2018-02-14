@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Futor
 {
-    public partial class OptionsForm : Form, IOptionsView
+    public partial class OptionsForm : Form
     {
         readonly ApplicationOptions _applicationOptions;
         readonly bool _isEdit;
