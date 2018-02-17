@@ -4,9 +4,9 @@ using System.Xml.Serialization;
 
 namespace Futor
 {
-    public class XmlSerializer<T>
+    public class XmlSerializer<T> : Serializer<T>
     {
-        public static void Serialize(T obj, string filePath)
+        public override void Serialize(T obj, string filePath)
         {
             var xmlSerializerNamespaces = new XmlSerializerNamespaces(new[] {XmlQualifiedName.Empty});
 
@@ -19,7 +19,7 @@ namespace Futor
             }
         }
 
-        public static T Deserialize(string filePath)
+        public override T Deserialize(string filePath)
         {
             var deserializer = new XmlSerializer(typeof(T));
             using (var reader = new StreamReader(filePath))

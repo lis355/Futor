@@ -76,6 +76,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -99,7 +101,9 @@
     <Compile Include="Source\Logic\Framework\HotKeyManager.cs" />
     <Compile Include="Source\Logic\Framework\Preferences.cs" />
     <Compile Include="Source\Logic\Framework\AutorunProvider.cs" />
-    <Compile Include="Source\Logic\Framework\XmlSerializer.cs" />
+    <Compile Include="Source\Logic\Framework\Serialization\JsonSerializer.cs" />
+    <Compile Include="Source\Logic\Framework\Serialization\Serializer.cs" />
+    <Compile Include="Source\Logic\Framework\Serialization\XmlSerializer.cs" />
     <Compile Include="UI\HotkeyForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -50,14 +50,16 @@ namespace Futor
             if (!_isLoaded)
                 throw new Exception("Preferences is not loaded.");
 
-            XmlSerializer<T>.Serialize(_instance._preferencesObject, _filePath);
+            var serializer = new JsonSerializer<T>();
+            serializer.Serialize(_instance._preferencesObject, _filePath);
         }
 
         void TryParsePreferencesFile()
         {
             try
             {
-                _preferencesObject = XmlSerializer<T>.Deserialize(_filePath);
+                var serializer = new JsonSerializer<T>();
+                _preferencesObject = serializer.Deserialize(_filePath + "111");
             }
             catch
             {

@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using Futor.UI;
-
-namespace Futor
+﻿namespace Futor
 {
     public class PluginsStackController
     {
