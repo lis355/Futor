@@ -2,7 +2,7 @@
 {
     public class ApplicationOptions
     {
-        const string _kPreferencesPath = "/preferences.json";
+        const string _kPreferencesPath = "/preferences.xml";
 
         PreferencesDescriptor Options => Preferences<PreferencesDescriptor>.Instance;
 
