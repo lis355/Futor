@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Jacobi.Vst.Core.Host;
 
@@ -23,9 +24,18 @@ namespace Futor
 
             if (_pluginCommandStub.EditorGetRect(out wndRect))
             {
-                Size = SizeFromClientSize(new Size(wndRect.Width, wndRect.Height));
+                ViewPanel.Size = new Size(wndRect.Width, wndRect.Height);
+                var maxW = Math.Max(ViewPanel.Width, PresetsPanel.Width);
+                ViewPanel.Location = new Point((maxW - ViewPanel.Width) / 2, 0);
+                PresetsPanel.Location = new Point((maxW - PresetsPanel.Width) / 2, ViewPanel.Height);
 
-                _pluginCommandStub.EditorOpen(panel1.Handle);
+                Size = SizeFromClientSize(new Size(maxW, ViewPanel.Height + PresetsPanel.Height));
+
+                _pluginCommandStub.EditorOpen(ViewPanel.Handle);
+            }
+            else
+            {
+                throw new Exception("Plugin hasn't UI.");
             }
 
             base.Show();

@@ -14,29 +14,41 @@ namespace Futor
             Last
         }
 
-        EPosition _positionType;
-
         readonly Color _disableColor = SystemColors.ControlDark;
         readonly Color _bypassColor = Color.Yellow;
         readonly Color _defaultTextColor;
         readonly Color _defaultBackgroundColor;
-        PluginsStack.PluginSlot _pluginSlot;
 
-        public EventHandler OnSelectButtonClick;
-        public EventHandler OnMoveUpButtonClick;
-        public EventHandler OnMoveDownButtonClick;
-        public EventHandler OnBypassButtonClick;
-        public EventHandler OnUIButtonClick;
-        public EventHandler OnRemoveButtonClick;
+        EPosition _positionType;
+        PluginsStack.Plugin _plugin;
 
-        public PluginLine(PluginsStack.PluginSlot pluginSlot)
+        public Action OnSelectButtonClick;
+        public Action OnMoveUpButtonClick;
+        public Action OnMoveDownButtonClick;
+        public Action OnBypassButtonClick;
+        public Action OnUIButtonClick;
+        public Action OnRemoveButtonClick;
+
+        public bool IsBypass
+        {
+            get { return _plugin.IsBypass; }
+            set
+            {
+                if (_plugin.IsBypass == value)
+                    return;
+
+                // TODO
+            }
+        }
+
+        public PluginLine(PluginsStack.Plugin plugin)
         {
             InitializeComponent();
 
             _defaultTextColor = RemoveButton.ForeColor;
             _defaultBackgroundColor = RemoveButton.BackColor;
 
-            Slot = pluginSlot;
+            Slot = plugin;
 
             UpdatePositionType();
         }
@@ -55,15 +67,15 @@ namespace Futor
             }
         }
 
-        public PluginsStack.PluginSlot Slot
+        public PluginsStack.Plugin Slot
         {
-            get { return _pluginSlot; }
+            get { return _plugin; }
             set
             {
-                if (_pluginSlot == value)
+                if (_plugin == value)
                     return;
 
-                _pluginSlot = value;
+                _plugin = value;
 
                 UpdateSlot();
             }
@@ -114,9 +126,9 @@ namespace Futor
         // TODO make private
         public void UpdateSlot()
         {
-            PluginNameLabel.Text = _pluginSlot.Name;
+            PluginNameLabel.Text = _plugin.Name;
 
-            var enabled = !_pluginSlot.IsEmpty;
+            var enabled = !_plugin.IsEmpty;
 
             UIButton.Enabled = enabled;
             BypassButton.Enabled = enabled;
@@ -124,12 +136,12 @@ namespace Futor
             MoveDownButton.Enabled = enabled;
             RemoveButton.Enabled = enabled;
 
-            BypassButton.BackColor = (_pluginSlot.IsBypass) ? _bypassColor : _defaultBackgroundColor;
+            BypassButton.BackColor = (_plugin.IsBypass) ? _bypassColor : _defaultBackgroundColor;
         }
 
         void SelectPlugin()
         {
-            OnSelectButtonClick?.Invoke(this, null);
+            OnSelectButtonClick?.Invoke();
         }
 
         void LabelPanel_Click(object sender, EventArgs e)
@@ -144,27 +156,27 @@ namespace Futor
 
         void MoveUpButton_Click(object sender, EventArgs e)
         {
-            OnMoveUpButtonClick?.Invoke(sender, e);
+            OnMoveUpButtonClick?.Invoke();
         }
 
         void MoveDownButton_Click(object sender, EventArgs e)
         {
-            OnMoveDownButtonClick?.Invoke(sender, e);
+            OnMoveDownButtonClick?.Invoke();
         }
 
         void BypassButton_Click(object sender, EventArgs e)
         {
-            OnBypassButtonClick?.Invoke(sender, e);
+            OnBypassButtonClick?.Invoke();
         }
 
         void UIButton_Click(object sender, EventArgs e)
         {
-            OnUIButtonClick?.Invoke(sender, e);
+            OnUIButtonClick?.Invoke();
         }
 
         void RemoveButton_Click(object sender, EventArgs e)
         {
-            OnRemoveButtonClick?.Invoke(sender, e);
+            OnRemoveButtonClick?.Invoke();
         }
     }
 }

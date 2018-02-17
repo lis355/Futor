@@ -86,26 +86,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\Application\Application.cs" />
-    <Compile Include="Source\Application\ApplicationController.cs" />
-    <Compile Include="Source\Application\ApplicationOptions.cs" />
-    <Compile Include="Source\Application\ApplicationOptionsController.cs" />
-    <Compile Include="Source\Application\DataPathProvider.cs" />
-    <Compile Include="Source\Application\PluginsStackController.cs" />
-    <Compile Include="Source\Application\PreferencesDescriptor.cs" />
-    <Compile Include="Source\Audio\AudioManager.cs" />
-    <Compile Include="Source\Audio\HostCommandStub.cs" />
-    <Compile Include="Source\Framework\HotKeyManager.cs" />
-    <Compile Include="Source\Framework\Preferences.cs" />
-    <Compile Include="Source\Framework\AutorunProvider.cs" />
-    <Compile Include="Source\Framework\XmlSerializer.cs" />
+    <Compile Include="Source\Logic\Application\Application.cs" />
+    <Compile Include="Source\Controllers\Application\ApplicationController.cs" />
+    <Compile Include="Source\Logic\Application\ApplicationOptions.cs" />
+    <Compile Include="Source\Controllers\Application\ApplicationOptionsController.cs" />
+    <Compile Include="Source\Logic\Application\DataPathProvider.cs" />
+    <Compile Include="Source\Controllers\Application\PluginController.cs" />
+    <Compile Include="Source\Controllers\Audio\PluginsStackController.cs" />
+    <Compile Include="Source\Logic\Application\PreferencesDescriptor.cs" />
+    <Compile Include="Source\Logic\Audio\AudioManager.cs" />
+    <Compile Include="Source\Logic\Audio\HostCommandStub.cs" />
+    <Compile Include="Source\Logic\Framework\HotKeyManager.cs" />
+    <Compile Include="Source\Logic\Framework\Preferences.cs" />
+    <Compile Include="Source\Logic\Framework\AutorunProvider.cs" />
+    <Compile Include="Source\Logic\Framework\XmlSerializer.cs" />
+    <Compile Include="UI\HotkeyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\HotkeyForm.Designer.cs">
+      <DependentUpon>HotkeyForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\IconMenu.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\IconMenu.Designer.cs">
       <DependentUpon>IconMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="Source\Audio\PluginsStack.cs" />
+    <Compile Include="Source\Logic\Audio\PluginsStack.cs" />
     <Compile Include="UI\PluginLine.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -124,9 +131,9 @@
     <Compile Include="UI\OptionsForm.Designer.cs">
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Source\Framework\TaskbarIcon.cs" />
-    <Compile Include="Source\Audio\SampleProcessor.cs" />
-    <Compile Include="Source\Application\Program.cs" />
+    <Compile Include="Source\Logic\Framework\TaskbarIcon.cs" />
+    <Compile Include="Source\Logic\Audio\SampleProcessor.cs" />
+    <Compile Include="Source\Logic\Application\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\StackForm.cs">
       <SubType>Form</SubType>
@@ -135,6 +142,9 @@
       <DependentUpon>StackForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\TaskbarView.cs" />
+    <EmbeddedResource Include="UI\HotkeyForm.resx">
+      <DependentUpon>HotkeyForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\IconMenu.resx">
       <DependentUpon>IconMenu.cs</DependentUpon>
     </EmbeddedResource>

@@ -8,35 +8,63 @@ namespace Futor
 {
     public partial class StackForm : Form
     {
-        readonly PluginsStack _pluginsStack;
         readonly List<PluginLine> _pluginLines = new List<PluginLine>(); 
+
+        public Action<PluginLine> OnSelectPluginButtonClick;
+        public Action<PluginLine> OnMoveUpPluginButtonClick;
+        public Action<PluginLine> OnMoveDownPluginButtonClick;
+        public Action<PluginLine> OnBypassPluginButtonClick;
+        public Action<PluginLine> OnUIPluginButtonClick;
+        public Action<PluginLine> OnRemovePluginButtonClick;
 
         public StackForm(PluginsStack pluginsStack)
         {
             InitializeComponent();
 
-            _pluginsStack = pluginsStack;
-
-            LoadSlots();
+            LoadSlots(pluginsStack);
         }
 
-        void LoadSlots()
+        void LoadSlots(PluginsStack stack)
         {
-            foreach (var pluginSlot in _pluginsStack.PluginSlots)
+            foreach (var pluginSlot in stack.PluginSlots)
                 AddPluginLine(pluginSlot);
         }
         
-        PluginLine AddPluginLine(PluginsStack.PluginSlot pluginSlot)
+        PluginLine AddPluginLine(PluginsStack.Plugin plugin)
         {
-            var pluginLine = new PluginLine(pluginSlot);
+            var pluginLine = new PluginLine(plugin);
 
-            // TODO
-            //pluginLine.OnSelectButtonClick;
-            pluginLine.OnMoveUpButtonClick += (sender, args) => MoveUpPlugin(pluginLine);
-            pluginLine.OnMoveDownButtonClick += (sender, args) => MoveDownPlugin(pluginLine);
-            pluginLine.OnBypassButtonClick += (sender, args) => BypassPlugin(pluginLine);
-            //pluginLine.OnUIButtonClick;
-            pluginLine.OnRemoveButtonClick += (sender, args) => RemovePluginLine(pluginLine);
+            pluginLine.OnSelectButtonClick += () =>
+            {
+                OnSelectPluginButtonClick?.Invoke(pluginLine);
+            };
+            pluginLine.OnMoveUpButtonClick += () =>
+            {
+                OnMoveUpPluginButtonClick.Invoke(pluginLine);
+
+                // TODO
+                MoveUpPlugin(pluginLine);
+
+            };
+            pluginLine.OnMoveDownButtonClick += () =>
+            {
+                // TODO
+                MoveDownPlugin(pluginLine);
+            };
+            pluginLine.OnBypassButtonClick += () =>
+            {
+                // TODO
+                BypassPlugin(pluginLine);
+            };
+            pluginLine.OnUIButtonClick += () =>
+            {
+                // TODO
+            };
+            pluginLine.OnRemoveButtonClick += () =>
+            {
+                // TODO
+                RemovePluginLine(pluginLine);
+            };
 
             _pluginLines.Add(pluginLine);
 
@@ -53,7 +81,7 @@ namespace Futor
 
             PluginsLayoutPanel.Controls.Remove(pluginLine);
 
-            _pluginsStack.ClosePlugin(pluginLine.Slot);
+            //_pluginsStack.ClosePlugin(pluginLine.Slot);
 
             PluginLinesChanged();
         }
@@ -75,7 +103,7 @@ namespace Futor
 
             PluginsLayoutPanel.Controls.SetChildIndex(pluginLine, newIndex);
 
-            _pluginsStack.SetPluginIndex(pluginLine.Slot, newIndex);
+            //_pluginsStack.SetPluginIndex(pluginLine.Slot, newIndex);
 
             PluginLinesChanged();
         }
@@ -126,16 +154,16 @@ namespace Futor
 
                 Preferences<PreferencesDescriptor>.Instance.LastPluginPath = Path.GetDirectoryName(pluginPath);
 
-                var pluginSlot = _pluginsStack.OpenPlugin(pluginPath);
-                var pluginLine = AddPluginLine(pluginSlot);
+                //var pluginSlot = _pluginsStack.OpenPlugin(pluginPath);
+                //var pluginLine = AddPluginLine(pluginSlot);
             }
         }
 
         void StackForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Preferences<PreferencesDescriptor>.Instance.PluginInfos = _pluginsStack.SaveStack();
-
-            Preferences<PreferencesDescriptor>.Manager.Save();
+            //Preferences<PreferencesDescriptor>.Instance.PluginInfos = _pluginsStack.SaveStack();
+            //
+            //Preferences<PreferencesDescriptor>.Manager.Save();
         }
 
         void AddButton_Click(object sender, EventArgs e)

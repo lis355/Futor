@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Jacobi.Vst.Core;
 using Jacobi.Vst.Interop.Host;
@@ -9,11 +8,11 @@ namespace Futor
 {
     public class PluginsStack : SampleProcessor
     {
-        public class PluginSlot
+        public class Plugin
         {
             const string _kEmptyPluginName = "...";
-            
-            public VstPluginContext Plugin;
+
+            public VstPluginContext PluginContext { get; set; }
 
             public string Name
             {
@@ -27,36 +26,39 @@ namespace Futor
                     }
                     else
                     {
-                        name = Plugin.PluginCommandStub.GetEffectName();
+                        name = PluginContext.PluginCommandStub.GetEffectName();
 
                         if (string.IsNullOrEmpty(name))
-                            name = Path.GetFileNameWithoutExtension(Plugin.Find<string>(_kPluginParameterPluginPath));
+                            name = System.IO.Path.GetFileNameWithoutExtension(Path);
                     }
 
                     return name;
                 }
             }
 
-            public bool IsEmpty => Plugin == null;
+            public bool IsEmpty => PluginContext == null;
+
+            public string Path => PluginContext?.Find<string>(_kPluginParameterPluginPath) ?? string.Empty;
 
             // TODO event
             public bool IsBypass { get; set; }
         }
+        
 
         public class PluginEventArgs : EventArgs 
         {
-            public PluginSlot PluginSlot { get; private set; }
+            public Plugin Plugin { get; private set; }
 
-            public PluginEventArgs(PluginSlot pluginSlot)
+            public PluginEventArgs(Plugin plugin)
             {
-                PluginSlot = pluginSlot;
+                Plugin = plugin;
             }
         }
 
         const string _kPluginParameterPluginPath = "PluginPath";
-        const string _kPluginParameterHostCmdStub = "HostCmdStub";
-
-        readonly List<PluginSlot> _pluginSlots = new List<PluginSlot>();
+            const string _kPluginParameterHostCmdStub = "HostCmdStub";
+        
+        readonly List<Plugin> _pluginSlots = new List<Plugin>();
         int _channelsCount;
         int _size;
         VstAudioBufferManager _bufferManager;
@@ -69,7 +71,7 @@ namespace Futor
         public EventHandler<PluginEventArgs> OnPluginSlotRemoved;
         public EventHandler<PluginEventArgs> OnPluginSlotChanged;
 
-        public IEnumerable<PluginSlot> PluginSlots => _pluginSlots;
+        public IEnumerable<Plugin> PluginSlots => _pluginSlots;
 
         public bool IsBypassAll
         {
@@ -89,22 +91,24 @@ namespace Futor
 
         public void LoadStack(List<PreferencesDescriptor.PluginInfo> pluginInfos)
         {
-            for (int i = 0; i < pluginInfos.Count; i++)
+            foreach (var pluginInfo in pluginInfos)
             {
-                var pluginInfo = pluginInfos[i];
-                
                 try
                 {
-                    var pluginSlot = OpenPlugin(pluginInfo.Path);
-
-                    pluginSlot.IsBypass = pluginInfo.IsBypass;
+                    var plugin = new Plugin
+                    {
+                        PluginContext = OpenPluginContext(pluginInfo.Path),
+                        IsBypass = pluginInfo.IsBypass
+                    };
+                    
+                    AddPlugin(plugin);
                 }
                 catch
                 {
                 }
             }
         }
-        
+
         public List<PreferencesDescriptor.PluginInfo> SaveStack()
         {
             var pluginInfos = new List<PreferencesDescriptor.PluginInfo>(_pluginSlots.Count);
@@ -115,9 +119,7 @@ namespace Futor
 
                 if (!pluginSlot.IsEmpty)
                 {
-                    var pluginContext = pluginSlot.Plugin;
-
-                    pluginInfo.Path = pluginContext.Find<string>(_kPluginParameterPluginPath);
+                    pluginInfo.Path = pluginSlot.Path;
                     pluginInfo.IsBypass = pluginSlot.IsBypass;
                 }
 
@@ -127,38 +129,30 @@ namespace Futor
             return pluginInfos;
         }
 
-        public PluginSlot OpenPlugin(string pluginPath)
+        public void AddPlugin(Plugin plugin)
         {
-            if (!File.Exists(pluginPath))
-                throw new FileNotFoundException(pluginPath);
+            _pluginSlots.Add(plugin);
+        }
 
-            var pluginContext = OpenPluginContext(pluginPath);
-            var pluginSlot = new PluginSlot
+        public void RemovePlugin(Plugin plugin)
+        {
+            if (!plugin.IsEmpty)
             {
-                Plugin = pluginContext
-            };
+                ClosePluginContext(plugin.PluginContext);
+                plugin = null;
+            }
             
-            _pluginSlots.Add(pluginSlot);
-            
-            return pluginSlot;
+            _pluginSlots.Remove(plugin);
         }
 
-        public void ClosePlugin(PluginSlot pluginSlot)
+        public void SetPluginIndex(Plugin plugin, int newIndex)
         {
-            if (!pluginSlot.IsEmpty)
-                ClosePluginContext(pluginSlot.Plugin);
-
-            _pluginSlots.Remove(pluginSlot);
-        }
-
-        public void SetPluginIndex(PluginSlot pluginSlot, int newIndex)
-        {
-            _pluginSlots.Remove(pluginSlot);
-            _pluginSlots.Insert(newIndex, pluginSlot);
+            _pluginSlots.Remove(plugin);
+            _pluginSlots.Insert(newIndex, plugin);
         }
 
         public override void Process(float[] buffer, int offset, int samples)
-        {
+        {/*
             if (samples == 0
                 || !_pluginSlots.Any()
                 || _isBypassAll)
@@ -202,7 +196,7 @@ namespace Futor
 
             for (int i = offset, k = 0; i < offset + samples; i += channelsCount, k++)
                 for (int j = 0; j < channelsCount; j++)
-                    buffer[i + j] = _outputBuffers[j][k];
+                    buffer[i + j] = _outputBuffers[j][k];*/
         }
 
         void ResetBufferManager(int channelsCount, int size)
@@ -218,7 +212,7 @@ namespace Futor
             _inputBuffers = buffers.Skip(0).Take(_channelsCount).ToArray();
             _outputBuffers = buffers.Skip(_channelsCount).Take(_channelsCount).ToArray();
         }
-        
+
         static VstPluginContext OpenPluginContext(string pluginPath)
         {
             try
