@@ -198,29 +198,45 @@ namespace Futor
         readonly long _osamp;
         readonly SmbPitchShifter _shifterLeft = new SmbPitchShifter();
         readonly SmbPitchShifter _shifterRight = new SmbPitchShifter();
+        float _pitchFactorLog;
+        int _pitchFactor;
 
         const float _kLimThresh = 0.95f;
         const float _kLimRange = (1f - _kLimThresh);
         const float _kMPi2 = (float)(Math.PI / 2);
 
-        public float PitchFactor { get; set; }
+        public int PitchFactor
+        {
+            get { return _pitchFactor; }
+            set
+            {
+                if (value == _pitchFactor)
+                    return;
+
+                _pitchFactor = value;
+
+                _pitchFactorLog = (float)Math.Pow(2, Math.Abs(_pitchFactor) / 12f);
+
+                if (value < 0)
+                    _pitchFactorLog = 1 / _pitchFactorLog;
+            }
+        }
 
         public PitchShifter()
-            : this(4096, 4L, 1f)
+            : this(4096, 4L, 0)
         {
         }
 
-        public PitchShifter(int fftSize, long osamp, float initialPitch)
+        public PitchShifter(int fftSize, long osamp, int initialPitch)
         {
             _fftSize = fftSize;
             _osamp = osamp;
             PitchFactor = initialPitch;
         }
-
-
+        
         public override void Process(float[] buffer, int offset, int count)
         {
-            if (Math.Abs(PitchFactor - 1f) < 1e-5)
+            if (Math.Abs(_pitchFactorLog - 1f) < 1e-5)
                 return;
             if (WaveFormat.Channels == 1)
             {
@@ -231,7 +247,7 @@ namespace Futor
                     mono[index] = buffer[sample];
                     index += 1;
                 }
-                _shifterLeft.PitchShift(PitchFactor, count, _fftSize, _osamp, WaveFormat.SampleRate, mono);
+                _shifterLeft.PitchShift(_pitchFactorLog, count, _fftSize, _osamp, WaveFormat.SampleRate, mono);
                 index = 0;
                 for (int sample = offset; sample <= count + offset - 1; sample++)
                 {
@@ -250,8 +266,8 @@ namespace Futor
                     right[index] = buffer[sample + 1];
                     index += 1;
                 }
-                _shifterLeft.PitchShift(PitchFactor, count >> 1, _fftSize, _osamp, WaveFormat.SampleRate, left);
-                _shifterRight.PitchShift(PitchFactor, count >> 1, _fftSize, _osamp, WaveFormat.SampleRate, right);
+                _shifterLeft.PitchShift(_pitchFactorLog, count >> 1, _fftSize, _osamp, WaveFormat.SampleRate, left);
+                _shifterRight.PitchShift(_pitchFactorLog, count >> 1, _fftSize, _osamp, WaveFormat.SampleRate, right);
                 index = 0;
                 for (int sample = offset; sample <= count + offset - 1; sample += 2)
                 {

@@ -46,7 +46,7 @@ namespace Futor
             //AudioManager.SampleProcessor = Stack;
 
             var pitchShifter = new PitchShifter();
-            pitchShifter.PitchFactor = 2f;
+            pitchShifter.PitchFactor = 2;
             AudioManager.SampleProcessor = pitchShifter;
              
             AudioManager.Start();
