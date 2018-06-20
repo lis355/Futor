@@ -91,10 +91,7 @@
     <Compile Include="Source\Logic\Application\Application.cs" />
     <Compile Include="Source\Controllers\Application\ApplicationController.cs" />
     <Compile Include="Source\Logic\Application\ApplicationOptions.cs" />
-    <Compile Include="Source\Controllers\Application\ApplicationOptionsController.cs" />
     <Compile Include="Source\Logic\Application\DataPathProvider.cs" />
-    <Compile Include="Source\Controllers\Application\PluginController.cs" />
-    <Compile Include="Source\Controllers\Audio\PluginsStackController.cs" />
     <Compile Include="Source\Logic\Application\PreferencesDescriptor.cs" />
     <Compile Include="Source\Logic\Audio\AudioManager.cs" />
     <Compile Include="Source\Logic\Audio\HostCommandStub.cs" />
@@ -104,12 +101,6 @@
     <Compile Include="Source\Logic\Framework\Serialization\JsonSerializer.cs" />
     <Compile Include="Source\Logic\Framework\Serialization\Serializer.cs" />
     <Compile Include="Source\Logic\Framework\Serialization\XmlSerializer.cs" />
-    <Compile Include="UI\HotkeyForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\HotkeyForm.Designer.cs">
-      <DependentUpon>HotkeyForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\IconMenu.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -117,18 +108,6 @@
       <DependentUpon>IconMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\Logic\Audio\PluginsStack.cs" />
-    <Compile Include="UI\PluginLine.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\PluginLine.Designer.cs">
-      <DependentUpon>PluginLine.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\PluginUIForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\PluginUIForm.Designer.cs">
-      <DependentUpon>PluginUIForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\OptionsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -139,24 +118,9 @@
     <Compile Include="Source\Logic\Audio\SampleProcessor.cs" />
     <Compile Include="Source\Logic\Application\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\StackForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\StackForm.Designer.cs">
-      <DependentUpon>StackForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\TaskbarView.cs" />
-    <EmbeddedResource Include="UI\HotkeyForm.resx">
-      <DependentUpon>HotkeyForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\IconMenu.resx">
       <DependentUpon>IconMenu.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\PluginLine.resx">
-      <DependentUpon>PluginLine.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\PluginUIForm.resx">
-      <DependentUpon>PluginUIForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\OptionsForm.resx">
       <DependentUpon>OptionsForm.cs</DependentUpon>
@@ -171,9 +135,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UI\StackForm.resx">
-      <DependentUpon>StackForm.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

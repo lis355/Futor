@@ -30,33 +30,28 @@
         {
             this.components = new System.ComponentModel.Container();
             this.ContextRightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.PluginStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.BypassAllStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.OptionsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.InputDeviceStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.OutputDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ExitStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.PitchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextRightMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // ContextRightMenu
             // 
             this.ContextRightMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.PluginStripMenuItem,
+            this.PitchToolStripMenuItem,
             this.BypassAllStripMenuItem,
             this.toolStripSeparator2,
-            this.OptionsStripMenuItem,
+            this.InputDeviceStripMenuItem,
+            this.OutputDeviceToolStripMenuItem,
             this.toolStripSeparator1,
             this.ExitStripMenuItem});
             this.ContextRightMenu.Name = "ContextMenuStrip";
-            this.ContextRightMenu.Size = new System.Drawing.Size(153, 126);
-            // 
-            // PluginStripMenuItem
-            // 
-            this.PluginStripMenuItem.Name = "PluginStripMenuItem";
-            this.PluginStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.PluginStripMenuItem.Text = "Plugins";
-            this.PluginStripMenuItem.Click += new System.EventHandler(this.PluginStripMenuItem_Click);
+            this.ContextRightMenu.Size = new System.Drawing.Size(153, 148);
             // 
             // BypassAllStripMenuItem
             // 
@@ -71,12 +66,19 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
             // 
-            // OptionsStripMenuItem
+            // InputDeviceStripMenuItem
             // 
-            this.OptionsStripMenuItem.Name = "OptionsStripMenuItem";
-            this.OptionsStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.OptionsStripMenuItem.Text = "Options";
-            this.OptionsStripMenuItem.Click += new System.EventHandler(this.OptionsStripMenuItem_Click);
+            this.InputDeviceStripMenuItem.Name = "InputDeviceStripMenuItem";
+            this.InputDeviceStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.InputDeviceStripMenuItem.Text = "Input Device";
+            this.InputDeviceStripMenuItem.Click += new System.EventHandler(this.InputDeviceStripMenuItem_Click);
+            // 
+            // OutputDeviceToolStripMenuItem
+            // 
+            this.OutputDeviceToolStripMenuItem.Name = "OutputDeviceToolStripMenuItem";
+            this.OutputDeviceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.OutputDeviceToolStripMenuItem.Text = "Output Device";
+            this.OutputDeviceToolStripMenuItem.Click += new System.EventHandler(this.OutputDeviceToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -89,6 +91,12 @@
             this.ExitStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.ExitStripMenuItem.Text = "Exit";
             this.ExitStripMenuItem.Click += new System.EventHandler(this.ExitStripMenuItem_Click);
+            // 
+            // PitchToolStripMenuItem
+            // 
+            this.PitchToolStripMenuItem.Name = "PitchToolStripMenuItem";
+            this.PitchToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.PitchToolStripMenuItem.Text = "Pitch";
             // 
             // IconMenu
             // 
@@ -105,9 +113,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem ExitStripMenuItem;
         public System.Windows.Forms.ContextMenuStrip ContextRightMenu;
-        private System.Windows.Forms.ToolStripMenuItem OptionsStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem PluginStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem InputDeviceStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem BypassAllStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem OutputDeviceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem PitchToolStripMenuItem;
     }
 }

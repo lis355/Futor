@@ -42,7 +42,7 @@
                 SetHasAutorun(HasAutorun);
         }
 
-        void SetHasAutorun(System.Boolean value)
+        void SetHasAutorun(bool value)
         {
             Options.HasAutorun = value;
 

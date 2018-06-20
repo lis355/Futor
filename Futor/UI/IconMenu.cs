@@ -6,9 +6,7 @@ namespace Futor
     public partial class IconMenu : UserControl
     {
         bool _isEdit;
-        
-        public event Action OnShowOptionsClicked;
-        public event Action OnShowStackClicked;
+
         public event Action<bool> OnBypassAllChanged;
         public event Action OnExitClicked;
 
@@ -32,14 +30,14 @@ namespace Futor
             BypassAll = application.Options.IsBypassAll;
         }
         
-        void OptionsStripMenuItem_Click(object sender, EventArgs e)
+        void InputDeviceStripMenuItem_Click(object sender, EventArgs e)
         {
-            OnShowOptionsClicked?.Invoke();
+
         }
 
-        void PluginStripMenuItem_Click(object sender, EventArgs e)
+        void OutputDeviceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OnShowStackClicked?.Invoke();
+
         }
 
         void BypassAllStripMenuItem_CheckedChanged(object sender, EventArgs e)
@@ -50,7 +48,7 @@ namespace Futor
             OnBypassAllChanged?.Invoke(BypassAllStripMenuItem.Checked);
         }
 
-        private void ExitStripMenuItem_Click(Object sender, EventArgs e)
+        void ExitStripMenuItem_Click(object sender, EventArgs e)
         {
             OnExitClicked?.Invoke();
         }
