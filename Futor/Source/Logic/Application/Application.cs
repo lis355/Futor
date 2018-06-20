@@ -40,11 +40,15 @@ namespace Futor
             AudioManager.OutputDeviceName = Preferences<PreferencesDescriptor>.Instance.OutputDeviceName;
             AudioManager.LatencyMilliseconds = Preferences<PreferencesDescriptor>.Instance.LatencyMilliseconds;
 
-            Stack = new PluginsStack();
-            Stack.LoadStack(Preferences<PreferencesDescriptor>.Instance.PluginInfos);
+            //Stack = new PluginsStack();
+            //Stack.LoadStack(Preferences<PreferencesDescriptor>.Instance.PluginInfos);
+            //
+            //AudioManager.SampleProcessor = Stack;
 
-            AudioManager.SampleProcessor = Stack;
-
+            var pitchShifter = new PitchShifter();
+            pitchShifter.PitchFactor = 2f;
+            AudioManager.SampleProcessor = pitchShifter;
+             
             AudioManager.Start();
         }
         

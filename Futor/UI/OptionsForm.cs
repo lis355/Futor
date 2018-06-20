@@ -20,7 +20,6 @@ namespace Futor
             _isEdit = true;
 
             ProcessAutostart();
-            ProcessAudio();
 
             _isEdit = false;
         }
@@ -30,45 +29,6 @@ namespace Futor
             AutostartCheckBox.Checked = _applicationOptions.HasAutorun;
         }
 
-        void ProcessAudio()
-        {/*
-            var audioManager = _application.AudioManager;
-
-            var inputDevices = audioManager.GetInputMMDevices();
-            if (!inputDevices.Any())
-            {
-                InputDevicesComboBox.Items.Add("--");
-                InputDevicesComboBox.SelectedIndex = 0;
-            }
-            else
-            {
-                foreach (var inputDevice in inputDevices)
-                {
-                    var deviceName = inputDevice.FriendlyName;
-                    InputDevicesComboBox.Items.Add(deviceName);
-
-                    if (audioManager.InputDeviceName == deviceName)
-                        InputDevicesComboBox.SelectedIndex = InputDevicesComboBox.Items.Count - 1;
-                }
-            }
-
-            var outputDevices = audioManager.GetOutputMMDevices();
-            if (!outputDevices.Any())
-            {
-                OutputDevicesComboBox.Items.Add("--");
-            }
-            else
-            {
-                foreach (var outputDevice in outputDevices)
-                {
-                    var deviceName = outputDevice.FriendlyName;
-                    OutputDevicesComboBox.Items.Add(deviceName);
-
-                    if (audioManager.OutputDeviceName == deviceName)
-                        OutputDevicesComboBox.SelectedIndex = OutputDevicesComboBox.Items.Count - 1;
-                }
-            }*/
-        }
 
         void OptionsForm_FormClosed(object sender, FormClosedEventArgs e)
         {
