@@ -95,7 +95,6 @@
     <Compile Include="Source\Logic\Application\PreferencesDescriptor.cs" />
     <Compile Include="Source\Logic\Audio\AudioManager.cs" />
     <Compile Include="Source\Logic\Audio\HostCommandStub.cs" />
-    <Compile Include="Source\Logic\Framework\HotKeyManager.cs" />
     <Compile Include="Source\Logic\Framework\Preferences.cs" />
     <Compile Include="Source\Logic\Framework\AutorunProvider.cs" />
     <Compile Include="Source\Logic\Framework\Serialization\JsonSerializer.cs" />

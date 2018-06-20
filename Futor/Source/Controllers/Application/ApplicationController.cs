@@ -30,8 +30,6 @@
         {
             _taskbarView.CloseView();
             
-            HotKeyManager.Instance.Dispose();
-
             Application.Dispose();
         }
     }
