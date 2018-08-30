@@ -19,24 +19,21 @@ namespace Futor
             readonly float[] _gSynMagn = new float[_kMaxFrameLength];
             long _gRover;
 
-            public void PitchShift(float pitchShift, long numSampsToProcess, float sampleRate, float[] indata)
-            {
-                PitchShift(pitchShift, numSampsToProcess, 2048, 10, sampleRate, indata);
-            }
-
             public void PitchShift(float pitchShift, long numSampsToProcess, long fftFrameSize, long osamp, float sampleRate, float[] indata)
             {
                 double magn, phase, tmp, window, real, imag;
                 double freqPerBin, expct;
                 long i, k, qpd, index, inFifoLatency, stepSize, fftFrameSize2;
-                
+
                 float[] outdata = indata;
                 fftFrameSize2 = fftFrameSize / 2;
                 stepSize = fftFrameSize / osamp;
                 freqPerBin = sampleRate / (double)fftFrameSize;
                 expct = 2.0 * Math.PI * stepSize / fftFrameSize;
                 inFifoLatency = fftFrameSize - stepSize;
-                if (_gRover == 0) _gRover = inFifoLatency;
+
+                if (_gRover == 0)
+                    _gRover = inFifoLatency;
 
                 for (i = 0; i < numSampsToProcess; i++)
                 {
@@ -71,8 +68,10 @@ namespace Futor
                             tmp -= k * expct;
 
                             qpd = (long)(tmp / Math.PI);
-                            if (qpd >= 0) qpd += qpd & 1;
-                            else qpd -= qpd & 1;
+                            if (qpd >= 0)
+                                qpd += qpd & 1;
+                            else
+                                qpd -= qpd & 1;
                             tmp -= Math.PI * qpd;
 
                             tmp = osamp * tmp / (2.0 * Math.PI);
@@ -119,7 +118,8 @@ namespace Futor
                             _gFfTworksp[2 * k + 1] = (float)(magn * Math.Sin(phase));
                         }
 
-                        for (k = fftFrameSize + 2; k < 2 * fftFrameSize; k++) _gFfTworksp[k] = 0.0F;
+                        for (k = fftFrameSize + 2; k < 2 * fftFrameSize; k++)
+                            _gFfTworksp[k] = 0.0F;
 
                         ShortTimeFourierTransform(_gFfTworksp, fftFrameSize, 1);
 
@@ -128,14 +128,17 @@ namespace Futor
                             window = -.5 * Math.Cos(2.0 * Math.PI * k / fftFrameSize) + .5;
                             _gOutputAccum[k] += (float)(2.0 * window * _gFfTworksp[2 * k] / (fftFrameSize2 * osamp));
                         }
-                        for (k = 0; k < stepSize; k++) _gOutFifo[k] = _gOutputAccum[k];
+
+                        for (k = 0; k < stepSize; k++)
+                            _gOutFifo[k] = _gOutputAccum[k];
 
                         for (k = 0; k < fftFrameSize; k++)
                         {
                             _gOutputAccum[k] = _gOutputAccum[k + stepSize];
                         }
 
-                        for (k = 0; k < inFifoLatency; k++) _gInFifo[k] = _gInFifo[k + stepSize];
+                        for (k = 0; k < inFifoLatency; k++)
+                            _gInFifo[k] = _gInFifo[k + stepSize];
                     }
                 }
             }
@@ -150,9 +153,11 @@ namespace Futor
                 {
                     for (bitm = 2, j = 0; bitm < 2 * fftFrameSize; bitm <<= 1)
                     {
-                        if ((i & bitm) != 0) j++;
+                        if ((i & bitm) != 0)
+                            j++;
                         j <<= 1;
                     }
+
                     if (i < j)
                     {
                         temp = fftBuffer[i];
@@ -163,6 +168,7 @@ namespace Futor
                         fftBuffer[j + 1] = temp;
                     }
                 }
+
                 long max = (long)(Math.Log(fftFrameSize) / Math.Log(2.0) + .5);
                 for (k = 0, le = 2; k < max; k++)
                 {
@@ -186,6 +192,7 @@ namespace Futor
                             fftBuffer[i + 1] += ti;
 
                         }
+
                         tr = ur * wr - ui * wi;
                         ui = ur * wi + ui * wr;
                         ur = tr;
@@ -207,7 +214,7 @@ namespace Futor
 
         public int PitchFactor
         {
-            get { return _pitchFactor; }
+            get => _pitchFactor;
             set
             {
                 if (value == _pitchFactor)
@@ -233,21 +240,25 @@ namespace Futor
             _osamp = osamp;
             PitchFactor = initialPitch;
         }
-        
+
         public override void Process(float[] buffer, int offset, int count)
         {
             if (Math.Abs(_pitchFactorLog - 1f) < 1e-5)
                 return;
+
             if (WaveFormat.Channels == 1)
             {
                 float[] mono = new float[count];
                 int index = 0;
+
                 for (int sample = offset; sample <= count + offset - 1; sample++)
                 {
                     mono[index] = buffer[sample];
                     index += 1;
                 }
+
                 _shifterLeft.PitchShift(_pitchFactorLog, count, _fftSize, _osamp, WaveFormat.SampleRate, mono);
+
                 index = 0;
                 for (int sample = offset; sample <= count + offset - 1; sample++)
                 {
@@ -259,6 +270,7 @@ namespace Futor
             {
                 float[] left = new float[(count >> 1)];
                 float[] right = new float[(count >> 1)];
+
                 int index = 0;
                 for (int sample = offset; sample <= count + offset - 1; sample += 2)
                 {
@@ -266,9 +278,12 @@ namespace Futor
                     right[index] = buffer[sample + 1];
                     index += 1;
                 }
+
                 _shifterLeft.PitchShift(_pitchFactorLog, count >> 1, _fftSize, _osamp, WaveFormat.SampleRate, left);
                 _shifterRight.PitchShift(_pitchFactorLog, count >> 1, _fftSize, _osamp, WaveFormat.SampleRate, right);
+
                 index = 0;
+
                 for (int sample = offset; sample <= count + offset - 1; sample += 2)
                 {
                     buffer[sample] = Limiter(left[index]);
@@ -299,6 +314,7 @@ namespace Futor
             {
                 res = sample;
             }
+
             return res;
         }
     }

@@ -13,7 +13,7 @@ namespace Futor
     {
         public class AudioManagerEventArgs : EventArgs
         {
-            public AudioManager AudioManager { get; private set; }
+            public AudioManager AudioManager { get; }
 
             public AudioManagerEventArgs(AudioManager audioManager)
             {
@@ -40,7 +40,7 @@ namespace Futor
 
         public string InputDeviceName
         {
-            get { return _inputDeviceName; }
+            get => _inputDeviceName;
             set
             {
                 if (_inputDeviceName == value)
@@ -56,7 +56,7 @@ namespace Futor
 
         public string OutputDeviceName
         {
-            get { return _outputDeviceName; }
+            get => _outputDeviceName;
             set
             {
                 if (_outputDeviceName == value)
@@ -69,7 +69,7 @@ namespace Futor
                 OnOutputDeviceChanged?.Invoke(this, new AudioManagerEventArgs(this));
             }
         }
-        
+
         public List<MMDevice> GetInputMMDevices()
         {
             return _mmDeviceEnumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active)
@@ -84,7 +84,7 @@ namespace Futor
 
         public int LatencyMilliseconds
         {
-            get { return _latencyMilliseconds; }
+            get => _latencyMilliseconds;
             set
             {
                 if (_latencyMilliseconds == value)
@@ -102,18 +102,18 @@ namespace Futor
 
         public SampleProcessor SampleProcessor
         {
-            get { return _sampleProcessor; }
+            get => _sampleProcessor;
             set
             {
                 if (_sampleProcessor == value)
                     return;
 
                 _sampleProcessor = value;
-                
+
                 RestartIfWorking();
             }
         }
-        
+
         public AudioManager()
         {
             _mmDeviceEnumerator = new MMDeviceEnumerator();
@@ -199,7 +199,7 @@ namespace Futor
 
             OnAudionConnectionFinished?.Invoke(this, new AudioManagerEventArgs(this));
         }
-        
+
         void RestartIfWorking()
         {
             if (!_working)

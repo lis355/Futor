@@ -5,17 +5,17 @@ namespace Futor
 {
     public partial class OptionsForm : Form
     {
-        readonly ApplicationOptions _applicationOptions;
+        readonly PreferenceController _preferenceController;
         readonly bool _isEdit;
 
         public event Action OnViewClosed;
         public event Action<bool> OnAutorunChanged;
 
-        public OptionsForm(ApplicationOptions applicationOptions)
+        public OptionsForm(PreferenceController preferenceController)
         {
             InitializeComponent();
 
-            _applicationOptions = applicationOptions;
+            _preferenceController = preferenceController;
 
             _isEdit = true;
 
@@ -26,7 +26,7 @@ namespace Futor
 
         void ProcessAutostart()
         {
-            AutostartCheckBox.Checked = _applicationOptions.HasAutorun;
+            AutostartCheckBox.Checked = _preferenceController.HasAutorun;
         }
 
 

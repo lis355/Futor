@@ -18,7 +18,6 @@
             };
             _taskbarView.Menu.OnBypassAllChanged += (value) =>
             {
-                // TODO как то отображать что включено в PluginLine
                 Application.Options.IsBypassAll = value;
             };
             _taskbarView.Menu.OnExitClicked += Exit;

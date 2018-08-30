@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Futor
@@ -10,10 +11,16 @@ namespace Futor
         public MouseEventHandler OnLeftMouseClick { get; set; }
         public Func<string> TextProvider { get; set; }
 
+        public Icon Icon
+        {
+            get => _notifyIcon.Icon;
+            set => _notifyIcon.Icon = value;
+        }
+
         public ContextMenuStrip ContextMenu
         {
-            get { return _notifyIcon.ContextMenuStrip; }
-            set { _notifyIcon.ContextMenuStrip = value; }
+            get => _notifyIcon.ContextMenuStrip;
+            set => _notifyIcon.ContextMenuStrip = value;
         }
 
         public TaskbarIcon()
@@ -23,7 +30,6 @@ namespace Futor
 
         public void Display()
         {
-            _notifyIcon.Icon = Properties.Resources.MainIcon;
             UpdateText();
             _notifyIcon.Visible = true;
 

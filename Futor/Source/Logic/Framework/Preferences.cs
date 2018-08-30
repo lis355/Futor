@@ -5,28 +5,13 @@ namespace Futor
 {
     public class Preferences<T> where T : new()
     {
-        static Preferences<T> _instance;
-
-        public static Preferences<T> Manager => _instance ?? (_instance = new Preferences<T>());
-
-        public static T Instance
-        {
-            get
-            {
-                if (Manager._preferencesObject == null)
-                    Manager.Reload();
-
-                return Manager._preferencesObject;
-            }
-        }
-
-        T _preferencesObject;
         string _filePath;
         bool _isLoaded;
 
-        Preferences()
-        {
-        }
+        public T Object { get; private set; }
+
+        public event Action OnLoaded;
+        public event Action OnSaved;
 
         public void Load(string filePath)
         {
@@ -35,6 +20,13 @@ namespace Futor
             TryParsePreferencesFile();
 
             _isLoaded = true;
+
+            Loaded();
+        }
+
+        void Loaded()
+        {
+            OnLoaded?.Invoke();
         }
 
         public void Reload()
@@ -43,6 +35,13 @@ namespace Futor
                 throw new FileNotFoundException(_filePath);
 
             TryParsePreferencesFile();
+
+            Reloaded();
+        }
+
+        void Reloaded()
+        {
+            Loaded();
         }
 
         public void Save()
@@ -51,7 +50,14 @@ namespace Futor
                 throw new Exception("Preferences is not loaded.");
 
             var serializer = new XmlSerializer<T>();
-            serializer.Serialize(_instance._preferencesObject, _filePath);
+            serializer.Serialize(Object, _filePath);
+
+            Saved();
+        }
+
+        void Saved()
+        {
+            OnSaved?.Invoke();
         }
 
         void TryParsePreferencesFile()
@@ -59,11 +65,11 @@ namespace Futor
             try
             {
                 var serializer = new XmlSerializer<T>();
-                _preferencesObject = serializer.Deserialize(_filePath + "111");
+                Object = serializer.Deserialize(_filePath);
             }
             catch
             {
-                _preferencesObject = new T();
+                Object = new T();
             }
         }
     }

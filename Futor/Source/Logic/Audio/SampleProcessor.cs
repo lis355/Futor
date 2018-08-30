@@ -28,8 +28,8 @@ namespace Futor
 
         public long Position
         {
-            get { return SampleSource.Position; }
-            set { SampleSource.Position = value; }
+            get => SampleSource.Position;
+            set => SampleSource.Position = value;
         }
 
         public long Length => SampleSource.Length;

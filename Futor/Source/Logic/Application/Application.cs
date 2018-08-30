@@ -4,14 +4,13 @@ namespace Futor
 {
     public class Application : IDisposable
     {
-        public ApplicationOptions Options { get; }
+        public PreferenceController Options { get; }
 
         public AudioManager AudioManager { get; private set; }
-        public PluginsStack Stack { get; private set; }
 
         public Application()
         {
-            Options = new ApplicationOptions();
+            Options = new PreferenceController();
             Options.Load();
 
             ProcessAudioManager();
@@ -23,30 +22,25 @@ namespace Futor
 
             AudioManager.OnInputDeviceChanged += (sender, args) =>
             {
-                Preferences<PreferencesDescriptor>.Instance.InputDeviceName = args.AudioManager.InputDeviceName;
+                Options.InputDeviceName = args.AudioManager.InputDeviceName;
             };
 
             AudioManager.OnOutputDeviceChanged += (sender, args) =>
             {
-                Preferences<PreferencesDescriptor>.Instance.OutputDeviceName = args.AudioManager.OutputDeviceName;
+                Options.OutputDeviceName = args.AudioManager.OutputDeviceName;
             };
 
             AudioManager.OnLatencyMillisecondsChanged += (sender, args) =>
             {
-                Preferences<PreferencesDescriptor>.Instance.LatencyMilliseconds = args.AudioManager.LatencyMilliseconds;
+                Options.LatencyMilliseconds = args.AudioManager.LatencyMilliseconds;
             };
 
-            AudioManager.InputDeviceName = Preferences<PreferencesDescriptor>.Instance.InputDeviceName;
-            AudioManager.OutputDeviceName = Preferences<PreferencesDescriptor>.Instance.OutputDeviceName;
-            AudioManager.LatencyMilliseconds = Preferences<PreferencesDescriptor>.Instance.LatencyMilliseconds;
-
-            //Stack = new PluginsStack();
-            //Stack.LoadStack(Preferences<PreferencesDescriptor>.Instance.PluginInfos);
-            //
-            //AudioManager.SampleProcessor = Stack;
+            AudioManager.InputDeviceName = Options.InputDeviceName;
+            AudioManager.OutputDeviceName = Options.OutputDeviceName;
+            AudioManager.LatencyMilliseconds = Options.LatencyMilliseconds;
 
             var pitchShifter = new PitchShifter();
-            pitchShifter.PitchFactor = 2;
+            pitchShifter.PitchFactor = Options.PitchFactor;
             AudioManager.SampleProcessor = pitchShifter;
              
             AudioManager.Start();

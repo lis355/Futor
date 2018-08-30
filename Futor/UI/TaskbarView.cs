@@ -1,4 +1,5 @@
 ﻿using System;
+using Futor.Properties;
 
 namespace Futor
 {
@@ -15,6 +16,10 @@ namespace Futor
             Menu = new IconMenu(application);
 
             _taskbarIcon = new TaskbarIcon {ContextMenu = Menu.ContextRightMenu};
+
+            // TODO
+            _taskbarIcon.Icon = Resources.FiconEnable;
+
             _taskbarIcon.OnLeftMouseClick += (sender, args) =>
             {
                 OnLeftMouseClick?.Invoke();

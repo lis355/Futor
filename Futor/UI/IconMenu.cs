@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Futor
@@ -8,23 +7,26 @@ namespace Futor
     public partial class IconMenu : UserControl
     {
         readonly Application _application;
-        bool _isEdit;
+        bool _isEdit = true;
 
         public event Action<bool> OnBypassAllChanged;
         public event Action OnExitClicked;
-        /*
+        
         public bool BypassAll
         {
-            get { return BypassAllStripMenuItem.Checked; }
+            get => BypassAllStripMenuItem.Checked;
             set
             {
+                if (BypassAllStripMenuItem.Checked == value)
+                    return;
+
                 _isEdit = true;
 
                 BypassAllStripMenuItem.Checked = value;
 
                 _isEdit = false;
             }
-        }*/
+        }
 
         public IconMenu(Application application)
         {
@@ -36,9 +38,9 @@ namespace Futor
 
             var applicationOptions = _application.Options;
 
-            BypassAllStripMenuItem.Checked = applicationOptions.HasAutorun;
+            BypassAll = applicationOptions.IsBypassAll;
 
-            //BypassAll = applicationOptions.IsBypassAll;
+            _isEdit = false;
         }
 
         void ProcessPitchOptions()
