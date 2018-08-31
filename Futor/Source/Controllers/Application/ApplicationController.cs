@@ -16,9 +16,9 @@
             _taskbarView.OnLeftMouseClick += () =>
             {
             };
-            _taskbarView.Menu.OnBypassAllChanged += (value) =>
+            _taskbarView.Menu.OnBypassAllClicked += () =>
             {
-                Application.Options.IsBypassAll = value;
+                Application.Options.IsBypassAll = !Application.Options.IsBypassAll;
             };
             _taskbarView.Menu.OnExitClicked += Exit;
 

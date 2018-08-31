@@ -30,13 +30,13 @@
         {
             this.components = new System.ComponentModel.Container();
             this.ContextRightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.PitchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.BypassAllStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.InputDeviceStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OutputDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ExitStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.PitchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextRightMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,52 +51,52 @@
             this.toolStripSeparator1,
             this.ExitStripMenuItem});
             this.ContextRightMenu.Name = "ContextMenuStrip";
-            this.ContextRightMenu.Size = new System.Drawing.Size(153, 148);
+            this.ContextRightMenu.Size = new System.Drawing.Size(181, 148);
+            // 
+            // PitchToolStripMenuItem
+            // 
+            this.PitchToolStripMenuItem.Name = "PitchToolStripMenuItem";
+            this.PitchToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.PitchToolStripMenuItem.Text = "Pitch";
             // 
             // BypassAllStripMenuItem
             // 
             this.BypassAllStripMenuItem.CheckOnClick = true;
             this.BypassAllStripMenuItem.Name = "BypassAllStripMenuItem";
-            this.BypassAllStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.BypassAllStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.BypassAllStripMenuItem.Text = "Bypass All";
-            this.BypassAllStripMenuItem.CheckedChanged += new System.EventHandler(this.BypassAllStripMenuItem_CheckedChanged);
+            this.BypassAllStripMenuItem.Click += new System.EventHandler(this.BypassAllStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // InputDeviceStripMenuItem
             // 
             this.InputDeviceStripMenuItem.Name = "InputDeviceStripMenuItem";
-            this.InputDeviceStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.InputDeviceStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.InputDeviceStripMenuItem.Text = "Input Device";
             this.InputDeviceStripMenuItem.Click += new System.EventHandler(this.InputDeviceStripMenuItem_Click);
             // 
             // OutputDeviceToolStripMenuItem
             // 
             this.OutputDeviceToolStripMenuItem.Name = "OutputDeviceToolStripMenuItem";
-            this.OutputDeviceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.OutputDeviceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.OutputDeviceToolStripMenuItem.Text = "Output Device";
             this.OutputDeviceToolStripMenuItem.Click += new System.EventHandler(this.OutputDeviceToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // ExitStripMenuItem
             // 
             this.ExitStripMenuItem.Name = "ExitStripMenuItem";
-            this.ExitStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.ExitStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ExitStripMenuItem.Text = "Exit";
             this.ExitStripMenuItem.Click += new System.EventHandler(this.ExitStripMenuItem_Click);
-            // 
-            // PitchToolStripMenuItem
-            // 
-            this.PitchToolStripMenuItem.Name = "PitchToolStripMenuItem";
-            this.PitchToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.PitchToolStripMenuItem.Text = "Pitch";
             // 
             // IconMenu
             // 

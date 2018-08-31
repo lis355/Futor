@@ -7,26 +7,10 @@ namespace Futor
     public partial class IconMenu : UserControl
     {
         readonly Application _application;
-        bool _isEdit = true;
 
-        public event Action<bool> OnBypassAllChanged;
+        public event Action OnBypassAllClicked;
+        public event Action<int> OnPitchButtonClicked;
         public event Action OnExitClicked;
-        
-        public bool BypassAll
-        {
-            get => BypassAllStripMenuItem.Checked;
-            set
-            {
-                if (BypassAllStripMenuItem.Checked == value)
-                    return;
-
-                _isEdit = true;
-
-                BypassAllStripMenuItem.Checked = value;
-
-                _isEdit = false;
-            }
-        }
 
         public IconMenu(Application application)
         {
@@ -34,16 +18,24 @@ namespace Futor
 
             InitializeComponent();
 
-            ProcessPitchOptions();
+            CreatePitchOptions();
 
             var applicationOptions = _application.Options;
 
-            BypassAll = applicationOptions.IsBypassAll;
+            SetBypassAllStripMenuItemCheckedState();
 
-            _isEdit = false;
+            applicationOptions.OnIsBypassAllChanged += () =>
+            {
+                SetBypassAllStripMenuItemCheckedState();
+            };
         }
 
-        void ProcessPitchOptions()
+        void SetBypassAllStripMenuItemCheckedState()
+        {
+            BypassAllStripMenuItem.Checked = _application.Options.IsBypassAll;
+        }
+
+        void CreatePitchOptions()
         {
             const int kPitchBorder = 12;
 
@@ -56,7 +48,7 @@ namespace Futor
                 var pitchValue = i;
                 pitchValueToolStripMenuItem.Click += (sender, args) =>
                 {
-                    ChangePitch(pitchValue);
+                    OnPitchButtonClicked?.Invoke(pitchValue);
                 };
 
                 pitchValueToolStripMenuItems.Add(pitchValueToolStripMenuItem);
@@ -105,9 +97,9 @@ namespace Futor
             }*/
         }
 
-        void ChangePitch(int pitchValue)
+        void BypassAllStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            OnBypassAllClicked?.Invoke();
         }
 
         void InputDeviceStripMenuItem_Click(object sender, EventArgs e)
@@ -118,14 +110,6 @@ namespace Futor
         void OutputDeviceToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-        }
-
-        void BypassAllStripMenuItem_CheckedChanged(object sender, EventArgs e)
-        {
-            if (_isEdit)
-                return;
-            
-            OnBypassAllChanged?.Invoke(BypassAllStripMenuItem.Checked);
         }
 
         void ExitStripMenuItem_Click(object sender, EventArgs e)
