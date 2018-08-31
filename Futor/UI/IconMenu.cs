@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Futor
@@ -20,11 +21,9 @@ namespace Futor
 
             CreatePitchOptions();
 
-            var applicationOptions = _application.Options;
-
             SetBypassAllStripMenuItemCheckedState();
 
-            applicationOptions.OnIsBypassAllChanged += () =>
+            _application.Options.OnIsBypassAllChanged += () =>
             {
                 SetBypassAllStripMenuItemCheckedState();
             };
@@ -43,18 +42,22 @@ namespace Futor
 
             for (int i = -kPitchBorder; i <= kPitchBorder; i++)
             {
-                var pitchValueToolStripMenuItem = new ToolStripMenuItem(string.Format("{0}", i));
+                var pitchValueToolStripMenuItem = new ToolStripMenuItem(i.ToString());
 
-                var pitchValue = i;
+                var pitchFactor = i;
+
+                if (_application.Options.PitchFactor == pitchFactor)
+                    pitchValueToolStripMenuItem.Checked = true;
+
                 pitchValueToolStripMenuItem.Click += (sender, args) =>
                 {
-                    OnPitchButtonClicked?.Invoke(pitchValue);
+                    OnPitchButtonClicked?.Invoke(pitchFactor);
                 };
 
                 pitchValueToolStripMenuItems.Add(pitchValueToolStripMenuItem);
             }
 
-            PitchToolStripMenuItem.DropDownItems.AddRange(pitchValueToolStripMenuItems.ToArray());
+            PitchToolStripMenuItem.DropDownItems.AddRange(pitchValueToolStripMenuItems.Cast<ToolStripItem>().ToArray());
         }
         
         void ProcessAudioDeviceOptions()

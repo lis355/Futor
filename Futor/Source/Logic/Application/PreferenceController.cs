@@ -16,7 +16,11 @@ namespace Futor
                 if (_manager.Object.HasAutorun == value)
                     return;
 
-                SetHasAutorun(value);
+                _manager.Object.HasAutorun = value;
+
+                SetAutorun(value);
+
+                OnHasAutorunChanged?.Invoke();
 
                 Save();
             }
@@ -45,8 +49,20 @@ namespace Futor
         public int PitchFactor
         {
             get => _manager.Object.PitchFactor;
-            set => _manager.Object.PitchFactor = value;
+            set
+            {
+                if (_manager.Object.PitchFactor == value)
+                    return;
+
+                _manager.Object.PitchFactor = value;
+
+                OnPitchFactorChanged?.Invoke();
+
+                Save();
+            }
         }
+
+        public event Action OnPitchFactorChanged;
 
         public bool IsBypassAll
         {
@@ -56,7 +72,9 @@ namespace Futor
                 if (_manager.Object.IsBypassAll == value)
                     return;
 
-                SetIsBypassAll(value);
+                _manager.Object.IsBypassAll = value;
+
+                OnIsBypassAllChanged?.Invoke();
 
                 Save();
             }
@@ -67,13 +85,15 @@ namespace Futor
         public void Load()
         {
             _manager = new Preferences<PreferencesDescriptor>();
-
-            _manager.OnLoaded += () =>
-            {
-                ProcessAutorun();
-            };
+            _manager.OnLoaded += Loaded;
 
             _manager.Load(PreferencePathProvider.Path(_kPreferencesPath));
+        }
+
+        void Loaded()
+        {
+            if (HasAutorun != AutorunProvider.HasSturtup())
+                SetAutorun(HasAutorun);
         }
 
         public void Save()
@@ -81,29 +101,12 @@ namespace Futor
             _manager.Save();
         }
 
-        void ProcessAutorun()
+        void SetAutorun(bool value)
         {
-            if (HasAutorun != AutorunProvider.HasSturtup())
-                SetHasAutorun(HasAutorun);
-        }
-
-        void SetHasAutorun(bool value)
-        {
-            _manager.Object.HasAutorun = value;
-
             if (value)
                 AutorunProvider.AddToStartup();
             else
                 AutorunProvider.RemoveFromStartup();
-
-            OnHasAutorunChanged?.Invoke();
-        }
-
-        void SetIsBypassAll(bool value)
-        {
-            _manager.Object.IsBypassAll = value;
-
-            OnIsBypassAllChanged?.Invoke();
         }
     }
 }

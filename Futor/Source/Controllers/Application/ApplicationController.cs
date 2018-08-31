@@ -20,6 +20,10 @@
             {
                 Application.Options.IsBypassAll = !Application.Options.IsBypassAll;
             };
+            _taskbarView.Menu.OnPitchButtonClicked += pitchFactor =>
+            {
+                Application.Options.PitchFactor = pitchFactor;
+            };
             _taskbarView.Menu.OnExitClicked += Exit;
 
             _taskbarView.ShowView();
