@@ -78,6 +78,9 @@
       <HintPath>..\packages\CSCore.1.2.1.2\lib\net35-client\CSCore.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="GJson, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GJson.1.0.1\lib\net30\GJson.dll</HintPath>
+    </Reference>
     <Reference Include="Jacobi.Vst.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=fa678e13c1efc859, processorArchitecture=x86">
       <HintPath>..\packages\VST.NET.x86.1.1\lib\net40\Jacobi.Vst.Core.dll</HintPath>
       <Private>True</Private>
@@ -111,13 +114,14 @@
     </Compile>
     <Compile Include="Source\Logic\Application\Application.cs" />
     <Compile Include="Source\Controllers\Application\ApplicationController.cs" />
-    <Compile Include="Source\Logic\Application\PreferenceController.cs" />
-    <Compile Include="Source\Logic\Application\PreferencePathProvider.cs" />
-    <Compile Include="Source\Logic\Application\PreferencesDescriptor.cs" />
+    <Compile Include="Source\Logic\Application\Preferences\PreferenceController.cs" />
+    <Compile Include="Source\Logic\Application\Preferences\PreferencePathProvider.cs" />
+    <Compile Include="Source\Logic\Application\Preferences\PreferencesDescriptor.cs" />
     <Compile Include="Source\Logic\Audio\AudioManager.cs" />
     <Compile Include="Source\Logic\Audio\PitchShifter.cs" />
-    <Compile Include="Source\Logic\Framework\Preferences.cs" />
+    <Compile Include="Source\Logic\Framework\Preferences\Preferences.cs" />
     <Compile Include="Source\Logic\Framework\AutorunProvider.cs" />
+    <Compile Include="Source\Logic\Framework\Preferences\IPreferencePathProvider.cs" />
     <Compile Include="Source\Logic\Framework\Serialization\Serializer.cs" />
     <Compile Include="Source\Logic\Framework\Serialization\XmlSerializer.cs" />
     <Compile Include="UI\IconMenu.cs">
@@ -175,6 +179,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

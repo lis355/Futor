@@ -8,6 +8,8 @@ namespace Futor
     public partial class IconMenu : UserControl
     {
         readonly Application _application;
+        readonly Dictionary<int, ToolStripMenuItem> _pitchToolStripMenuItems = new Dictionary<int, ToolStripMenuItem>();
+        ToolStripMenuItem _lastPitchToolStripMenuItem;
 
         public event Action OnBypassAllClicked;
         public event Action<int> OnPitchButtonClicked;
@@ -21,7 +23,13 @@ namespace Futor
 
             CreatePitchOptions();
 
+            SetPitchFactorToolStripMenuItem();
             SetBypassAllStripMenuItemCheckedState();
+
+            application.Options.OnPitchFactorChanged += () =>
+            {
+                SetPitchFactorToolStripMenuItem();
+            };
 
             _application.Options.OnIsBypassAllChanged += () =>
             {
@@ -29,35 +37,38 @@ namespace Futor
             };
         }
 
-        void SetBypassAllStripMenuItemCheckedState()
-        {
-            BypassAllStripMenuItem.Checked = _application.Options.IsBypassAll;
-        }
-
         void CreatePitchOptions()
         {
             const int kPitchBorder = 12;
-
-            var pitchValueToolStripMenuItems = new List<ToolStripMenuItem>();
 
             for (int i = -kPitchBorder; i <= kPitchBorder; i++)
             {
                 var pitchValueToolStripMenuItem = new ToolStripMenuItem(i.ToString());
 
                 var pitchFactor = i;
-
-                if (_application.Options.PitchFactor == pitchFactor)
-                    pitchValueToolStripMenuItem.Checked = true;
-
                 pitchValueToolStripMenuItem.Click += (sender, args) =>
                 {
                     OnPitchButtonClicked?.Invoke(pitchFactor);
                 };
 
-                pitchValueToolStripMenuItems.Add(pitchValueToolStripMenuItem);
+                _pitchToolStripMenuItems.Add(pitchFactor, pitchValueToolStripMenuItem);
             }
 
-            PitchToolStripMenuItem.DropDownItems.AddRange(pitchValueToolStripMenuItems.Cast<ToolStripItem>().ToArray());
+            PitchToolStripMenuItem.DropDownItems.AddRange(_pitchToolStripMenuItems.Values.Cast<ToolStripItem>().ToArray());
+        }
+
+        void SetPitchFactorToolStripMenuItem()
+        {
+            if (_lastPitchToolStripMenuItem != null)
+                _lastPitchToolStripMenuItem.Checked = false;
+
+            _lastPitchToolStripMenuItem = _pitchToolStripMenuItems[_application.Options.PitchFactor];
+            _lastPitchToolStripMenuItem.Checked = true;
+        }
+
+        void SetBypassAllStripMenuItemCheckedState()
+        {
+            BypassAllStripMenuItem.Checked = _application.Options.IsBypassAll;
         }
         
         void ProcessAudioDeviceOptions()

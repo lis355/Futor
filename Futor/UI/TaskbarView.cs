@@ -1,5 +1,4 @@
-﻿using System;
-using Futor.Properties;
+﻿using Futor.Properties;
 
 namespace Futor
 {
@@ -10,8 +9,6 @@ namespace Futor
         
         public IconMenu Menu { get; }
 
-        public event Action OnLeftMouseClick;
-
         public TaskbarView(Application application)
         {
             _application = application;
@@ -19,14 +16,10 @@ namespace Futor
             Menu = new IconMenu(application);
 
             _taskbarIcon = new TaskbarIcon {ContextMenu = Menu.ContextRightMenu};
+            _taskbarIcon.IsShowMenuOnLeftClick = true;
 
             SetTaskBarIcon();
-
-            _taskbarIcon.OnLeftMouseClick += (sender, args) =>
-            {
-                OnLeftMouseClick?.Invoke();
-            };
-
+            
             application.Options.OnIsBypassAllChanged += () =>
             {
                 SetTaskBarIcon();

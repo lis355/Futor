@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace Futor
@@ -22,6 +23,8 @@ namespace Futor
             get => _notifyIcon.ContextMenuStrip;
             set => _notifyIcon.ContextMenuStrip = value;
         }
+
+        public bool IsShowMenuOnLeftClick { get; set; }
 
         public TaskbarIcon()
         {
@@ -59,8 +62,16 @@ namespace Futor
 
         void NotifyIconMouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-                OnLeftMouseClick?.Invoke(sender, e);
+            if (IsShowMenuOnLeftClick)
+            {
+                var methodInfo = typeof(NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
+                methodInfo.Invoke(_notifyIcon, null);
+            }
+            else
+            {
+                if (e.Button == MouseButtons.Left)
+                    OnLeftMouseClick?.Invoke(sender, e);
+            }
         }
     }
 }

@@ -13,9 +13,6 @@
             _taskbarView = new TaskbarView(Application);
             _taskbarView.ShowView();
 
-            _taskbarView.OnLeftMouseClick += () =>
-            {
-            };
             _taskbarView.Menu.OnBypassAllClicked += () =>
             {
                 Application.Options.IsBypassAll = !Application.Options.IsBypassAll;

@@ -4,9 +4,8 @@ namespace Futor
 {
     public class PreferenceController
     {
-        const string _kPreferencesPath = "preferences.xml";
-        
         Preferences<PreferencesDescriptor> _manager;
+        readonly PreferencePathProvider _preferencePathProvider = new PreferencePathProvider();
 
         public bool HasAutorun
         {
@@ -87,7 +86,7 @@ namespace Futor
             _manager = new Preferences<PreferencesDescriptor>();
             _manager.OnLoaded += Loaded;
 
-            _manager.Load(PreferencePathProvider.Path(_kPreferencesPath));
+            _manager.Load(_preferencePathProvider.Path);
         }
 
         void Loaded()

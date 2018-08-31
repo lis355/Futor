@@ -11,6 +11,7 @@ namespace Futor
         public T Object { get; private set; }
 
         public event Action OnLoaded;
+        public event Action OnReloaded;
         public event Action OnSaved;
 
         public void Load(string filePath)
@@ -41,6 +42,8 @@ namespace Futor
 
         void Reloaded()
         {
+            OnReloaded?.Invoke();
+
             Loaded();
         }
 
