@@ -77,14 +77,12 @@
             this.InputDeviceStripMenuItem.Name = "InputDeviceStripMenuItem";
             this.InputDeviceStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.InputDeviceStripMenuItem.Text = "Input Device";
-            this.InputDeviceStripMenuItem.Click += new System.EventHandler(this.InputDeviceStripMenuItem_Click);
             // 
             // OutputDeviceToolStripMenuItem
             // 
             this.OutputDeviceToolStripMenuItem.Name = "OutputDeviceToolStripMenuItem";
             this.OutputDeviceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.OutputDeviceToolStripMenuItem.Text = "Output Device";
-            this.OutputDeviceToolStripMenuItem.Click += new System.EventHandler(this.OutputDeviceToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 

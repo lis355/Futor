@@ -9,10 +9,11 @@ namespace Futor
     {
         readonly Application _application;
         readonly Dictionary<int, ToolStripMenuItem> _pitchToolStripMenuItems = new Dictionary<int, ToolStripMenuItem>();
-        ToolStripMenuItem _lastPitchToolStripMenuItem;
 
         public event Action OnBypassAllClicked;
         public event Action<int> OnPitchButtonClicked;
+        public event Action<string> OnInputDeviceButtonClicked;
+        public event Action<string> OnOutputDeviceButtonClicked;
         public event Action OnExitClicked;
 
         public IconMenu(Application application)
@@ -25,6 +26,11 @@ namespace Futor
 
             SetPitchFactorToolStripMenuItem();
             SetBypassAllStripMenuItemCheckedState();
+            
+            CreateAudioDeviceOptions();
+
+            SetInputDeviceStripMenuItem();
+            SetOutputDeviceStripMenuItem();
 
             application.Options.OnPitchFactorChanged += () =>
             {
@@ -35,6 +41,16 @@ namespace Futor
             {
                 SetBypassAllStripMenuItemCheckedState();
             };
+
+            _application.Options.OnInputDeviceNameChanged += () =>
+            {
+                SetInputDeviceStripMenuItem();
+            };
+
+            _application.Options.OnOutputDeviceNameChanged += () =>
+            {
+                SetOutputDeviceStripMenuItem();
+            };
         }
 
         void CreatePitchOptions()
@@ -44,6 +60,7 @@ namespace Futor
             for (int i = -kPitchBorder; i <= kPitchBorder; i++)
             {
                 var pitchValueToolStripMenuItem = new ToolStripMenuItem(i.ToString());
+                pitchValueToolStripMenuItem.Tag = i;
 
                 var pitchFactor = i;
                 pitchValueToolStripMenuItem.Click += (sender, args) =>
@@ -59,71 +76,61 @@ namespace Futor
 
         void SetPitchFactorToolStripMenuItem()
         {
-            if (_lastPitchToolStripMenuItem != null)
-                _lastPitchToolStripMenuItem.Checked = false;
-
-            _lastPitchToolStripMenuItem = _pitchToolStripMenuItems[_application.Options.PitchFactor];
-            _lastPitchToolStripMenuItem.Checked = true;
+            foreach (var pitchToolStripMenuItem in PitchToolStripMenuItem.DropDownItems.Cast<ToolStripMenuItem>())
+                pitchToolStripMenuItem.Checked = (int)pitchToolStripMenuItem.Tag == _application.Options.PitchFactor;
         }
 
         void SetBypassAllStripMenuItemCheckedState()
         {
             BypassAllStripMenuItem.Checked = _application.Options.IsBypassAll;
         }
-        
-        void ProcessAudioDeviceOptions()
+
+        void CreateAudioDeviceOptions()
         {
             var audioManager = _application.AudioManager;
-            /*
-            var inputDevices = audioManager.GetInputMMDevices();
-            if (!inputDevices.Any())
+
+            InputDeviceStripMenuItem.DropDownItems.Add("--");
+
+            foreach (var inputDevice in audioManager.GetInputMMDevices())
+                InputDeviceStripMenuItem.DropDownItems.Add(inputDevice.FriendlyName);
+
+            foreach (var inputDeviceItem in InputDeviceStripMenuItem.DropDownItems.Cast<ToolStripMenuItem>())
             {
-                InputDevicesComboBox.Items.Add("--");
-                InputDevicesComboBox.SelectedIndex = 0;
-            }
-            else
-            {
-                foreach (var inputDevice in inputDevices)
+                inputDeviceItem.Click += (sender, args) =>
                 {
-                    var deviceName = inputDevice.FriendlyName;
-                    InputDevicesComboBox.Items.Add(deviceName);
-
-                    if (audioManager.InputDeviceName == deviceName)
-                        InputDevicesComboBox.SelectedIndex = InputDevicesComboBox.Items.Count - 1;
-                }
+                    OnInputDeviceButtonClicked?.Invoke(inputDeviceItem.Text);
+                };
             }
+            
+            OutputDeviceToolStripMenuItem.DropDownItems.Add("--");
 
-            var outputDevices = audioManager.GetOutputMMDevices();
-            if (!outputDevices.Any())
+            foreach (var outputDevice in audioManager.GetOutputMMDevices())
+                OutputDeviceToolStripMenuItem.DropDownItems.Add(outputDevice.FriendlyName);
+
+            foreach (var outputDeviceItem in OutputDeviceToolStripMenuItem.DropDownItems.Cast<ToolStripMenuItem>())
             {
-                OutputDevicesComboBox.Items.Add("--");
-            }
-            else
-            {
-                foreach (var outputDevice in outputDevices)
+                outputDeviceItem.Click += (sender, args) =>
                 {
-                    var deviceName = outputDevice.FriendlyName;
-                    OutputDevicesComboBox.Items.Add(deviceName);
+                    OnOutputDeviceButtonClicked?.Invoke(outputDeviceItem.Text);
+                };
+            }
+        }
 
-                    if (audioManager.OutputDeviceName == deviceName)
-                        OutputDevicesComboBox.SelectedIndex = OutputDevicesComboBox.Items.Count - 1;
-                }
-            }*/
+        void SetInputDeviceStripMenuItem()
+        {
+            foreach (var inputDeviceItem in InputDeviceStripMenuItem.DropDownItems.Cast<ToolStripMenuItem>())
+                inputDeviceItem.Checked = inputDeviceItem.Text == _application.Options.InputDeviceName;
+        }
+
+        void SetOutputDeviceStripMenuItem()
+        {
+            foreach (var outputDeviceItem in OutputDeviceToolStripMenuItem.DropDownItems.Cast<ToolStripMenuItem>())
+                outputDeviceItem.Checked = outputDeviceItem.Text == _application.Options.OutputDeviceName;
         }
 
         void BypassAllStripMenuItem_Click(object sender, EventArgs e)
         {
             OnBypassAllClicked?.Invoke();
-        }
-
-        void InputDeviceStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        void OutputDeviceToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
         }
 
         void ExitStripMenuItem_Click(object sender, EventArgs e)

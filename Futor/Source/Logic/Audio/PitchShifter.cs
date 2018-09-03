@@ -208,6 +208,7 @@ namespace Futor
         float _pitchFactorLog;
         int _pitchFactor;
 
+        const int _kMaxAbsIntFactor = 12;
         const float _kLimThresh = 0.95f;
         const float _kLimRange = (1f - _kLimThresh);
         const float _kMPi2 = (float)(Math.PI / 2);
@@ -220,7 +221,7 @@ namespace Futor
                 if (value == _pitchFactor)
                     return;
 
-                _pitchFactor = value;
+                _pitchFactor = (value >= 0) ? Math.Min(_kMaxAbsIntFactor, value) : Math.Max(-_kMaxAbsIntFactor, value);
 
                 _pitchFactorLog = (float)Math.Pow(2, Math.Abs(_pitchFactor) / 12f);
 

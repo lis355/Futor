@@ -7,6 +7,9 @@ namespace Futor
         Preferences<PreferencesDescriptor> _manager;
         readonly PreferencePathProvider _preferencePathProvider = new PreferencePathProvider();
 
+        public event Action OnLoaded;
+        public event Action OnSaved;
+
         public bool HasAutorun
         {
             get => _manager.Object.HasAutorun;
@@ -16,8 +19,6 @@ namespace Futor
                     return;
 
                 _manager.Object.HasAutorun = value;
-
-                SetAutorun(value);
 
                 OnHasAutorunChanged?.Invoke();
 
@@ -30,20 +31,56 @@ namespace Futor
         public string InputDeviceName
         {
             get => _manager.Object.InputDeviceName;
-            set => _manager.Object.InputDeviceName = value;
+            set
+            {
+                if (_manager.Object.InputDeviceName == value)
+                    return;
+
+                _manager.Object.InputDeviceName = value;
+
+                OnInputDeviceNameChanged?.Invoke();
+
+                Save();
+            }
         }
 
+        public event Action OnInputDeviceNameChanged;
+    
         public string OutputDeviceName
         {
             get => _manager.Object.OutputDeviceName;
-            set => _manager.Object.OutputDeviceName = value;
+            set
+            {
+                if (_manager.Object.OutputDeviceName == value)
+                    return;
+
+                _manager.Object.OutputDeviceName = value;
+
+                OnOutputDeviceNameChanged?.Invoke();
+
+                Save();
+            }
         }
+
+        public event Action OnOutputDeviceNameChanged;
 
         public int LatencyMilliseconds
         {
             get => _manager.Object.LatencyMilliseconds;
-            set => _manager.Object.LatencyMilliseconds = value;
+            set
+            {
+                if (_manager.Object.LatencyMilliseconds == value)
+                    return;
+
+                _manager.Object.LatencyMilliseconds = value;
+
+                OnLatencyMillisecondsChanged?.Invoke();
+
+                Save();
+            }
         }
+
+        public event Action OnLatencyMillisecondsChanged;
 
         public int PitchFactor
         {
@@ -84,28 +121,23 @@ namespace Futor
         public void Load()
         {
             _manager = new Preferences<PreferencesDescriptor>();
-            _manager.OnLoaded += Loaded;
+
+            _manager.OnLoaded += () =>
+            {
+                OnLoaded?.Invoke();
+            };
+            
+            _manager.OnSaved += () =>
+            {
+                OnSaved?.Invoke();
+            };
 
             _manager.Load(_preferencePathProvider.Path);
-        }
-
-        void Loaded()
-        {
-            if (HasAutorun != AutorunProvider.HasSturtup())
-                SetAutorun(HasAutorun);
         }
 
         public void Save()
         {
             _manager.Save();
-        }
-
-        void SetAutorun(bool value)
-        {
-            if (value)
-                AutorunProvider.AddToStartup();
-            else
-                AutorunProvider.RemoveFromStartup();
         }
     }
 }

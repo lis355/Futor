@@ -1,6 +1,6 @@
 ﻿namespace Futor
 {
-    // %appdata%\..\Local\MBL\Futor\
+    // %appdata%\..\Local\MBL\Futor\1.0.0.0\
 
     public class PreferencePathProvider : IPreferencePathProvider
     {

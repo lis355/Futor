@@ -21,6 +21,14 @@
             {
                 Application.Options.PitchFactor = pitchFactor;
             };
+            _taskbarView.Menu.OnInputDeviceButtonClicked += inputDeviceName =>
+            {
+                Application.Options.InputDeviceName = inputDeviceName;
+            };
+            _taskbarView.Menu.OnOutputDeviceButtonClicked += outputDeviceName =>
+            {
+                Application.Options.OutputDeviceName = outputDeviceName;
+            };
             _taskbarView.Menu.OnExitClicked += Exit;
 
             _taskbarView.ShowView();

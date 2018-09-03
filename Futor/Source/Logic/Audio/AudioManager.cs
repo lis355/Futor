@@ -29,8 +29,8 @@ namespace Futor
         SampleProcessor _sampleProcessor;
         bool _working;
         int _latencyMilliseconds = _kMinimumLatencyMilliseconds;
-        string _inputDeviceName;
-        string _outputDeviceName;
+        string _inputDeviceName = string.Empty;
+        string _outputDeviceName = string.Empty;
 
         public event EventHandler<AudioManagerEventArgs> OnInputDeviceChanged;
         public event EventHandler<AudioManagerEventArgs> OnOutputDeviceChanged;
@@ -43,7 +43,8 @@ namespace Futor
             get => _inputDeviceName;
             set
             {
-                if (_inputDeviceName == value)
+                if (_inputDeviceName == value
+                    || FindInputDevice(value) == null)
                     return;
 
                 _inputDeviceName = value;
@@ -59,7 +60,8 @@ namespace Futor
             get => _outputDeviceName;
             set
             {
-                if (_outputDeviceName == value)
+                if (_outputDeviceName == value
+                    || FindOutputDevice(value) == null)
                     return;
 
                 _outputDeviceName = value;
@@ -98,7 +100,7 @@ namespace Futor
             }
         }
 
-        public int SampleRate => (!_working) ? 0 : _soundOut.WaveSource.WaveFormat.SampleRate;
+        //public int SampleRate => (!_working) ? 0 : _soundOut.WaveSource.WaveFormat.SampleRate;
 
         public SampleProcessor SampleProcessor
         {
@@ -130,17 +132,14 @@ namespace Futor
                 || !outputMMDevices.Any())
                 return;
 
-            // DEBUG
-            InputDeviceName = "CABLE Output (VB-Audio Virtual Cable)";
-
-            var inputDevice = inputMMDevices.Find(x => x.FriendlyName == InputDeviceName);
+            var inputDevice = FindInputDevice(InputDeviceName);
             if (inputDevice == null)
             {
                 inputDevice = inputMMDevices.First();
                 InputDeviceName = inputDevice.FriendlyName;
             }
 
-            var outputDevice = outputMMDevices.Find(x => x.FriendlyName == OutputDeviceName);
+            var outputDevice = FindOutputDevice(OutputDeviceName);
             if (outputDevice == null)
             {
                 outputDevice = outputMMDevices.First();
@@ -198,6 +197,16 @@ namespace Futor
             _working = false;
 
             OnAudionConnectionFinished?.Invoke(this, new AudioManagerEventArgs(this));
+        }
+
+        MMDevice FindInputDevice(string deviceName)
+        {
+            return GetInputMMDevices().Find(x => x.FriendlyName == deviceName);
+        }
+
+        MMDevice FindOutputDevice(string deviceName)
+        {
+            return GetOutputMMDevices().Find(x => x.FriendlyName == deviceName);
         }
 
         void RestartIfWorking()
