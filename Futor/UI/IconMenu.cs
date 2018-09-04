@@ -7,6 +7,8 @@ namespace Futor
 {
     public partial class IconMenu : UserControl
     {
+        const string _kEmptyDeviceName = "--";
+
         readonly Application _application;
         readonly Dictionary<int, ToolStripMenuItem> _pitchToolStripMenuItems = new Dictionary<int, ToolStripMenuItem>();
 
@@ -24,32 +26,32 @@ namespace Futor
 
             CreatePitchOptions();
 
-            SetPitchFactorToolStripMenuItem();
-            SetBypassAllStripMenuItemCheckedState();
+            SetPitchFactor();
+            SetBypassAll();
             
             CreateAudioDeviceOptions();
 
-            SetInputDeviceStripMenuItem();
-            SetOutputDeviceStripMenuItem();
+            SetInputDeviceName();
+            SetOutputDeviceName();
 
-            application.Options.OnPitchFactorChanged += () =>
+            application.Options.PitchFactor.OnChanged += (sender, args) =>
             {
-                SetPitchFactorToolStripMenuItem();
+                SetPitchFactor();
             };
 
-            _application.Options.OnIsBypassAllChanged += () =>
+            _application.Options.IsBypassAll.OnChanged += (sender, args) =>
             {
-                SetBypassAllStripMenuItemCheckedState();
+                SetBypassAll();
             };
 
-            _application.Options.OnInputDeviceNameChanged += () =>
+            _application.Options.InputDeviceName.OnChanged += (sender, args) =>
             {
-                SetInputDeviceStripMenuItem();
+                SetInputDeviceName();
             };
 
-            _application.Options.OnOutputDeviceNameChanged += () =>
+            _application.Options.OutputDeviceName.OnChanged += (sender, args) =>
             {
-                SetOutputDeviceStripMenuItem();
+                SetOutputDeviceName();
             };
         }
 
@@ -74,22 +76,22 @@ namespace Futor
             PitchToolStripMenuItem.DropDownItems.AddRange(_pitchToolStripMenuItems.Values.Cast<ToolStripItem>().ToArray());
         }
 
-        void SetPitchFactorToolStripMenuItem()
+        void SetPitchFactor()
         {
             foreach (var pitchToolStripMenuItem in PitchToolStripMenuItem.DropDownItems.Cast<ToolStripMenuItem>())
-                pitchToolStripMenuItem.Checked = (int)pitchToolStripMenuItem.Tag == _application.Options.PitchFactor;
+                pitchToolStripMenuItem.Checked = (int)pitchToolStripMenuItem.Tag == _application.Options.PitchFactor.Value;
         }
 
-        void SetBypassAllStripMenuItemCheckedState()
+        void SetBypassAll()
         {
-            BypassAllStripMenuItem.Checked = _application.Options.IsBypassAll;
+            BypassAllStripMenuItem.Checked = _application.Options.IsBypassAll.Value;
         }
 
         void CreateAudioDeviceOptions()
         {
             var audioManager = _application.AudioManager;
 
-            InputDeviceStripMenuItem.DropDownItems.Add("--");
+            InputDeviceStripMenuItem.DropDownItems.Add(_kEmptyDeviceName);
 
             foreach (var inputDevice in audioManager.GetInputMMDevices())
                 InputDeviceStripMenuItem.DropDownItems.Add(inputDevice.FriendlyName);
@@ -98,11 +100,15 @@ namespace Futor
             {
                 inputDeviceItem.Click += (sender, args) =>
                 {
-                    OnInputDeviceButtonClicked?.Invoke(inputDeviceItem.Text);
+                    var text = inputDeviceItem.Text;
+                    if (text == _kEmptyDeviceName)
+                        text = string.Empty;
+
+                    OnInputDeviceButtonClicked?.Invoke(text);
                 };
             }
             
-            OutputDeviceToolStripMenuItem.DropDownItems.Add("--");
+            OutputDeviceToolStripMenuItem.DropDownItems.Add(_kEmptyDeviceName);
 
             foreach (var outputDevice in audioManager.GetOutputMMDevices())
                 OutputDeviceToolStripMenuItem.DropDownItems.Add(outputDevice.FriendlyName);
@@ -111,21 +117,33 @@ namespace Futor
             {
                 outputDeviceItem.Click += (sender, args) =>
                 {
-                    OnOutputDeviceButtonClicked?.Invoke(outputDeviceItem.Text);
+                    var text = outputDeviceItem.Text;
+                    if (text == _kEmptyDeviceName)
+                        text = string.Empty;
+
+                    OnOutputDeviceButtonClicked?.Invoke(text);
                 };
             }
         }
 
-        void SetInputDeviceStripMenuItem()
+        void SetInputDeviceName()
         {
+            var text = _application.Options.InputDeviceName.Value;
+            if (string.IsNullOrEmpty(text))
+                text = _kEmptyDeviceName;
+
             foreach (var inputDeviceItem in InputDeviceStripMenuItem.DropDownItems.Cast<ToolStripMenuItem>())
-                inputDeviceItem.Checked = inputDeviceItem.Text == _application.Options.InputDeviceName;
+                inputDeviceItem.Checked = inputDeviceItem.Text == text;
         }
 
-        void SetOutputDeviceStripMenuItem()
+        void SetOutputDeviceName()
         {
+            var text = _application.Options.OutputDeviceName.Value;
+            if (string.IsNullOrEmpty(text))
+                text = _kEmptyDeviceName;
+
             foreach (var outputDeviceItem in OutputDeviceToolStripMenuItem.DropDownItems.Cast<ToolStripMenuItem>())
-                outputDeviceItem.Checked = outputDeviceItem.Text == _application.Options.OutputDeviceName;
+                outputDeviceItem.Checked = outputDeviceItem.Text == text;
         }
 
         void BypassAllStripMenuItem_Click(object sender, EventArgs e)

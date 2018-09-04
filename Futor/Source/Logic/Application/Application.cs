@@ -25,7 +25,7 @@ namespace Futor
 
         void OptionsLoaded()
         {
-            var hasAutorun = Options.HasAutorun;
+            var hasAutorun = Options.HasAutorun.Value;
             if (hasAutorun != AutorunProvider.HasSturtup())
                 SetAutorun(hasAutorun);
         }
@@ -40,59 +40,90 @@ namespace Futor
 
         void ProcessAudioManager()
         {
-            AudioManager = new AudioManager
-            {
-                InputDeviceName = Options.InputDeviceName,
-                OutputDeviceName = Options.OutputDeviceName,
-                LatencyMilliseconds = Options.LatencyMilliseconds
-            };
-
+            AudioManager = new AudioManager();
+            
             AudioManager.OnInputDeviceChanged += (sender, args) =>
             {
-                Options.InputDeviceName = args.AudioManager.InputDeviceName;
+                Options.InputDeviceName.Value = args.AudioManager.InputDeviceName;
             };
             
             AudioManager.OnOutputDeviceChanged += (sender, args) =>
             {
-                Options.OutputDeviceName = args.AudioManager.OutputDeviceName;
+                Options.OutputDeviceName.Value = args.AudioManager.OutputDeviceName;
             };
             
             AudioManager.OnLatencyMillisecondsChanged += (sender, args) =>
             {
-                Options.LatencyMilliseconds = args.AudioManager.LatencyMilliseconds;
+                Options.LatencyMilliseconds.Value = args.AudioManager.LatencyMilliseconds;
             };
-            
+
+            SetInputDeviceName();
+            SetOutputDeviceName();
+            SetLatencyMilliseconds();
+
             _pitchShifter = new PitchShifter();
             SetPitchFactor();
 
             AudioManager.SampleProcessor = _pitchShifter;
 
-            Options.OnPitchFactorChanged += () =>
+            Options.PitchFactor.OnChanged += (sender, args) => 
             {
-                _pitchShifter.PitchFactor = Options.PitchFactor;
+                SetPitchFactor();
             };
 
-            Options.OnInputDeviceNameChanged += () =>
+            Options.InputDeviceName.OnChanged += (sender, args) =>
             {
-                AudioManager.InputDeviceName = Options.InputDeviceName;
+                SetInputDeviceName();
             };
 
-            Options.OnOutputDeviceNameChanged += () =>
+            Options.OutputDeviceName.OnChanged += (sender, args) =>
             {
-                AudioManager.OutputDeviceName = Options.OutputDeviceName;
+                SetOutputDeviceName();
             };
 
-            Options.OnLatencyMillisecondsChanged += () =>
+            Options.LatencyMilliseconds.OnChanged += (sender, args) =>
             {
-                AudioManager.LatencyMilliseconds = Options.LatencyMilliseconds;
+                SetLatencyMilliseconds();
+            };
+
+            Options.IsBypassAll.OnChanged += (sender, args) =>
+            {
+                if (args.NewValue
+                    && AudioManager.IsWorking.Value)
+                {
+                    AudioManager.Finish();
+                }
+                else if (!args.NewValue
+                     && !AudioManager.IsWorking.Value)
+                {
+                    AudioManager.Start();
+                }
             };
 
             AudioManager.Start();
         }
 
+        void SetInputDeviceName()
+        {
+            if (!Options.IsBypassAll.Value)
+                AudioManager.InputDeviceName = Options.InputDeviceName.Value;
+        }
+
+        void SetOutputDeviceName()
+        {
+            if (!Options.IsBypassAll.Value)
+                AudioManager.OutputDeviceName = Options.OutputDeviceName.Value;
+        }
+
+        void SetLatencyMilliseconds()
+        {
+            if (!Options.IsBypassAll.Value)
+                AudioManager.LatencyMilliseconds = Options.LatencyMilliseconds.Value;
+        }
+
         void SetPitchFactor()
         {
-            _pitchShifter.PitchFactor = Options.PitchFactor;
+            _pitchShifter.PitchFactor = Options.PitchFactor.Value;
         }
 
         public void Dispose()

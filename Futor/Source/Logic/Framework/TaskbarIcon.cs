@@ -34,6 +34,7 @@ namespace Futor
         public void Display()
         {
             UpdateText();
+
             _notifyIcon.Visible = true;
 
             _notifyIcon.MouseMove += NotifyIconMouseMove;

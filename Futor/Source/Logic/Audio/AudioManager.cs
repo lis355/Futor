@@ -27,29 +27,32 @@ namespace Futor
         WasapiCapture _soundIn;
         WasapiOut _soundOut;
         SampleProcessor _sampleProcessor;
+        bool _firstStart = true;
         bool _working;
         int _latencyMilliseconds = _kMinimumLatencyMilliseconds;
         string _inputDeviceName = string.Empty;
         string _outputDeviceName = string.Empty;
 
+        public Option<bool> IsWorking;
+
         public event EventHandler<AudioManagerEventArgs> OnInputDeviceChanged;
         public event EventHandler<AudioManagerEventArgs> OnOutputDeviceChanged;
         public event EventHandler<AudioManagerEventArgs> OnLatencyMillisecondsChanged;
-        public event EventHandler<AudioManagerEventArgs> OnAudionConnectionStarted;
-        public event EventHandler<AudioManagerEventArgs> OnAudionConnectionFinished;
 
         public string InputDeviceName
         {
             get => _inputDeviceName;
             set
             {
-                if (_inputDeviceName == value
-                    || FindInputDevice(value) == null)
+                if (_inputDeviceName == value)
                     return;
+
+                if (FindInputDevice(value) == null)
+                    value = string.Empty;
 
                 _inputDeviceName = value;
 
-                RestartIfWorking();
+                RestartIfStarted();
 
                 OnInputDeviceChanged?.Invoke(this, new AudioManagerEventArgs(this));
             }
@@ -60,13 +63,15 @@ namespace Futor
             get => _outputDeviceName;
             set
             {
-                if (_outputDeviceName == value
-                    || FindOutputDevice(value) == null)
+                if (_outputDeviceName == value)
                     return;
+
+                if (FindOutputDevice(value) == null)
+                    value = string.Empty;
 
                 _outputDeviceName = value;
 
-                RestartIfWorking();
+                RestartIfStarted();
 
                 OnOutputDeviceChanged?.Invoke(this, new AudioManagerEventArgs(this));
             }
@@ -74,14 +79,12 @@ namespace Futor
 
         public List<MMDevice> GetInputMMDevices()
         {
-            return _mmDeviceEnumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active)
-                .ToList();
+            return _mmDeviceEnumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active).ToList();
         }
 
         public List<MMDevice> GetOutputMMDevices()
         {
-            return _mmDeviceEnumerator.EnumAudioEndpoints(DataFlow.Render, DeviceState.Active)
-                .ToList();
+            return _mmDeviceEnumerator.EnumAudioEndpoints(DataFlow.Render, DeviceState.Active).ToList();
         }
 
         public int LatencyMilliseconds
@@ -94,13 +97,13 @@ namespace Futor
 
                 _latencyMilliseconds = Math.Max(_kMinimumLatencyMilliseconds, value);
 
-                RestartIfWorking();
+                RestartIfStarted();
 
                 OnLatencyMillisecondsChanged?.Invoke(this, new AudioManagerEventArgs(this));
             }
         }
 
-        //public int SampleRate => (!_working) ? 0 : _soundOut.WaveSource.WaveFormat.SampleRate;
+        public int SampleRate => (!IsWorking.Value) ? 0 : _soundOut.WaveSource.WaveFormat.SampleRate;
 
         public SampleProcessor SampleProcessor
         {
@@ -112,18 +115,22 @@ namespace Futor
 
                 _sampleProcessor = value;
 
-                RestartIfWorking();
+                RestartIfStarted();
             }
         }
 
         public AudioManager()
         {
             _mmDeviceEnumerator = new MMDeviceEnumerator();
+
+            IsWorking = new Option<bool>(
+                () => _working,
+                value => _working = value);
         }
 
         public void Start()
         {
-            if (_working)
+            if (IsWorking.Value)
                 throw new Exception("Call Start when working.");
 
             var inputMMDevices = GetInputMMDevices();
@@ -135,16 +142,20 @@ namespace Futor
             var inputDevice = FindInputDevice(InputDeviceName);
             if (inputDevice == null)
             {
-                inputDevice = inputMMDevices.First();
-                InputDeviceName = inputDevice.FriendlyName;
+                //inputDevice = inputMMDevices.First();
+                InputDeviceName = string.Empty; //inputDevice.FriendlyName;
             }
 
             var outputDevice = FindOutputDevice(OutputDeviceName);
             if (outputDevice == null)
             {
-                outputDevice = outputMMDevices.First();
-                OutputDeviceName = outputDevice.FriendlyName;
+                //outputDevice = outputMMDevices.First();
+                OutputDeviceName = string.Empty; //outputDevice.FriendlyName;
             }
+
+            if (inputDevice == null
+                || outputDevice == null)
+                return;
 
             const AudioClientShareMode audioClientSharedMode = AudioClientShareMode.Shared;
 
@@ -178,14 +189,14 @@ namespace Futor
 
             _soundOut.Play();
 
-            _working = true;
+            IsWorking.Value = true;
 
-            OnAudionConnectionStarted?.Invoke(this, new AudioManagerEventArgs(this));
+            _firstStart = false;
         }
 
         public void Finish()
         {
-            if (!_working)
+            if (!IsWorking.Value)
                 throw new Exception("Call Finish when not working.");
 
             _soundOut?.Dispose();
@@ -194,9 +205,7 @@ namespace Futor
             _soundOut = null;
             _soundIn = null;
 
-            _working = false;
-
-            OnAudionConnectionFinished?.Invoke(this, new AudioManagerEventArgs(this));
+            IsWorking.Value = false;
         }
 
         MMDevice FindInputDevice(string deviceName)
@@ -209,12 +218,14 @@ namespace Futor
             return GetOutputMMDevices().Find(x => x.FriendlyName == deviceName);
         }
 
-        void RestartIfWorking()
+        void RestartIfStarted()
         {
-            if (!_working)
+            if (_firstStart)
                 return;
 
-            Finish();
+            if (IsWorking.Value)
+                Finish();
+
             Start();
         }
     }

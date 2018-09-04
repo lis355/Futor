@@ -15,21 +15,28 @@
 
             _taskbarView.Menu.OnBypassAllClicked += () =>
             {
-                Application.Options.IsBypassAll = !Application.Options.IsBypassAll;
+                Application.Options.IsBypassAll.Value = !Application.Options.IsBypassAll.Value;
             };
+
             _taskbarView.Menu.OnPitchButtonClicked += pitchFactor =>
             {
-                Application.Options.PitchFactor = pitchFactor;
+                Application.Options.PitchFactor.Value = pitchFactor;
             };
+
             _taskbarView.Menu.OnInputDeviceButtonClicked += inputDeviceName =>
             {
-                Application.Options.InputDeviceName = inputDeviceName;
+                Application.Options.InputDeviceName.Value = inputDeviceName;
             };
+
             _taskbarView.Menu.OnOutputDeviceButtonClicked += outputDeviceName =>
             {
-                Application.Options.OutputDeviceName = outputDeviceName;
+                Application.Options.OutputDeviceName.Value = outputDeviceName;
             };
-            _taskbarView.Menu.OnExitClicked += Exit;
+
+            _taskbarView.Menu.OnExitClicked += () =>
+            {
+                Exit();
+            };
 
             _taskbarView.ShowView();
         }

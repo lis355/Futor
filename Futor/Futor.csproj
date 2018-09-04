@@ -119,6 +119,7 @@
     <Compile Include="Source\Logic\Application\Preferences\PreferencesDescriptor.cs" />
     <Compile Include="Source\Logic\Audio\AudioManager.cs" />
     <Compile Include="Source\Logic\Audio\PitchShifter.cs" />
+    <Compile Include="Source\Logic\Framework\Preferences\Option.cs" />
     <Compile Include="Source\Logic\Framework\Preferences\Preferences.cs" />
     <Compile Include="Source\Logic\Framework\AutorunProvider.cs" />
     <Compile Include="Source\Logic\Framework\Preferences\IPreferencePathProvider.cs" />

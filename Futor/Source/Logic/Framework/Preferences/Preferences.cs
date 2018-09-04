@@ -5,7 +5,7 @@ namespace Futor
 {
     public class Preferences<T> where T : new()
     {
-        string _filePath;
+        IPreferencePathProvider _preferencePathProvider;
         bool _isLoaded;
 
         public T Object { get; private set; }
@@ -14,9 +14,9 @@ namespace Futor
         public event Action OnReloaded;
         public event Action OnSaved;
 
-        public void Load(string filePath)
+        public void Load(IPreferencePathProvider preferencePathProvider)
         {
-            _filePath = filePath;
+            _preferencePathProvider = preferencePathProvider;
 
             TryParsePreferencesFile();
 
@@ -32,8 +32,9 @@ namespace Futor
 
         public void Reload()
         {
-            if (!File.Exists(_filePath))
-                throw new FileNotFoundException(_filePath);
+            var filePath = _preferencePathProvider.Path;
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException(filePath);
 
             TryParsePreferencesFile();
 
@@ -53,7 +54,7 @@ namespace Futor
                 throw new Exception("Preferences is not loaded.");
 
             var serializer = new XmlSerializer<T>();
-            serializer.Serialize(Object, _filePath);
+            serializer.Serialize(Object, _preferencePathProvider.Path);
 
             Saved();
         }
@@ -68,7 +69,7 @@ namespace Futor
             try
             {
                 var serializer = new XmlSerializer<T>();
-                Object = serializer.Deserialize(_filePath);
+                Object = serializer.Deserialize(_preferencePathProvider.Path);
             }
             catch
             {

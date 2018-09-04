@@ -26,7 +26,7 @@ namespace Futor
 
         void ProcessAutostart()
         {
-            AutostartCheckBox.Checked = _preferenceController.HasAutorun;
+            AutostartCheckBox.Checked = _preferenceController.HasAutorun.Value;
         }
 
 

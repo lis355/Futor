@@ -1,6 +1,6 @@
 ﻿namespace Futor
 {
-    interface IPreferencePathProvider
+    public interface IPreferencePathProvider
     {
         string Path { get; }
     }

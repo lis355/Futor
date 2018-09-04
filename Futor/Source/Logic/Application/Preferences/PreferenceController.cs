@@ -9,135 +9,74 @@ namespace Futor
 
         public event Action OnLoaded;
         public event Action OnSaved;
-
-        public bool HasAutorun
-        {
-            get => _manager.Object.HasAutorun;
-            set
-            {
-                if (_manager.Object.HasAutorun == value)
-                    return;
-
-                _manager.Object.HasAutorun = value;
-
-                OnHasAutorunChanged?.Invoke();
-
-                Save();
-            }
-        }
-
-        public event Action OnHasAutorunChanged;
-
-        public string InputDeviceName
-        {
-            get => _manager.Object.InputDeviceName;
-            set
-            {
-                if (_manager.Object.InputDeviceName == value)
-                    return;
-
-                _manager.Object.InputDeviceName = value;
-
-                OnInputDeviceNameChanged?.Invoke();
-
-                Save();
-            }
-        }
-
-        public event Action OnInputDeviceNameChanged;
-    
-        public string OutputDeviceName
-        {
-            get => _manager.Object.OutputDeviceName;
-            set
-            {
-                if (_manager.Object.OutputDeviceName == value)
-                    return;
-
-                _manager.Object.OutputDeviceName = value;
-
-                OnOutputDeviceNameChanged?.Invoke();
-
-                Save();
-            }
-        }
-
-        public event Action OnOutputDeviceNameChanged;
-
-        public int LatencyMilliseconds
-        {
-            get => _manager.Object.LatencyMilliseconds;
-            set
-            {
-                if (_manager.Object.LatencyMilliseconds == value)
-                    return;
-
-                _manager.Object.LatencyMilliseconds = value;
-
-                OnLatencyMillisecondsChanged?.Invoke();
-
-                Save();
-            }
-        }
-
-        public event Action OnLatencyMillisecondsChanged;
-
-        public int PitchFactor
-        {
-            get => _manager.Object.PitchFactor;
-            set
-            {
-                if (_manager.Object.PitchFactor == value)
-                    return;
-
-                _manager.Object.PitchFactor = value;
-
-                OnPitchFactorChanged?.Invoke();
-
-                Save();
-            }
-        }
-
-        public event Action OnPitchFactorChanged;
-
-        public bool IsBypassAll
-        {
-            get => _manager.Object.IsBypassAll;
-            set
-            {
-                if (_manager.Object.IsBypassAll == value)
-                    return;
-
-                _manager.Object.IsBypassAll = value;
-
-                OnIsBypassAllChanged?.Invoke();
-
-                Save();
-            }
-        }
-
-        public event Action OnIsBypassAllChanged;
+        
+        public Option<bool> HasAutorun;
+        public Option<string> InputDeviceName;
+        public Option<string> OutputDeviceName;
+        public Option<int> LatencyMilliseconds;
+        public Option<int> PitchFactor;
+        public Option<bool> IsBypassAll;
 
         public void Load()
         {
             _manager = new Preferences<PreferencesDescriptor>();
+            
+            HasAutorun = new Option<bool>(
+                () => _manager.Object.HasAutorun,
+                value => _manager.Object.HasAutorun = value,
+                (sender, args) => Save());
+
+            InputDeviceName = new Option<string>(
+                () => _manager.Object.InputDeviceName,
+                value => _manager.Object.InputDeviceName = value,
+                (sender, args) => Save());
+
+            OutputDeviceName = new Option<string>(
+                () => _manager.Object.OutputDeviceName,
+                value => _manager.Object.OutputDeviceName = value,
+                (sender, args) => Save());
+
+            LatencyMilliseconds = new Option<int>(
+                () => _manager.Object.LatencyMilliseconds,
+                value => _manager.Object.LatencyMilliseconds = value,
+                (sender, args) => Save());
+
+            PitchFactor = new Option<int>(
+                () => _manager.Object.PitchFactor,
+                value => _manager.Object.PitchFactor = value,
+                (sender, args) => Save());
+
+            IsBypassAll = new Option<bool>(
+                () => _manager.Object.IsBypassAll,
+                value => _manager.Object.IsBypassAll = value,
+                (sender, args) => Save());
 
             _manager.OnLoaded += () =>
             {
-                OnLoaded?.Invoke();
+                Loaded();
             };
             
             _manager.OnSaved += () =>
             {
-                OnSaved?.Invoke();
+                Saved();
             };
 
-            _manager.Load(_preferencePathProvider.Path);
+            _manager.Load(_preferencePathProvider);
         }
 
         public void Save()
         {
             _manager.Save();
+        }
+
+        void Loaded()
+        {
+            OnLoaded?.Invoke();
+        }
+
+        void Saved()
+        {
+            OnSaved?.Invoke();
         }
     }
 }

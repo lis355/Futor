@@ -13,14 +13,24 @@ namespace Futor
         {
             _application = application;
 
-            Menu = new IconMenu(application);
+            Menu = new IconMenu(_application);
 
             _taskbarIcon = new TaskbarIcon {ContextMenu = Menu.ContextRightMenu};
             _taskbarIcon.IsShowMenuOnLeftClick = true;
 
             SetTaskBarIcon();
-            
-            application.Options.OnIsBypassAllChanged += () =>
+
+            _application.Options.PitchFactor.OnChanged += (sender, args) =>
+            {
+                SetTaskBarIcon();
+            };
+
+            _application.Options.IsBypassAll.OnChanged += (sender, args) =>
+            {
+                SetTaskBarIcon();
+            };
+
+            _application.AudioManager.IsWorking.OnChanged += (sender, args) =>
             {
                 SetTaskBarIcon();
             };
@@ -28,7 +38,11 @@ namespace Futor
 
         void SetTaskBarIcon()
         {
-            _taskbarIcon.Icon = (_application.Options.IsBypassAll) ? Resources.FiconEnable : Resources.FiconDisable;
+            var active = _application.AudioManager.IsWorking.Value
+                && !_application.Options.IsBypassAll.Value
+                && _application.Options.PitchFactor.Value != 0;
+
+            _taskbarIcon.Icon = (active) ? Resources.FiconEnable : Resources.FiconDisable;
         }
 
         public void ShowView()
