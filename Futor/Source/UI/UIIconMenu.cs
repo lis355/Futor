@@ -93,8 +93,8 @@ namespace Futor
 
             InputDeviceStripMenuItem.DropDownItems.Add(_kEmptyDeviceName);
 
-            foreach (var inputDevice in audioManager.GetInputMMDevices())
-                InputDeviceStripMenuItem.DropDownItems.Add(inputDevice.FriendlyName);
+            foreach (var inputDeviceName in audioManager.GetInputDevicesNames())
+                InputDeviceStripMenuItem.DropDownItems.Add(inputDeviceName);
 
             foreach (var inputDeviceItem in InputDeviceStripMenuItem.DropDownItems.Cast<ToolStripMenuItem>())
             {
@@ -110,8 +110,8 @@ namespace Futor
             
             OutputDeviceToolStripMenuItem.DropDownItems.Add(_kEmptyDeviceName);
 
-            foreach (var outputDevice in audioManager.GetOutputMMDevices())
-                OutputDeviceToolStripMenuItem.DropDownItems.Add(outputDevice.FriendlyName);
+            foreach (var outputDeviceName in audioManager.GetOutputDevicesNames())
+                OutputDeviceToolStripMenuItem.DropDownItems.Add(outputDeviceName);
 
             foreach (var outputDeviceItem in OutputDeviceToolStripMenuItem.DropDownItems.Cast<ToolStripMenuItem>())
             {

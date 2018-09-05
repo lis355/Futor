@@ -213,7 +213,7 @@ namespace Futor
         const float _kLimRange = (1f - _kLimThresh);
         const float _kMPi2 = (float)(Math.PI / 2);
 
-        public Option<int> PitchFactor { get; private set; }
+        public Option<int> PitchFactor { get; }
 
         public PitchShifter(int fftSize, long osamp, int initialPitch)
         {

@@ -33,11 +33,7 @@ namespace Futor
         string _inputDeviceName = string.Empty;
         string _outputDeviceName = string.Empty;
 
-        public Option<bool> IsWorking;
-
-        public event EventHandler<AudioManagerEventArgs> OnInputDeviceChanged;
-        public event EventHandler<AudioManagerEventArgs> OnOutputDeviceChanged;
-        public event EventHandler<AudioManagerEventArgs> OnLatencyMillisecondsChanged;
+        public Option<bool> IsWorking { get; }
 
         public string InputDeviceName
         {
@@ -76,17 +72,7 @@ namespace Futor
                 OnOutputDeviceChanged?.Invoke(this, new AudioManagerEventArgs(this));
             }
         }
-
-        public List<MMDevice> GetInputMMDevices()
-        {
-            return _mmDeviceEnumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active).ToList();
-        }
-
-        public List<MMDevice> GetOutputMMDevices()
-        {
-            return _mmDeviceEnumerator.EnumAudioEndpoints(DataFlow.Render, DeviceState.Active).ToList();
-        }
-
+        
         public int LatencyMilliseconds
         {
             get => _latencyMilliseconds;
@@ -118,6 +104,10 @@ namespace Futor
                 RestartIfStarted();
             }
         }
+
+        public event EventHandler<AudioManagerEventArgs> OnInputDeviceChanged;
+        public event EventHandler<AudioManagerEventArgs> OnOutputDeviceChanged;
+        public event EventHandler<AudioManagerEventArgs> OnLatencyMillisecondsChanged;
 
         public AudioManager()
         {
@@ -206,6 +196,26 @@ namespace Futor
             _soundIn = null;
 
             IsWorking.Value = false;
+        }
+
+        List<MMDevice> GetInputMMDevices()
+        {
+            return _mmDeviceEnumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active).ToList();
+        }
+
+        List<MMDevice> GetOutputMMDevices()
+        {
+            return _mmDeviceEnumerator.EnumAudioEndpoints(DataFlow.Render, DeviceState.Active).ToList();
+        }
+
+        public IEnumerable<string> GetInputDevicesNames()
+        {
+            return GetInputMMDevices().Select(x => x.FriendlyName);
+        }
+
+        public IEnumerable<string> GetOutputDevicesNames()
+        {
+            return GetOutputMMDevices().Select(x => x.FriendlyName);
         }
 
         MMDevice FindInputDevice(string deviceName)

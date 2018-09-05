@@ -10,17 +10,17 @@ namespace Futor
         public event Action OnLoaded;
         public event Action OnSaved;
         
-        public Option<bool> HasAutorun;
-        public Option<string> InputDeviceName;
-        public Option<string> OutputDeviceName;
-        public Option<int> LatencyMilliseconds;
-        public Option<int> PitchFactor;
-        public Option<bool> IsBypassAll;
+        public Option<bool> HasAutorun { get; }
+        public Option<string> InputDeviceName { get; }
+        public Option<string> OutputDeviceName { get; }
+        public Option<int> LatencyMilliseconds { get; }
+        public Option<int> PitchFactor { get; }
+        public Option<bool> IsBypassAll { get; }
 
-        public void Load()
+        public PreferenceController()
         {
             _manager = new Preferences<PreferencesDescriptor>();
-            
+
             HasAutorun = new Option<bool>(
                 () => _manager.Object.HasAutorun,
                 value => _manager.Object.HasAutorun = value,
@@ -55,12 +55,15 @@ namespace Futor
             {
                 Loaded();
             };
-            
+
             _manager.OnSaved += () =>
             {
                 Saved();
             };
+        }
 
+        public void Load()
+        {
             _manager.Load(_preferencePathProvider);
         }
 
