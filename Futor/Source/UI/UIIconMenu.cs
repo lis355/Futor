@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace Futor
 {
-    public partial class IconMenu : UserControl
+    public partial class UIIconMenu : UserControl
     {
         const string _kEmptyDeviceName = "--";
 
@@ -18,7 +18,7 @@ namespace Futor
         public event Action<string> OnOutputDeviceButtonClicked;
         public event Action OnExitClicked;
 
-        public IconMenu(Application application)
+        public UIIconMenu(Application application)
         {
             _application = application;
 

@@ -103,7 +103,7 @@ namespace Futor
             }
         }
 
-        public int SampleRate => (!IsWorking.Value) ? 0 : _soundOut.WaveSource.WaveFormat.SampleRate;
+        //public int SampleRate => (!IsWorking.Value) ? 0 : _soundOut.WaveSource.WaveFormat.SampleRate;
 
         public SampleProcessor SampleProcessor
         {

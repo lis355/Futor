@@ -2,21 +2,21 @@
 
 namespace Futor
 {
-    public class TaskbarView
+    public class UITaskbarView
     {
         readonly Application _application;
-        readonly TaskbarIcon _taskbarIcon;
+        readonly UITaskbarIcon _uiTaskbarIcon;
         
-        public IconMenu Menu { get; }
+        public UIIconMenu Menu { get; }
 
-        public TaskbarView(Application application)
+        public UITaskbarView(Application application)
         {
             _application = application;
 
-            Menu = new IconMenu(_application);
+            Menu = new UIIconMenu(_application);
 
-            _taskbarIcon = new TaskbarIcon {ContextMenu = Menu.ContextRightMenu};
-            _taskbarIcon.IsShowMenuOnLeftClick = true;
+            _uiTaskbarIcon = new UITaskbarIcon {ContextMenu = Menu.ContextRightMenu};
+            _uiTaskbarIcon.IsShowMenuOnLeftClick = true;
 
             SetTaskBarIcon();
 
@@ -42,17 +42,17 @@ namespace Futor
                 && !_application.Options.IsBypassAll.Value
                 && _application.Options.PitchFactor.Value != 0;
 
-            _taskbarIcon.Icon = (active) ? Resources.FiconEnable : Resources.FiconDisable;
+            _uiTaskbarIcon.Icon = (active) ? Resources.FiconEnable : Resources.FiconDisable;
         }
 
         public void ShowView()
         {
-            _taskbarIcon.Display();
+            _uiTaskbarIcon.Display();
         }
 
         public void CloseView()
         {
-            _taskbarIcon.Dispose();
+            _uiTaskbarIcon.Dispose();
         }
     }
 }

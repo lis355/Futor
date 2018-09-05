@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace Futor
 {
-    public class TaskbarIcon : IDisposable
+    public class UITaskbarIcon : IDisposable
     {
         readonly NotifyIcon _notifyIcon;
 
@@ -26,7 +26,7 @@ namespace Futor
 
         public bool IsShowMenuOnLeftClick { get; set; }
 
-        public TaskbarIcon()
+        public UITaskbarIcon()
         {
             _notifyIcon = new NotifyIcon();
         }

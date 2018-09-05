@@ -78,9 +78,6 @@
       <HintPath>..\packages\CSCore.1.2.1.2\lib\net35-client\CSCore.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="GJson, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\GJson.1.0.1\lib\net30\GJson.dll</HintPath>
-    </Reference>
     <Reference Include="Jacobi.Vst.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=fa678e13c1efc859, processorArchitecture=x86">
       <HintPath>..\packages\VST.NET.x86.1.1\lib\net40\Jacobi.Vst.Core.dll</HintPath>
       <Private>True</Private>
@@ -113,47 +110,47 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Source\Logic\Application\Application.cs" />
-    <Compile Include="Source\Controllers\Application\ApplicationController.cs" />
+    <Compile Include="Source\Logic\Application\ApplicationController.cs" />
     <Compile Include="Source\Logic\Application\Preferences\PreferenceController.cs" />
     <Compile Include="Source\Logic\Application\Preferences\PreferencePathProvider.cs" />
     <Compile Include="Source\Logic\Application\Preferences\PreferencesDescriptor.cs" />
     <Compile Include="Source\Logic\Audio\AudioManager.cs" />
     <Compile Include="Source\Logic\Audio\PitchShifter.cs" />
-    <Compile Include="Source\Logic\Framework\Preferences\Option.cs" />
+    <Compile Include="Source\Logic\Framework\Option.cs" />
     <Compile Include="Source\Logic\Framework\Preferences\Preferences.cs" />
     <Compile Include="Source\Logic\Framework\AutorunProvider.cs" />
     <Compile Include="Source\Logic\Framework\Preferences\IPreferencePathProvider.cs" />
     <Compile Include="Source\Logic\Framework\Serialization\Serializer.cs" />
     <Compile Include="Source\Logic\Framework\Serialization\XmlSerializer.cs" />
-    <Compile Include="UI\IconMenu.cs">
+    <Compile Include="Source\UI\UIIconMenu.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\IconMenu.Designer.cs">
-      <DependentUpon>IconMenu.cs</DependentUpon>
+    <Compile Include="Source\UI\UIIconMenu.Designer.cs">
+      <DependentUpon>UIIconMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\OptionsForm.cs">
+    <Compile Include="Source\UI\UIOptionsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\OptionsForm.Designer.cs">
-      <DependentUpon>OptionsForm.cs</DependentUpon>
+    <Compile Include="Source\UI\UIOptionsForm.Designer.cs">
+      <DependentUpon>UIOptionsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Source\Logic\Framework\TaskbarIcon.cs" />
+    <Compile Include="Source\UI\Framework\UITaskbarIcon.cs" />
     <Compile Include="Source\Logic\Audio\SampleProcessor.cs" />
-    <Compile Include="Source\Logic\Application\Program.cs" />
+    <Compile Include="Source\Logic\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\TaskbarView.cs" />
-    <EmbeddedResource Include="UI\IconMenu.resx">
-      <DependentUpon>IconMenu.cs</DependentUpon>
+    <Compile Include="Source\UI\UITaskbarView.cs" />
+    <EmbeddedResource Include="Source\UI\UIIconMenu.resx">
+      <DependentUpon>UIIconMenu.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\OptionsForm.resx">
-      <DependentUpon>OptionsForm.cs</DependentUpon>
+    <EmbeddedResource Include="Source\UI\UIOptionsForm.resx">
+      <DependentUpon>UIOptionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
+    <None Include="Config\packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -165,7 +162,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="Config\App.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ficon_disable.ico" />

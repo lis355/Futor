@@ -10,7 +10,13 @@ namespace Futor
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
 
-            new ApplicationController(new Application());
+            var applicationController = new ApplicationController(new Application());
+
+            applicationController.OnExit += () =>
+            {
+                System.Windows.Forms.Application.Exit();
+                Environment.Exit(0);
+            };
 
             System.Windows.Forms.Application.Run();
         }

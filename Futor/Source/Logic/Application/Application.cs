@@ -9,7 +9,7 @@ namespace Futor
         public PreferenceController Options { get; }
 
         public AudioManager AudioManager { get; private set; }
-
+        
         public Application()
         {
             Options = new PreferenceController();
@@ -123,7 +123,7 @@ namespace Futor
 
         void SetPitchFactor()
         {
-            _pitchShifter.PitchFactor = Options.PitchFactor.Value;
+            _pitchShifter.PitchFactor.Value = Options.PitchFactor.Value;
         }
 
         public void Dispose()
@@ -133,12 +133,10 @@ namespace Futor
 
         public void Exit()
         {
-            // TODO call dispose
+            if (AudioManager.IsWorking.Value)
+                AudioManager.Finish();
 
             Options.Save();
-
-            System.Windows.Forms.Application.Exit();
-            Environment.Exit(0);
         }
     }
 }

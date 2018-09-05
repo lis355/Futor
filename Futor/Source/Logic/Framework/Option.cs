@@ -41,7 +41,7 @@ namespace Futor
 
                 _setter(value);
 
-                OnChanged?.Invoke(this, new ChangeEventArgs { OldValue = oldValue, NewValue = Value });
+                OnChanged?.Invoke(this, new ChangeEventArgs {OldValue = oldValue, NewValue = Value});
             }
         }
     }

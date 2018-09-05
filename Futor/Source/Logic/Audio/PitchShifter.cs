@@ -213,33 +213,31 @@ namespace Futor
         const float _kLimRange = (1f - _kLimThresh);
         const float _kMPi2 = (float)(Math.PI / 2);
 
-        public int PitchFactor
-        {
-            get => _pitchFactor;
-            set
-            {
-                if (value == _pitchFactor)
-                    return;
-
-                _pitchFactor = (value >= 0) ? Math.Min(_kMaxAbsIntFactor, value) : Math.Max(-_kMaxAbsIntFactor, value);
-
-                _pitchFactorLog = (float)Math.Pow(2, Math.Abs(_pitchFactor) / 12f);
-
-                if (value < 0)
-                    _pitchFactorLog = 1 / _pitchFactorLog;
-            }
-        }
-
-        public PitchShifter()
-            : this(4096, 4L, 0)
-        {
-        }
+        public Option<int> PitchFactor { get; private set; }
 
         public PitchShifter(int fftSize, long osamp, int initialPitch)
         {
             _fftSize = fftSize;
             _osamp = osamp;
-            PitchFactor = initialPitch;
+
+            PitchFactor = new Option<int>(
+                () => _pitchFactor,
+                value =>
+                {
+                    _pitchFactor = (value >= 0) ? Math.Min(_kMaxAbsIntFactor, value) : Math.Max(-_kMaxAbsIntFactor, value);
+
+                    _pitchFactorLog = (float)Math.Pow(2, Math.Abs(_pitchFactor) / 12f);
+
+                    if (value < 0)
+                        _pitchFactorLog = 1 / _pitchFactorLog;
+                });
+
+            PitchFactor.Value = initialPitch;
+        }
+
+        public PitchShifter()
+            : this(4096, 4L, 0)
+        {
         }
 
         public override void Process(float[] buffer, int offset, int count)

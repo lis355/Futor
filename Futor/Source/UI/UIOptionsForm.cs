@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Futor
 {
-    public partial class OptionsForm : Form
+    public partial class UIOptionsForm : Form
     {
         readonly PreferenceController _preferenceController;
         readonly bool _isEdit;
@@ -11,7 +11,7 @@ namespace Futor
         public event Action OnViewClosed;
         public event Action<bool> OnAutorunChanged;
 
-        public OptionsForm(PreferenceController preferenceController)
+        public UIOptionsForm(PreferenceController preferenceController)
         {
             InitializeComponent();
 
