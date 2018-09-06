@@ -37,6 +37,11 @@ namespace Futor
             {
                 Options.PitchFactor.Value += 1;
             });
+
+            HotKeyManager.Instance.RegisterHotKey(new HotKeyManager.HotKey { Key = Keys.Multiply, Modifiers = HotKeyManager.Modifiers.Ctrl | HotKeyManager.Modifiers.Alt }, () =>
+            {
+                Options.PitchFactor.Value = 0;
+            });
         }
 
         void OptionsLoaded()
@@ -78,6 +83,7 @@ namespace Futor
             SetInputDeviceName();
             SetOutputDeviceName();
             SetLatencyMilliseconds();
+            SetBypassSampleProcessor();
 
             PitchShifter = new PitchShifter();
             SetPitchFactor();
@@ -106,16 +112,7 @@ namespace Futor
 
             Options.IsBypassAll.OnChanged += (sender, args) =>
             {
-                if (args.NewValue
-                    && AudioManager.IsWorking.Value)
-                {
-                    AudioManager.Finish();
-                }
-                else if (!args.NewValue
-                     && !AudioManager.IsWorking.Value)
-                {
-                    AudioManager.Start();
-                }
+                SetBypassSampleProcessor();
             };
 
             AudioManager.Start();
@@ -123,20 +120,22 @@ namespace Futor
 
         void SetInputDeviceName()
         {
-            if (!Options.IsBypassAll.Value)
-                AudioManager.InputDeviceName = Options.InputDeviceName.Value;
+            AudioManager.InputDeviceName = Options.InputDeviceName.Value;
         }
 
         void SetOutputDeviceName()
         {
-            if (!Options.IsBypassAll.Value)
-                AudioManager.OutputDeviceName = Options.OutputDeviceName.Value;
+            AudioManager.OutputDeviceName = Options.OutputDeviceName.Value;
         }
 
         void SetLatencyMilliseconds()
         {
-            if (!Options.IsBypassAll.Value)
-                AudioManager.LatencyMilliseconds = Options.LatencyMilliseconds.Value;
+            AudioManager.LatencyMilliseconds = Options.LatencyMilliseconds.Value;
+        }
+
+        void SetBypassSampleProcessor()
+        {
+            AudioManager.BypassSampleProcessor.Value = Options.IsBypassAll.Value;
         }
 
         void SetPitchFactor()

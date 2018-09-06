@@ -224,17 +224,22 @@ namespace Futor
                 () => _pitchFactor,
                 value =>
                 {
-                    _pitchFactor = value;
-
-                    _pitchFactorLog = (float)Math.Pow(2, Math.Abs(_pitchFactor) / 12f);
-
-                    if (value < 0)
-                        _pitchFactorLog = 1 / _pitchFactorLog;
+                    SetPitchFactor(value);
                 },
                 -_kMaxAbsIntFactor,
                 _kMaxAbsIntFactor);
 
-            PitchFactor.Value = initialPitch;
+            SetPitchFactor(initialPitch);
+        }
+
+        void SetPitchFactor(int value)
+        {
+            _pitchFactor = value;
+
+            _pitchFactorLog = (float)Math.Pow(2, Math.Abs(_pitchFactor) / 12f);
+
+            if (value < 0)
+                _pitchFactorLog = 1 / _pitchFactorLog;
         }
 
         public PitchShifter()

@@ -32,6 +32,7 @@ namespace Futor
         int _latencyMilliseconds = _kMinimumLatencyMilliseconds;
         string _inputDeviceName = string.Empty;
         string _outputDeviceName = string.Empty;
+        bool _bypass;
 
         public Option<bool> IsWorking { get; }
 
@@ -105,6 +106,8 @@ namespace Futor
             }
         }
 
+        public Option<bool> BypassSampleProcessor { get; }
+
         public event EventHandler<AudioManagerEventArgs> OnInputDeviceChanged;
         public event EventHandler<AudioManagerEventArgs> OnOutputDeviceChanged;
         public event EventHandler<AudioManagerEventArgs> OnLatencyMillisecondsChanged;
@@ -117,8 +120,13 @@ namespace Futor
                 () => _working,
                 value => _working = value);
 
-            //DEBUG
-            IsWorking.OnChanged += (sender, args) => System.Diagnostics.Debug.Print("AudioManager {0}", (args.NewValue) ? "ON" : "OFF");
+            BypassSampleProcessor = new Option<bool>(
+                () => _bypass,
+                value => _bypass = value,
+                (sender, args) =>
+                {
+                    RestartIfStarted();
+                });
         }
 
         public void Start()
@@ -134,17 +142,11 @@ namespace Futor
 
             var inputDevice = FindInputDevice(InputDeviceName);
             if (inputDevice == null)
-            {
-                //inputDevice = inputMMDevices.First();
-                InputDeviceName = string.Empty; //inputDevice.FriendlyName;
-            }
+                InputDeviceName = string.Empty;
 
             var outputDevice = FindOutputDevice(OutputDeviceName);
             if (outputDevice == null)
-            {
-                //outputDevice = outputMMDevices.First();
-                OutputDeviceName = string.Empty; //outputDevice.FriendlyName;
-            }
+                OutputDeviceName = string.Empty;
 
             if (inputDevice == null
                 || outputDevice == null)
@@ -167,7 +169,8 @@ namespace Futor
 
             IWaveSource waveSource = soundInSource;
 
-            if (SampleProcessor != null)
+            if (SampleProcessor != null
+                && !BypassSampleProcessor.Value)
             {
                 SampleProcessor.SampleSource = soundInSource.ToSampleSource();
                 waveSource = SampleProcessor.ToWaveSource();
