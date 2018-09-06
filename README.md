@@ -36,7 +36,7 @@ Now you can change output sound pitch via option "Pitch"
 Futor has hotkeys for fast pitch shifting:
 
 * **Ctrl + Alt + Plus** - increase pitch by a semitone 
-* **Ctrl + Alt + Plus** - decrease pitch by a semitone 
+* **Ctrl + Alt + Minus** - decrease pitch by a semitone 
 * **Ctrl + Alt + Multiply** - reset pitch 
 
 Futor has option "Autostart" for starting on Windows starts
