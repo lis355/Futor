@@ -37,6 +37,11 @@ namespace Futor
                 Application.Options.OutputDeviceName.Value = outputDeviceName;
             };
 
+            _uiTaskbarView.Menu.OnAutorunClicked += () =>
+            {
+                Application.Options.IsAutorun.Value = !Application.Options.IsAutorun.Value;
+            };
+
             _uiTaskbarView.Menu.OnExitClicked += () =>
             {
                 Exit();

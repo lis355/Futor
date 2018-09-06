@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -15,6 +14,7 @@ namespace Futor
         public event Action<int> OnPitchButtonClicked;
         public event Action<string> OnInputDeviceButtonClicked;
         public event Action<string> OnOutputDeviceButtonClicked;
+        public event Action OnAutorunClicked;
         public event Action OnExitClicked;
 
         public UIIconMenu(Application application)
@@ -27,13 +27,14 @@ namespace Futor
 
             SetPitchFactor();
             SetBypassAll();
-            
+            SetAutorun();
+
             CreateAudioDeviceOptions();
 
             SetInputDeviceName();
             SetOutputDeviceName();
 
-            application.Options.PitchFactor.OnChanged += (sender, args) =>
+            _application.Options.PitchFactor.OnChanged += (sender, args) =>
             {
                 SetPitchFactor();
             };
@@ -52,11 +53,16 @@ namespace Futor
             {
                 SetOutputDeviceName();
             };
+
+            _application.Options.IsAutorun.OnChanged += (sender, args) =>
+            {
+                SetAutorun();
+            };
         }
 
         void CreatePitchOptions()
         {
-            for (int i = -_application.PitchShifter.PitchFactor.Min; i <= _application.PitchShifter.PitchFactor.Max; i++)
+            for (int i = _application.PitchShifter.PitchFactor.Min; i <= _application.PitchShifter.PitchFactor.Max; i++)
             {
                 var pitchValueToolStripMenuItem = new ToolStripMenuItem(i.ToString());
                 pitchValueToolStripMenuItem.Tag = i;
@@ -77,6 +83,11 @@ namespace Futor
         void SetBypassAll()
         {
             BypassAllStripMenuItem.Checked = _application.Options.IsBypassAll.Value;
+        }
+
+        void SetAutorun()
+        {
+            AutorunMenuItem.Checked = _application.Options.IsAutorun.Value;
         }
 
         void CreateAudioDeviceOptions()
@@ -141,6 +152,11 @@ namespace Futor
         void BypassAllStripMenuItem_Click(object sender, EventArgs e)
         {
             OnBypassAllClicked?.Invoke();
+        }
+        
+        void AutorunMenuItem_Click(object sender, EventArgs e)
+        {
+            OnAutorunClicked?.Invoke();
         }
 
         void ExitStripMenuItem_Click(object sender, EventArgs e)

@@ -33,6 +33,8 @@ namespace Futor
             get => Get();
             set
             {
+                value = Validate(value);
+
                 if (_setter == null
                     || Equals(Value, value))
                     return;
@@ -43,6 +45,11 @@ namespace Futor
 
                 OnChanged?.Invoke(this, new ChangeEventArgs {OldValue = oldValue, NewValue = Value});
             }
+        }
+
+        public virtual T Validate(T value)
+        {
+            return value;
         }
 
         public virtual T Get()
@@ -71,7 +78,7 @@ namespace Futor
             Max = max;
         }
 
-        public override void Set(T value)
+        public override T Validate(T value)
         {
             if (value.CompareTo(Min) < 0)
                 value = Min;
@@ -79,7 +86,7 @@ namespace Futor
             if (value.CompareTo(Max) > 0)
                 value = Max;
 
-            base.Set( value);
+            return value;
         }
     }
 }

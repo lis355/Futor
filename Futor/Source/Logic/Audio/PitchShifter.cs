@@ -25,7 +25,7 @@ namespace Futor
                 double freqPerBin, expct;
                 long i, k, qpd, index, inFifoLatency, stepSize, fftFrameSize2;
 
-                float[] outdata = indata;
+                var outdata = indata;
                 fftFrameSize2 = fftFrameSize / 2;
                 stepSize = fftFrameSize / osamp;
                 freqPerBin = sampleRate / (double)fftFrameSize;
@@ -210,7 +210,7 @@ namespace Futor
 
         const int _kMaxAbsIntFactor = 12;
         const float _kLimThresh = 0.95f;
-        const float _kLimRange = (1f - _kLimThresh);
+        const float _kLimRange = 1f - _kLimThresh;
         const float _kMPi2 = (float)(Math.PI / 2);
 
         public OptionMinMax<int> PitchFactor { get; }
@@ -249,7 +249,7 @@ namespace Futor
 
             if (WaveFormat.Channels == 1)
             {
-                float[] mono = new float[count];
+                var mono = new float[count];
                 int index = 0;
 
                 for (int sample = offset; sample <= count + offset - 1; sample++)
@@ -269,8 +269,8 @@ namespace Futor
             }
             else if (WaveFormat.Channels == 2)
             {
-                float[] left = new float[(count >> 1)];
-                float[] right = new float[(count >> 1)];
+                var left = new float[(count >> 1)];
+                var right = new float[(count >> 1)];
 
                 int index = 0;
                 for (int sample = offset; sample <= count + offset - 1; sample += 2)

@@ -4,13 +4,13 @@ namespace Futor
 {
     public class PreferenceController
     {
-        Preferences<PreferencesDescriptor> _manager;
+        readonly Preferences<PreferencesDescriptor> _manager;
         readonly PreferencePathProvider _preferencePathProvider = new PreferencePathProvider();
 
         public event Action OnLoaded;
         public event Action OnSaved;
         
-        public Option<bool> HasAutorun { get; }
+        public Option<bool> IsAutorun { get; }
         public Option<string> InputDeviceName { get; }
         public Option<string> OutputDeviceName { get; }
         public Option<int> LatencyMilliseconds { get; }
@@ -21,7 +21,7 @@ namespace Futor
         {
             _manager = new Preferences<PreferencesDescriptor>();
 
-            HasAutorun = new Option<bool>(
+            IsAutorun = new Option<bool>(
                 () => _manager.Object.HasAutorun,
                 value => _manager.Object.HasAutorun = value,
                 (sender, args) => Save());

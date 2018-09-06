@@ -8,7 +8,7 @@ namespace Futor
         
         public int Read(float[] buffer, int offset, int count)
         {
-            SampleSource?.Read(buffer, offset, count);
+            SampleSource.Read(buffer, offset, count);
 
             Process(buffer, offset, count);
 
@@ -19,7 +19,6 @@ namespace Futor
 
         public void Dispose()
         {
-            SampleSource?.Dispose();
         }
 
         public bool CanSeek => SampleSource.CanSeek;

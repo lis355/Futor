@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace Futor
 {
@@ -20,22 +21,39 @@ namespace Futor
 
             Options.Load();
 
+            Options.IsAutorun.OnChanged += (sender, args) =>
+            {
+                SetAutorun();
+            };
+
             ProcessAudioManager();
+
+            HotKeyManager.Instance.RegisterHotKey(new HotKeyManager.HotKey { Key = Keys.Subtract, Modifiers = HotKeyManager.Modifiers.Ctrl | HotKeyManager.Modifiers.Alt }, () =>
+            {
+                Options.PitchFactor.Value -= 1;
+            });
+
+            HotKeyManager.Instance.RegisterHotKey(new HotKeyManager.HotKey { Key = Keys.Add, Modifiers = HotKeyManager.Modifiers.Ctrl | HotKeyManager.Modifiers.Alt }, () =>
+            {
+                Options.PitchFactor.Value += 1;
+            });
         }
 
         void OptionsLoaded()
         {
-            var hasAutorun = Options.HasAutorun.Value;
-            if (hasAutorun != AutorunProvider.HasSturtup())
-                SetAutorun(hasAutorun);
+            SetAutorun();
         }
 
-        void SetAutorun(bool value)
+        void SetAutorun()
         {
-            if (value)
-                AutorunProvider.AddToStartup();
-            else
-                AutorunProvider.RemoveFromStartup();
+            var hasAutorun = Options.IsAutorun.Value;
+            if (hasAutorun != AutorunProvider.HasSturtup())
+            {
+                if (hasAutorun)
+                    AutorunProvider.AddToStartup();
+                else
+                    AutorunProvider.RemoveFromStartup();
+            }
         }
 
         void ProcessAudioManager()
@@ -133,6 +151,8 @@ namespace Futor
 
         public void Exit()
         {
+            HotKeyManager.Instance.Dispose();
+
             if (AudioManager.IsWorking.Value)
                 AudioManager.Finish();
 

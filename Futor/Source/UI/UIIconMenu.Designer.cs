@@ -37,6 +37,8 @@
             this.OutputDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ExitStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.AutorunMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextRightMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,10 +50,12 @@
             this.toolStripSeparator2,
             this.InputDeviceStripMenuItem,
             this.OutputDeviceToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.AutorunMenuItem,
             this.toolStripSeparator1,
             this.ExitStripMenuItem});
             this.ContextRightMenu.Name = "ContextMenuStrip";
-            this.ContextRightMenu.Size = new System.Drawing.Size(181, 148);
+            this.ContextRightMenu.Size = new System.Drawing.Size(181, 176);
             // 
             // PitchToolStripMenuItem
             // 
@@ -96,6 +100,18 @@
             this.ExitStripMenuItem.Text = "Exit";
             this.ExitStripMenuItem.Click += new System.EventHandler(this.ExitStripMenuItem_Click);
             // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+            // 
+            // AutorunMenuItem
+            // 
+            this.AutorunMenuItem.Name = "AutorunMenuItem";
+            this.AutorunMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.AutorunMenuItem.Text = "Autostart";
+            this.AutorunMenuItem.Click += new System.EventHandler(this.AutorunMenuItem_Click);
+            // 
             // UIIconMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -116,5 +132,7 @@
         private System.Windows.Forms.ToolStripMenuItem BypassAllStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OutputDeviceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem PitchToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem AutorunMenuItem;
     }
 }

@@ -116,6 +116,9 @@ namespace Futor
             IsWorking = new Option<bool>(
                 () => _working,
                 value => _working = value);
+
+            //DEBUG
+            IsWorking.OnChanged += (sender, args) => System.Diagnostics.Debug.Print("AudioManager {0}", (args.NewValue) ? "ON" : "OFF");
         }
 
         public void Start()
@@ -188,6 +191,11 @@ namespace Futor
         {
             if (!IsWorking.Value)
                 throw new Exception("Call Finish when not working.");
+
+            _soundOut.Stop();
+            _soundIn.Stop();
+
+            SampleProcessor.SampleSource = null;
 
             _soundOut?.Dispose();
             _soundIn?.Dispose();
