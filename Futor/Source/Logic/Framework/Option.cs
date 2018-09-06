@@ -30,7 +30,7 @@ namespace Futor
 
         public T Value
         {
-            get => (_getter != null) ? _getter() : default(T);
+            get => Get();
             set
             {
                 if (_setter == null
@@ -39,10 +39,47 @@ namespace Futor
 
                 var oldValue = Value;
 
-                _setter(value);
+                Set(value);
 
                 OnChanged?.Invoke(this, new ChangeEventArgs {OldValue = oldValue, NewValue = Value});
             }
+        }
+
+        public virtual T Get()
+        {
+            return (_getter != null) ? _getter() : default(T);
+        }
+
+        public virtual void Set(T value)
+        {
+            _setter(value);
+        }
+    }
+
+    public class OptionMinMax<T> : Option<T> where T : IComparable<T>
+    {
+        public T Min { get; set; }
+        public T Max { get; set; }
+
+        public OptionMinMax(Func<T> getter, Action<T> setter, T min, T max, EventHandler<ChangeEventArgs> onChanged = null) :
+            base(getter, setter, onChanged)
+        {
+            if (min.CompareTo(max) > 0)
+                throw new ArgumentNullException(nameof(min));
+
+            Min = min;
+            Max = max;
+        }
+
+        public override void Set(T value)
+        {
+            if (value.CompareTo(Min) < 0)
+                value = Min;
+
+            if (value.CompareTo(Max) > 0)
+                value = Max;
+
+            base.Set( value);
         }
     }
 }

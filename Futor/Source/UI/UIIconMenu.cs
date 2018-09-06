@@ -10,7 +10,6 @@ namespace Futor
         const string _kEmptyDeviceName = "--";
 
         readonly Application _application;
-        readonly Dictionary<int, ToolStripMenuItem> _pitchToolStripMenuItems = new Dictionary<int, ToolStripMenuItem>();
 
         public event Action OnBypassAllClicked;
         public event Action<int> OnPitchButtonClicked;
@@ -57,23 +56,16 @@ namespace Futor
 
         void CreatePitchOptions()
         {
-            const int kPitchBorder = 12;
-
-            for (int i = -kPitchBorder; i <= kPitchBorder; i++)
+            for (int i = -_application.PitchShifter.PitchFactor.Min; i <= _application.PitchShifter.PitchFactor.Max; i++)
             {
                 var pitchValueToolStripMenuItem = new ToolStripMenuItem(i.ToString());
                 pitchValueToolStripMenuItem.Tag = i;
 
                 var pitchFactor = i;
-                pitchValueToolStripMenuItem.Click += (sender, args) =>
-                {
-                    OnPitchButtonClicked?.Invoke(pitchFactor);
-                };
+                pitchValueToolStripMenuItem.Click += (sender, args) => { OnPitchButtonClicked?.Invoke(pitchFactor); };
 
-                _pitchToolStripMenuItems.Add(pitchFactor, pitchValueToolStripMenuItem);
+                PitchToolStripMenuItem.DropDownItems.Add(pitchValueToolStripMenuItem);
             }
-
-            PitchToolStripMenuItem.DropDownItems.AddRange(_pitchToolStripMenuItems.Values.Cast<ToolStripItem>().ToArray());
         }
 
         void SetPitchFactor()

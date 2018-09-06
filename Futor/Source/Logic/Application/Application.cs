@@ -4,11 +4,11 @@ namespace Futor
 {
     public class Application : IDisposable
     {
-        PitchShifter _pitchShifter;
-
         public PreferenceController Options { get; }
 
         public AudioManager AudioManager { get; private set; }
+
+        public PitchShifter PitchShifter { get; private set; }
         
         public Application()
         {
@@ -61,10 +61,10 @@ namespace Futor
             SetOutputDeviceName();
             SetLatencyMilliseconds();
 
-            _pitchShifter = new PitchShifter();
+            PitchShifter = new PitchShifter();
             SetPitchFactor();
 
-            AudioManager.SampleProcessor = _pitchShifter;
+            AudioManager.SampleProcessor = PitchShifter;
 
             Options.PitchFactor.OnChanged += (sender, args) => 
             {
@@ -123,7 +123,7 @@ namespace Futor
 
         void SetPitchFactor()
         {
-            _pitchShifter.PitchFactor.Value = Options.PitchFactor.Value;
+            PitchShifter.PitchFactor.Value = Options.PitchFactor.Value;
         }
 
         public void Dispose()
